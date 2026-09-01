@@ -1,0 +1,20 @@
+{
+  "name": "thendral-wind-turbine-service-report-generator",
+  "version": "1.0.0",
+  "description": "Production-Grade Wind Turbine Service Report & Borescope Inspection PDF Generator",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "dev": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "wind-turbine",
+    "service-report",
+    "borescope-inspection",
+    "gearbox-repair",
+    "uptower-maintenance",
+    "pdf-generator"
+  ],
+  "author": "Thendral Wind Power Services",
+  "license": "MIT"
+}

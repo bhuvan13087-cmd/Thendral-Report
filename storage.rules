@@ -1,0 +1,21 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Reports Photos & Signatures
+    match /reports/{reportId}/{allPaths=**} {
+      // Authenticated users can read photos
+      allow read: if isAuthenticated();
+
+      // Authenticated users can upload photos with reasonable file sizes & image types
+      allow write: if isAuthenticated()
+                   && request.resource.size < 15 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+  }
+}

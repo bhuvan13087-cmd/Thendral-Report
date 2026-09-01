@@ -1,0 +1,1197 @@
+/* ==========================================================================
+   THENDRAL WIND TURBINE SERVICE REPORT - OEM-GRADE TECHNICAL PRINT & PREVIEW STYLESHEET
+   Industry Standard: DNV-GL / TÜV Rheinland / Vestas / ZF Wind Power Specification
+   Unified Screen Preview (A4 210mm x 297mm) & 1:1 High-Resolution PDF Output
+   ========================================================================== */
+
+/* ==========================================================================
+   1. A4 SHEET SETUP & CORE PAGE CONTAINER
+   ========================================================================== */
+.report-page {
+  width: 210mm;
+  min-height: 297mm;
+  max-height: 297mm;
+  height: 297mm;
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.18), 0 1px 4px rgba(15, 23, 42, 0.08);
+  position: relative;
+  box-sizing: border-box;
+  padding: 6mm 8mm 5mm 8mm;
+  border: 1.2px solid #0f172a;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 8.5pt;
+  line-height: 1.32;
+  page-break-after: always;
+  break-after: page;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  overflow: hidden;
+  margin: 0 auto 28px auto;
+  border-radius: 0;
+}
+
+/* Page Body Container (Left Sidebar Strip + Main Report Flow) */
+.page-body-container {
+  display: flex;
+  flex: 1;
+  gap: 0;
+  margin-top: 2mm;
+  margin-bottom: 1.5mm;
+  overflow: hidden;
+  min-height: 0;
+  width: 100%;
+}
+
+/* ==========================================================================
+   2. CORPORATE PAGE HEADER (EVERY PAGE)
+   ========================================================================== */
+.report-page-header {
+  display: grid;
+  grid-template-columns: 120px 1fr 165px;
+  border: 1.2px solid #0f172a;
+  background: #ffffff;
+  height: 46px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.header-logo-box {
+  padding: 3px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1.2px solid #0f172a;
+  height: 100%;
+  background: #ffffff;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.report-brand-logo-img {
+  max-height: 38px;
+  max-width: 110px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.header-center-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.header-company-name {
+  font-size: 10pt;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+
+.header-center-title h2 {
+  font-size: 9.5pt;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+
+.header-sub-bar {
+  font-size: 7.6pt;
+  font-weight: 700;
+  color: #0284c7;
+  letter-spacing: 0.4px;
+  margin-top: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.header-right-meta {
+  border-left: 1.2px solid #0f172a;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2px 8px;
+  font-size: 7pt;
+  background: #f8fafc;
+  box-sizing: border-box;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 1.25;
+}
+
+.meta-lbl {
+  color: #475569;
+  font-weight: 600;
+}
+
+.meta-val {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* Secondary Document Reference Bar */
+.report-doc-id-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.2px solid #0f172a;
+  border-top: none;
+  padding: 2px 10px;
+  font-size: 7.5pt;
+  font-weight: 700;
+  background: #f1f5f9;
+  flex-shrink: 0;
+}
+
+.doc-id-item {
+  color: #0f172a;
+  letter-spacing: 0.2px;
+}
+
+.doc-id-sep {
+  color: #94a3b8;
+  margin: 0 4px;
+}
+
+.doc-id-date {
+  color: #0284c7;
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   3. LEFT SIDEBAR (REMOVED FOR CLEAN CLIENT-FACING PRESENTATION)
+   ========================================================================== */
+.report-page-sidebar {
+  display: none !important;
+}
+
+/* ==========================================================================
+   4. MAIN CONTENT AREA & SECTIONS
+   ========================================================================== */
+.report-page-main {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.report-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.section-title {
+  font-size: 9.2pt;
+  font-weight: 900;
+  color: #0f172a;
+  border-bottom: 1.8px solid #0284c7;
+  padding-bottom: 1.2px;
+  margin-bottom: 1px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subsection-title {
+  font-size: 8.2pt;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 1mm;
+  margin-bottom: 0.5mm;
+}
+
+/* ==========================================================================
+   5. COVER PAGE (PAGE 1)
+   ========================================================================== */
+.cover-page-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+  padding: 2mm 0;
+  text-align: center;
+  box-sizing: border-box;
+  gap: 3mm;
+}
+
+.cover-badge-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  background: #e0f2fe;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
+  border-radius: 4px;
+  font-size: 7.5pt;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 1.5mm;
+}
+
+.cover-illustration-box {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 1mm auto;
+  /* No overflow:hidden, no max-height — let the image determine its own height */
+}
+
+.cover-title-section {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2mm;
+}
+
+.cover-doc-title {
+  font-size: 21pt;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.cover-gearbox-id {
+  font-size: 13.5pt;
+  font-weight: 800;
+  color: #0284c7;
+  letter-spacing: 0.5px;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+.cover-meta-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1.2px solid #0f172a;
+  font-size: 8.5pt;
+  margin: 2mm 0;
+  background: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.cover-meta-summary-table td {
+  padding: 6.5px 12px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+  line-height: 1.35;
+  font-family: inherit;
+  vertical-align: middle;
+}
+
+.cover-meta-summary-table .c-lbl {
+  width: 36%;
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 700;
+  font-size: 8.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  border-right: 1.2px solid #0f172a;
+  font-family: inherit;
+}
+
+.cover-meta-summary-table .c-val {
+  width: 64%;
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 8.5pt;
+  font-family: inherit;
+}
+
+.cover-company-box {
+  border: 1.2px solid #0f172a;
+  padding: 3mm 8mm;
+  width: 100%;
+  text-align: center;
+  background: #f8fafc;
+  box-sizing: border-box;
+  margin-top: 1mm;
+}
+
+.company-legal-name {
+  font-size: 9pt;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.8mm;
+  text-transform: uppercase;
+}
+
+.company-address-line {
+  font-size: 7.4pt;
+  color: #334155;
+  margin-bottom: 0.8mm;
+}
+
+.company-contact-line {
+  font-size: 7.2pt;
+  color: #475569;
+}
+
+.contact-sep {
+  margin: 0 4px;
+  color: #cbd5e1;
+}
+
+/* ==========================================================================
+   6. TECHNICAL SPEC TABLES & MATRICES
+   ========================================================================== */
+/* 2-Column Info Grid */
+.info-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 1.2mm;
+  column-gap: 4mm;
+  font-size: 7.8pt;
+}
+
+.info-item {
+  display: flex;
+  align-items: baseline;
+  border-bottom: 0.8px solid #e2e8f0;
+  padding-bottom: 1px;
+}
+
+.info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.info-lbl {
+  width: 130px;
+  color: #64748b;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.info-val {
+  flex: 1;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+/* Complaint Box */
+.complaint-box {
+  border: 1.2px solid #0f172a;
+  padding: 2mm 3mm;
+  background: #f8fafc;
+  border-radius: 2px;
+}
+
+.complaint-label {
+  font-size: 7.8pt;
+  font-weight: 800;
+  text-decoration: underline;
+  color: #0f172a;
+  margin-bottom: 0.8mm;
+}
+
+.complaint-text {
+  font-size: 7.8pt;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+/* Technical Specification Table */
+.report-spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 7.8pt;
+  border: 1.2px solid #0f172a;
+}
+
+.report-spec-table tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.report-spec-table td {
+  padding: 2.2px 6px;
+  border: 0.8px solid #cbd5e1;
+  vertical-align: middle;
+}
+
+.report-spec-table .tbl-lbl {
+  width: 25%;
+  color: #475569;
+  font-weight: 700;
+  background: #f8fafc;
+}
+
+.report-spec-table .tbl-val {
+  width: 25%;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+/* Status Pills */
+.status-pill {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 7pt;
+  font-weight: 800;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.status-stop {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 0.8px solid #f87171;
+}
+
+.status-run {
+  background: #dcfce7;
+  color: #15803d;
+  border: 0.8px solid #4ade80;
+}
+
+/* Work Performed Card */
+.work-performed-card {
+  border: 1.2px solid #0f172a;
+}
+
+.work-card-header {
+  background: #f1f5f9;
+  font-size: 8pt;
+  font-weight: 800;
+  padding: 1.5mm 3mm;
+  border-bottom: 1.2px solid #0f172a;
+  color: #0f172a;
+}
+
+.work-card-content {
+  padding: 2mm 3mm;
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+  font-size: 7.8pt;
+}
+
+.work-item-row {
+  color: #1e293b;
+}
+
+/* Assessment Definitions Box */
+.assessment-definitions-box {
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  padding: 1.5mm 2.5mm;
+  margin-bottom: 1.2mm;
+  font-size: 7.4pt;
+}
+
+.def-header {
+  font-size: 7.6pt;
+  font-weight: 800;
+  margin-bottom: 0.8mm;
+  color: #0f172a;
+}
+
+.def-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.6mm;
+}
+
+.def-text {
+  color: #334155;
+  font-size: 7.2pt;
+}
+
+.def-note {
+  font-size: 6.6pt;
+  color: #64748b;
+  margin-top: 0.8mm;
+  font-style: italic;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5px 6px;
+  font-size: 7pt;
+  font-weight: 800;
+  border-radius: 3px;
+  text-align: center;
+  min-width: 78px;
+  line-height: 1.2;
+}
+
+.badge-acceptable {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.badge-caution {
+  background: #fefce8;
+  color: #854d0e;
+  border: 1px solid #fde047;
+}
+
+.badge-not-acceptable {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.badge-neutral {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+/* Technical Matrix Table (Bearings, Gears, Bores, Shafts) */
+.report-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 7.4pt;
+  border: 1.2px solid #0f172a;
+}
+
+.report-matrix-table thead {
+  display: table-header-group;
+}
+
+.report-matrix-table tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.report-matrix-table th {
+  background: #0f172a;
+  border: 1px solid #0f172a;
+  padding: 3px 6px;
+  font-weight: 800;
+  text-align: left;
+  color: #ffffff;
+  font-size: 7.2pt;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.report-matrix-table tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.report-matrix-table td {
+  border: 0.8px solid #cbd5e1;
+  padding: 2px 6px;
+  vertical-align: middle;
+}
+
+.component-group-title {
+  font-size: 8pt;
+  font-weight: 800;
+  margin-top: 1.2mm;
+  margin-bottom: 0.6mm;
+  color: #0f172a;
+}
+
+.remarks-callout {
+  border: 1px solid #cbd5e1;
+  border-left: 3.5px solid #0284c7;
+  background: #f8fafc;
+  padding: 1.2mm 2.5mm;
+  margin-top: 1mm;
+  font-size: 7.4pt;
+}
+
+.remarks-title {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.remarks-text {
+  margin-top: 0.4mm;
+  color: #334155;
+  line-height: 1.3;
+}
+
+/* ==========================================================================
+   7. SUMMARY, RECOMMENDATIONS & DUAL SIGN-OFF (PAGE 7)
+   ========================================================================== */
+.summary-box {
+  border: 1.2px solid #0f172a;
+  padding: 2mm 3mm;
+  font-size: 7.8pt;
+  background: #f8fafc;
+}
+
+.summary-text {
+  color: #1e293b;
+  line-height: 1.32;
+}
+
+.summary-status-row {
+  margin-top: 1.5mm;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-title {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.rec-sub-block {
+  margin-bottom: 1.5mm;
+}
+
+.rec-title {
+  font-size: 8.2pt;
+  font-weight: 800;
+  margin-bottom: 0.6mm;
+  color: #0f172a;
+}
+
+.rec-box-content {
+  border: 1.2px solid #0f172a;
+  padding: 1.8mm 3mm;
+  font-size: 7.8pt;
+  min-height: 9mm;
+  background: #ffffff;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.further-jobs-row {
+  margin-top: 1mm;
+  font-size: 7.8pt;
+}
+
+.jobs-lbl {
+  color: #475569;
+  font-weight: 600;
+}
+
+/* Dual Sign-Off Section */
+.report-signoff-section {
+  margin-top: 3mm;
+  text-align: center;
+  border-top: 1px solid #cbd5e1;
+  padding-top: 2mm;
+}
+
+.signoff-closing {
+  font-size: 7.8pt;
+  color: #475569;
+}
+
+.signoff-company {
+  font-size: 9.5pt;
+  font-weight: 900;
+  margin-top: 0.4mm;
+  margin-bottom: 4mm;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.signatures-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10mm;
+  padding: 0 8mm;
+}
+
+.sig-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sig-image-holder {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1mm;
+}
+
+.rendered-sig-img {
+  max-height: 34px;
+  max-width: 140px;
+  object-fit: contain;
+}
+
+.sig-line {
+  width: 100%;
+  border-bottom: 1.2px solid #0f172a;
+  margin-bottom: 1.2mm;
+}
+
+.sig-name {
+  font-size: 8pt;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.sig-role {
+  font-size: 7pt;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   8. APPENDIX & TECHNICAL SCHEMATICS (PAGE 8)
+   ========================================================================== */
+.appendix-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 0.6mm;
+  column-gap: 4mm;
+  font-size: 7pt;
+  margin-bottom: 1.5mm;
+}
+
+.appendix-item {
+  color: #334155;
+}
+
+.app-code {
+  font-weight: 800;
+  min-width: 38px;
+  display: inline-block;
+  color: #0284c7;
+}
+
+.schematics-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+}
+
+.schematic-card {
+  border: 1.2px solid #0f172a;
+  background: #ffffff;
+}
+
+.schematic-header {
+  background: #f1f5f9;
+  font-size: 7.6pt;
+  font-weight: 800;
+  padding: 1mm 3mm;
+  border-bottom: 1.2px solid #0f172a;
+  color: #0f172a;
+}
+
+.schematic-body {
+  padding: 1.5mm;
+  display: flex;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   9. LEGAL & STANDARDS COMPLIANCE (PAGE 9)
+   ========================================================================== */
+.legal-text {
+  font-size: 7pt;
+  color: #475569;
+  line-height: 1.32;
+  text-align: justify;
+}
+
+.standards-compliance-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2mm;
+}
+
+.standards-card {
+  border: 1.2px solid #0f172a;
+  background: #ffffff;
+  padding: 2mm;
+  box-sizing: border-box;
+}
+
+.standards-card-title {
+  font-size: 7.5pt;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1mm;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 0.5mm;
+}
+
+.standards-card-content {
+  font-size: 6.8pt;
+  color: #334155;
+  line-height: 1.28;
+}
+
+.standards-card-list {
+  margin: 0.8mm 0 0 0;
+  padding-left: 3.5mm;
+}
+
+.standards-card-list li {
+  margin-bottom: 0.5mm;
+}
+
+/* ==========================================================================
+   10. DYNAMIC PHOTO EVIDENCE GALLERIES (PAGES 10+)
+   ========================================================================== */
+.photo-evidence-header-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f1f5f9;
+  border: 1.2px solid #0f172a;
+  padding: 1.5mm 3mm;
+  margin-bottom: 2mm;
+  flex-shrink: 0;
+}
+
+.photo-section-heading .section-title {
+  border-bottom: none;
+  padding: 0;
+  margin: 0;
+  font-size: 8.5pt;
+}
+
+.photo-section-subtitle {
+  font-size: 6.8pt;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.photo-count-badge {
+  background: #0284c7;
+  color: #ffffff;
+  font-size: 6.8pt;
+  font-weight: 800;
+  padding: 1mm 2.5mm;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.photo-gallery-page-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5mm;
+  min-height: 0;
+  justify-content: flex-start;
+}
+
+.photo-gallery-row {
+  display: flex;
+  gap: 2.5mm;
+  width: 100%;
+  box-sizing: border-box;
+  /* align-items: flex-start so each card wraps its own content height (aspect-ratio-aware) */
+  align-items: flex-start;
+}
+
+.photo-evidence-card {
+  flex: 1;
+  border: 1.2px solid #0f172a;
+  background: #ffffff;
+  /* block layout: image content drives height, not the flex container */
+  display: block;
+  overflow: hidden;
+  border-radius: 2px;
+  min-width: 0;
+  box-sizing: border-box;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Single-photo row: center the card and cap its width so it
+   never expands to fill the full page width */
+.photo-gallery-row.cols-1 {
+  justify-content: center;
+}
+
+.photo-gallery-row.cols-1 .photo-evidence-card {
+  flex: none;
+  width: 62%;
+  max-width: 110mm;
+}
+
+/* Single-photo image: slightly more room but still capped */
+.photo-gallery-row.cols-1 .photo-evidence-img {
+  max-height: 90mm;
+}
+
+/* Two-column images */
+.photo-gallery-row.cols-2 .photo-evidence-img {
+  max-height: 90mm;
+}
+
+/* Three-column images: slightly shorter cap so three fit side-by-side cleanly */
+.photo-gallery-row.cols-3 .photo-evidence-img {
+  max-height: 82mm;
+}
+
+.photo-evidence-img-box {
+  /* Clean white background, no bars — image drives the height */
+  width: 100%;
+  background: #ffffff;
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.photo-evidence-img {
+  /*
+   * Consistent professional photo sizing:
+   * - width: 100% fills the card column
+   * - height: auto preserves the original aspect ratio (portrait stays portrait, landscape stays landscape)
+   * - max-height caps the image so a single photo never fills the whole page
+   * - No object-fit distortion, no letterboxing
+   */
+  width: 100%;
+  height: auto;
+  max-height: 90mm;
+  object-fit: scale-down;
+  display: block;
+}
+
+.photo-timestamp-pill {
+  position: absolute;
+  bottom: 2px;
+  left: 3px;
+  background: rgba(15, 23, 42, 0.88);
+  color: #facc15;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 5.6pt;
+  font-weight: 700;
+  padding: 1px 3.5px;
+  border-radius: 2px;
+  letter-spacing: 0.2px;
+  pointer-events: none;
+}
+
+.photo-category-pill {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  background: rgba(14, 116, 144, 0.92);
+  color: #ffffff;
+  font-size: 5.2pt;
+  font-weight: 700;
+  padding: 1px 3.5px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  pointer-events: none;
+}
+
+.photo-evidence-caption-box {
+  padding: 1.2mm 2mm;
+  background: #f8fafc;
+  border-top: 1.2px solid #0f172a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.photo-point-name {
+  font-size: 7pt;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.15;
+  word-break: break-word;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.photo-sub-caption {
+  font-size: 6pt;
+  color: #475569;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-top: 0.4mm;
+  word-break: break-word;
+  text-align: center;
+}
+
+/* ==========================================================================
+   11. PAGE FOOTER (EVERY PAGE)
+   ========================================================================== */
+.report-page-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7pt;
+  color: #64748b;
+  border-top: 0.8px solid #cbd5e1;
+  padding-top: 1.2mm;
+  margin-top: 1.2mm;
+  flex-shrink: 0;
+}
+
+.footer-company-tag {
+  font-weight: 700;
+  color: #475569;
+}
+
+.footer-page-num {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* ==========================================================================
+   12. PRINT MEDIA RULES (Browser Print & PDF Generation)
+   ========================================================================== */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide workspace UI and modal controls during print */
+  .workspace-sidebar,
+  .workspace-header,
+  .workspace-main > .workspace-header,
+  .header-actions-group,
+  .app-modal-header,
+  .toast-notification,
+  .btn,
+  .camera-modal,
+  .preview-photo-controls,
+  .preview-photo-btn {
+    display: none !important;
+  }
+
+  .preview-editable {
+    outline: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    cursor: default !important;
+  }
+
+  .preview-decision-wrap {
+    cursor: default !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .app-modal,
+  .pdf-modal-dialog,
+  .pdf-modal-body,
+  .workspace-layout,
+  .workspace-main {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+  }
+
+  #report-preview-container {
+    display: block !important;
+    gap: 0 !important;
+    transform: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 210mm !important;
+  }
+
+  .report-page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 6mm 8mm 5mm 8mm !important;
+    border: 1.2px solid #0f172a !important;
+    page-break-after: always !important;
+    page-break-inside: avoid !important;
+    break-after: page !important;
+    break-inside: avoid !important;
+    border-radius: 0 !important;
+  }
+
+  .report-page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+}
+
+/* ==========================================================================
+   13. PDF EXPORT MODE (Triggered during html2pdf.js generation)
+   Enforces exact 1:1 page-for-page pagination without gap spillover
+   ========================================================================== */
+#report-preview-container.pdf-export-mode {
+  gap: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  width: 210mm !important;
+}
+
+#report-preview-container.pdf-export-mode .report-page {
+  margin: 0 !important;
+  box-shadow: none !important;
+  border: 1.2px solid #0f172a !important;
+  page-break-after: always !important;
+  page-break-inside: avoid !important;
+  break-after: page !important;
+  break-inside: avoid !important;
+  border-radius: 0 !important;
+}
+
+#report-preview-container.pdf-export-mode .report-page:last-child {
+  page-break-after: auto !important;
+  break-after: auto !important;
+}

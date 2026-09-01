@@ -1,0 +1,105 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function getUserRole() {
+      return isAuthenticated() && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        ? getUserData().role
+        : 'engineer';
+    }
+
+    function isAdmin() {
+      return getUserRole() == 'admin';
+    }
+
+    function isReviewer() {
+      return getUserRole() == 'reviewer' || isAdmin();
+    }
+
+    function isAuthorizedUser() {
+      return isAuthenticated() && (isAdmin() || getUserRole() == 'engineer' || getUserRole() == 'reviewer');
+    }
+
+    // ------------------------------------------
+    // USER PROFILES: users/{userId}
+    // ------------------------------------------
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId) || isAdmin();
+      allow update: if (isOwner(userId) && (
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'uid', 'createdAt', 'status']) || isAdmin()
+      )) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ------------------------------------------
+    // GLOBAL ATOMIC COUNTERS: counters/{counterId}
+    // ------------------------------------------
+    match /counters/{counterId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // ------------------------------------------
+    // REPORTS COLLECTION: reports/{reportId}
+    // ------------------------------------------
+    match /reports/{reportId} {
+      // Helper for creator verification
+      function isReportCreator() {
+        return (resource.data.createdByUid == request.auth.uid) ||
+               ('auditMetadata' in resource.data && resource.data.auditMetadata.createdByUid == request.auth.uid);
+      }
+
+      // READ: 
+      // - Admins and Reviewers can read all reports
+      // - Engineers can read their own reports or team shared/released reports
+      allow read: if isAuthenticated() && (
+        isReviewer() || 
+        isReportCreator() || 
+        resource.data.isShared == true || 
+        resource.data.status == 'Released' ||
+        resource.data.visibility == 'team'
+      );
+
+      // CREATE: 
+      // - Authenticated users creating their own report with valid ownership fields
+      allow create: if isAuthenticated() && 
+        (
+          request.resource.data.createdByUid == request.auth.uid ||
+          ('auditMetadata' in request.resource.data && request.resource.data.auditMetadata.createdByUid == request.auth.uid)
+        ) &&
+        request.resource.data.isDeleted == false;
+
+      // UPDATE: 
+      // 1. Creator can update their report
+      // 2. Reviewer or Admin can review/approve/release any report
+      allow update: if isAuthenticated() && (
+        isReportCreator() ||
+        isReviewer() ||
+        isAdmin()
+      );
+
+      // DELETE:
+      allow delete: if isAuthenticated() && (
+        isReportCreator() || 
+        isReviewer() || 
+        isAdmin() ||
+        resource.data.createdByUid == request.auth.uid ||
+        resource.data.isShared == true ||
+        resource.data.visibility == 'team'
+      );
+    }
+  }
+}

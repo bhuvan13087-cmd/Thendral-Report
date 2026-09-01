@@ -1,0 +1,2728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thendral Wind Turbine Service Report Workspace</title>
+  <meta name="description" content="Professional Wind Turbine Technical Service Report Management System for Thendral Wind Services.">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Application Stylesheets -->
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/print.css">
+
+  <!-- Early Persistent Session State Initializer -->
+  <script>
+    (function() {
+      try {
+        if (localStorage.getItem('thendral_has_session') === 'true') {
+          document.documentElement.classList.add('session-active');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- HTML2PDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+
+  <!-- ==========================================
+       PRODUCTION ENTERPRISE PUBLIC LANDING PAGE
+       ========================================== -->
+  <div id="login-landing-screen" class="login-landing-screen">
+    
+    <!-- 1. HEADER -->
+    <header class="tw-landing-header">
+      <div class="tw-landing-container tw-header-inner">
+        <a href="#" class="tw-brand-link">
+          <img src="assets/logo_horizontal.png" alt="Thendral Wind Tech" class="tw-header-logo">
+        </a>
+
+        <nav class="tw-landing-nav">
+          <a href="#landing-about" class="tw-nav-link">About</a>
+          <a href="#landing-services" class="tw-nav-link">Services</a>
+          <a href="#landing-reporting" class="tw-nav-link">Technical Reporting</a>
+        </nav>
+
+        <div class="tw-header-actions">
+          <a href="#landing-auth-portal" class="tw-btn-login-outline">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+              <polyline points="10 17 15 12 10 7"></polyline>
+              <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            <span>Login</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. HERO SECTION -->
+    <section class="tw-hero-section" id="landing-about">
+      <div class="tw-landing-container tw-hero-grid">
+        
+        <div class="tw-hero-content">
+          <div class="tw-system-badge">
+            <span class="tw-badge-dot"></span>
+            <span>Enterprise Technical Reporting Platform</span>
+          </div>
+
+          <h1 class="tw-hero-title">
+            Professional Wind Turbine Inspection &amp; Technical Reporting
+          </h1>
+
+          <p class="tw-hero-desc">
+            Thendral Wind Tech provides structured inspection, condition assessment, technical documentation, and engineering reporting for wind turbine and gearbox service operations.
+          </p>
+
+          <div class="tw-hero-actions">
+            <a href="#landing-auth-portal" class="tw-btn-primary">
+              <span>Access Reporting Portal</span>
+              <span class="tw-btn-arrow">→</span>
+            </a>
+            <a href="#landing-services" class="tw-btn-secondary">
+              <span>Explore Services</span>
+            </a>
+          </div>
+
+          <div class="tw-trust-tags">
+            <span class="tw-trust-tag">✓ Bearing &amp; Gear Damage Matrix</span>
+            <span class="tw-trust-tag">✓ Multi-Page A4 PDF Engine</span>
+            <span class="tw-trust-tag">✓ Hybrid Cloud &amp; Offline Sync</span>
+          </div>
+        </div>
+
+        <!-- Technical Engineering Visual Graphic Card -->
+        <div class="tw-hero-visual-wrap">
+          <div class="tw-spec-card">
+            <div class="tw-spec-card-header">
+              <div class="tw-spec-status-pill">
+                <span class="status-dot-pulse"></span>
+                <span>Active Standard</span>
+              </div>
+              <span class="tw-spec-doc-no">Doc #TWT-10826</span>
+            </div>
+
+            <div class="tw-spec-card-body">
+              <div class="tw-spec-row">
+                <span class="tw-spec-label">Domain Scope</span>
+                <span class="tw-spec-val">Wind Turbine &amp; Gearbox Inspection</span>
+              </div>
+              <div class="tw-spec-row">
+                <span class="tw-spec-label">Standard Format</span>
+                <span class="tw-spec-val font-mono">ISO &amp; OEM Standardized A4</span>
+              </div>
+              <div class="tw-spec-row">
+                <span class="tw-spec-label">Subsystem Coverage</span>
+                <div class="tw-subsystem-pills">
+                  <span class="tw-sub-pill">Bearings (11 Points)</span>
+                  <span class="tw-sub-pill">Gear Mesh Flanks</span>
+                  <span class="tw-sub-pill">Lubrication &amp; Auxiliaries</span>
+                </div>
+              </div>
+              <div class="tw-spec-row">
+                <span class="tw-spec-label">Quality Clearance</span>
+                <span class="tw-spec-val text-success font-semibold">✓ 2-Stage Engineer Sign-off</span>
+              </div>
+            </div>
+
+            <div class="tw-spec-card-footer">
+              <span>🔒 256-Bit Session Guard</span>
+              <span>Thendral Wind Tech LLP</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. WHAT WE DO -->
+    <section class="tw-section tw-bg-subtle" id="landing-services">
+      <div class="tw-landing-container">
+        
+        <div class="tw-section-header">
+          <span class="tw-section-tag">Core Capabilities</span>
+          <h2 class="tw-section-title">What We Do</h2>
+          <p class="tw-section-subtitle">Structured industrial engineering inspection, condition diagnostics, and technical documentation.</p>
+        </div>
+
+        <div class="tw-cards-grid-3">
+          
+          <!-- Card 1 -->
+          <div class="tw-feature-card">
+            <div class="tw-card-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="m4.93 4.93 4.24 4.24"></path>
+                <path d="m14.83 9.17 4.24-4.24"></path>
+                <path d="m14.83 14.83 4.24 4.24"></path>
+                <path d="m9.17 14.83-4.24 4.24"></path>
+                <circle cx="12" cy="12" r="4"></circle>
+              </svg>
+            </div>
+            <h3 class="tw-card-title">Inspection &amp; Assessment</h3>
+            <p class="tw-card-desc">
+              Structured inspection workflows for bearings, gears, shafts, lubrication systems, and auxiliary components.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="tw-feature-card">
+            <div class="tw-card-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
+            <h3 class="tw-card-title">Technical Reporting</h3>
+            <p class="tw-card-desc">
+              Generate structured engineering reports with inspection findings, photographic evidence, recommendations, and approvals.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="tw-feature-card">
+            <div class="tw-card-icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <h3 class="tw-card-title">Evidence &amp; Documentation</h3>
+            <p class="tw-card-desc">
+              Organize technical photographs, observations, decisions, signatures, and service records in one professional report.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. WHY THIS PLATFORM -->
+    <section class="tw-section" id="landing-reporting">
+      <div class="tw-landing-container">
+        
+        <div class="tw-section-header">
+          <span class="tw-section-tag">Engineering Advantages</span>
+          <h2 class="tw-section-title">Why This Platform</h2>
+          <p class="tw-section-subtitle">Designed specifically for industrial reliability teams and field engineers.</p>
+        </div>
+
+        <div class="tw-benefits-grid">
+          
+          <div class="tw-benefit-box">
+            <div class="tw-benefit-badge">1</div>
+            <div class="tw-benefit-body">
+              <h4 class="tw-benefit-heading">Structured Inspection Workflow</h4>
+              <p class="tw-benefit-text">Multi-dashboard step methodology aligning customer scope, gearbox kinematics, and damage coding.</p>
+            </div>
+          </div>
+
+          <div class="tw-benefit-box">
+            <div class="tw-benefit-badge">2</div>
+            <div class="tw-benefit-body">
+              <h4 class="tw-benefit-heading">Centralized Technical Evidence</h4>
+              <p class="tw-benefit-text">Directly link high-resolution component evidence photos to specific bearing and gear rows.</p>
+            </div>
+          </div>
+
+          <div class="tw-benefit-box">
+            <div class="tw-benefit-badge">3</div>
+            <div class="tw-benefit-body">
+              <h4 class="tw-benefit-heading">Professional A4 Reports</h4>
+              <p class="tw-benefit-text">Dynamic pagination engine with exact cover page gearbox photo isolation and print compliance.</p>
+            </div>
+          </div>
+
+          <div class="tw-benefit-box">
+            <div class="tw-benefit-badge">4</div>
+            <div class="tw-benefit-body">
+              <h4 class="tw-benefit-heading">Engineering Review &amp; Sign-Off</h4>
+              <p class="tw-benefit-text">Pre-release verification scorecard and digital signature pads for Lead Engineer and Reviewer.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. FINAL CTA & AUTHENTICATION PORTAL -->
+    <section class="tw-section tw-bg-subtle" id="landing-auth-portal">
+      <div class="tw-landing-container">
+        
+        <div class="tw-auth-panel">
+          
+          <div class="tw-auth-info">
+            <span class="tw-section-tag">Authorized Portal Access</span>
+            <h2 class="tw-auth-heading">Ready to manage technical inspection reports professionally?</h2>
+            <p class="tw-auth-lead">
+              Access the reporting workspace to create, review, and manage technical service reports.
+            </p>
+            
+            <div class="tw-auth-checklist">
+              <div class="tw-check-row">
+                <span class="tw-check-icon">✓</span>
+                <span>Role-based access control (Admin, Lead Engineer, Technical Reviewer)</span>
+              </div>
+              <div class="tw-check-row">
+                <span class="tw-check-icon">✓</span>
+                <span>Automatic Cloud Firestore &amp; Offline IndexedDB persistence</span>
+              </div>
+              <div class="tw-check-row">
+                <span class="tw-check-icon">✓</span>
+                <span>Live in-browser preview &amp; high-fidelity PDF export</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- AUTHENTICATION FORM CARD (EXACT IDS & LOGIC PRESERVED) -->
+          <div class="tw-login-card-wrap">
+            <div class="tw-login-card">
+              
+              <div class="tw-card-header">
+                <div class="tw-portal-pill">
+                  <span class="status-dot-pulse"></span>
+                  <span>Portal Login</span>
+                </div>
+                <h3 class="tw-form-title">Sign In to Workspace</h3>
+                <p class="tw-form-subtitle">Enter your authorized engineer credentials</p>
+              </div>
+
+              <!-- EXACT LOGIN FORM PRESERVED -->
+              <form id="login-landing-form" onsubmit="app.handleLandingLoginSubmit(event)">
+                <div class="login-form-group">
+                  <label class="login-form-label" for="login-email-input">Engineer Email</label>
+                  <div class="login-input-wrap">
+                    <span class="login-input-icon">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </span>
+                    <input type="email" id="login-email-input" class="login-input" placeholder="engineer@thendral.com" required autocomplete="email">
+                  </div>
+                </div>
+
+                <div class="login-form-group">
+                  <label class="login-form-label" for="login-password-input">Password</label>
+                  <div class="login-input-wrap">
+                    <span class="login-input-icon">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                    </span>
+                    <input type="password" id="login-password-input" class="login-input" placeholder="••••••••" required autocomplete="current-password">
+                    <button type="button" id="btn-toggle-login-pass" class="login-toggle-pass-btn" onclick="app.togglePasswordVisibility('login-password-input', 'btn-toggle-login-pass')" title="Show password" aria-label="Toggle password visibility">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Error Alert Box -->
+                <div id="login-error-box" class="login-error-box"></div>
+
+                <!-- Sign In Submit Button -->
+                <button type="submit" id="btn-login-submit" class="btn-login-submit">
+                  <span>Sign In to Workspace</span>
+                  <span class="btn-arrow">→</span>
+                </button>
+              </form>
+
+              <!-- Security & System Notes -->
+              <div class="login-footer-notes">
+                🔒 Secure 256-Bit Encrypted Session • Authorized Personnel Only
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 6. MINIMAL PROFESSIONAL FOOTER -->
+    <footer class="tw-landing-footer">
+      <div class="tw-landing-container tw-footer-inner">
+        <div class="tw-footer-left">
+          <div class="tw-footer-brand">Thendral Wind Tech LLP Dindigul</div>
+          <div class="tw-footer-desc">Professional Wind Turbine Inspection &amp; Technical Reporting</div>
+        </div>
+        <div class="tw-footer-right">
+          <span>© 2026 Thendral Wind Tech LLP. All rights reserved.</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Full Service Report Workspace Layout (Guarded until authenticated) -->
+  <div class="workspace-layout" id="workspace-layout" style="display: none;">
+    
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="app.closeSidebar()"></div>
+
+    <!-- LEFT SIDEBAR: REPORT NAVIGATION & QUALITY STEPPER -->
+    <aside class="workspace-sidebar" id="app-sidebar">
+      <div class="sidebar-top">
+        
+        <!-- Brand Header (Official THENDRAL WIND TECH Logo) -->
+        <div class="sidebar-brand-box">
+          <div class="sidebar-brand-logo-wrap">
+            <img src="assets/logo_horizontal.png" alt="THENDRAL WIND TECH" class="sidebar-brand-logo-img">
+          </div>
+        </div>
+
+        <!-- Overall Report Progress Bar -->
+        <div class="sidebar-progress-box">
+          <div class="progress-info-row">
+            <span class="progress-label">Report Completion</span>
+            <span class="progress-fraction" id="sidebar-progress-fraction">0 / 10 (0%)</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="sidebar-progress-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Grouped Workflow Navigation -->
+        <nav class="sidebar-nav-list">
+          
+          <!-- STAGE 01: REPORT & ASSET -->
+          <div class="nav-group-header">
+            <span class="nav-group-label">01 • Report &amp; Asset</span>
+          </div>
+
+          <a class="nav-step-item active" id="nav-step-report-details" onclick="app.switchSection('step-report-details')">
+            <div class="nav-step-left">
+              <span class="nav-step-num">1.1</span>
+              <span class="nav-step-title">Report Information</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-report-details">✓</span>
+          </a>
+
+          <a class="nav-step-item" id="nav-step-job-turbine" onclick="app.switchSection('step-job-turbine')">
+            <div class="nav-step-left">
+              <span class="nav-step-num">1.2</span>
+              <span class="nav-step-title">Customer &amp; Turbine Specs</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-job-turbine">✓</span>
+          </a>
+
+          <!-- STAGE 02: TECHNICAL INSPECTION -->
+          <div class="nav-group-header" style="margin-top: 10px;">
+            <span class="nav-group-label">02 • Technical Inspection</span>
+          </div>
+
+          <a class="nav-step-item" id="nav-step-lubrication" onclick="app.switchSection('step-lubrication')">
+            <div class="nav-step-left">
+              <span class="nav-step-num">2.1</span>
+              <span class="nav-step-title">Lubrication &amp; Dynamics</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-lubrication">✓</span>
+          </a>
+
+          <a class="nav-step-item" id="nav-step-bearings" onclick="app.switchSection('step-bearings')">
+            <div class="nav-step-left">
+              <span class="nav-step-num">2.2</span>
+              <span class="nav-step-title">Bearing Condition</span>
+            </div>
+            <span class="step-state-badge state-attention" id="badge-step-bearings">✓</span>
+          </a>
+
+          <a class="nav-step-item" id="nav-step-gears" onclick="app.switchSection('step-gears')">
+            <div class="nav-step-left">
+              <span class="nav-step-num">2.3</span>
+              <span class="nav-step-title">Gears &amp; Auxiliaries</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-gears">✓</span>
+          </a>
+
+          <a class="nav-step-item" id="nav-step-inspections" onclick="app.switchSection('step-inspections')">
+            <div class="nav-step-left">
+              <span class="nav-step-num">2.4</span>
+              <span class="nav-step-title">Custom Inspections</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-inspections">✓</span>
+          </a>
+
+          <!-- STAGE 03: FINALIZE & RELEASE -->
+          <div class="nav-group-header" style="margin-top: 10px;">
+            <span class="nav-group-label">03 • Finalize &amp; Release</span>
+          </div>
+
+          <a class="nav-step-item" id="nav-step-photos" onclick="app.switchSection('step-photos')">
+            <div class="nav-step-left">
+              <span class="nav-step-num">3.1</span>
+              <span class="nav-step-title">Photo Evidence Hub</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-photos">✓</span>
+          </a>
+
+          <a class="nav-step-item" id="nav-step-findings-signoff" onclick="app.switchSection('step-findings-signoff')">
+            <div class="nav-step-left">
+              <span class="nav-step-num">3.2</span>
+              <span class="nav-step-title">Executive Summary &amp; Sign-off</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-findings-signoff">✓</span>
+          </a>
+
+          <a class="nav-step-item" id="nav-step-review-release" onclick="app.switchSection('step-review-release')">
+            <div class="nav-step-left">
+              <span class="nav-step-num">3.3</span>
+              <span class="nav-step-title">Quality Review &amp; Release</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-review-release">●</span>
+          </a>
+
+          <a class="nav-step-item" id="nav-step-appendix" onclick="app.switchSection('step-appendix')">
+            <div class="nav-step-left">
+              <span class="nav-step-num">3.4</span>
+              <span class="nav-step-title">Appendix &amp; Definitions</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-appendix">✓</span>
+          </a>
+
+          <!-- ARCHIVE -->
+          <div class="nav-group-header" style="margin-top: 10px;">
+            <span class="nav-group-label">Archive &amp; History</span>
+          </div>
+
+          <a class="nav-step-item" id="nav-step-history" onclick="app.switchSection('step-history')">
+            <div class="nav-step-left">
+              <span class="nav-step-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </span>
+              <span class="nav-step-title">Reports History</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-history">0 Saved</span>
+          </a>
+
+          <!-- ADMIN & TEAM (Admin Role Only) -->
+          <div class="nav-group-header nav-admin-only" id="nav-group-admin" style="margin-top: 10px;">
+            <span class="nav-group-label">Admin &amp; Management</span>
+          </div>
+
+          <a class="nav-step-item nav-admin-only" id="nav-step-users" onclick="app.switchSection('step-users')">
+            <div class="nav-step-left">
+              <span class="nav-step-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </span>
+              <span class="nav-step-title">User Management</span>
+            </div>
+            <span class="step-state-badge state-complete" id="badge-step-users">Admin</span>
+          </a>
+
+        </nav>
+      </div>
+
+      <div class="sidebar-footer-box">
+        <div class="sidebar-status-card">
+          <div class="report-system-status">
+            <span class="status-dot-pulse"></span>
+            <span>System Online • Auto-Saving</span>
+          </div>
+          <div class="sidebar-retention-pill">30-Day Storage Retention</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN WORKSPACE CONTENT -->
+    <main class="workspace-main">
+      
+      <!-- GLOBAL WORKSPACE HEADER (Refined Engineering Action Bar) -->
+      <header class="workspace-header">
+        
+        <!-- Left: Mobile Toggle & Document Identity Context -->
+        <div class="header-report-context">
+          <button type="button" class="btn btn-outline mobile-sidebar-toggle" id="sidebar-toggle-btn" onclick="app.toggleSidebar()" title="Toggle Navigation">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
+          <div class="report-identity-pill">
+            <span class="context-tag">Report</span>
+            <span class="context-value" id="hdr-report-no">TWT-10826</span>
+            <span class="context-divider">•</span>
+            <span class="context-tag">WTG</span>
+            <span class="context-value" id="hdr-turbine-id">CN18D064</span>
+          </div>
+
+          <span class="report-lifecycle-badge badge-draft" id="hdr-status-badge">In Progress</span>
+        </div>
+
+        <!-- Middle: Real Auto-Save State Indicator -->
+        <div class="header-middle-controls">
+          <div class="autosave-indicator saved" id="hdr-autosave-indicator">
+            <span>●</span>
+            <span id="hdr-autosave-text">All changes saved</span>
+          </div>
+        </div>
+
+        <!-- Right: Real Functional Actions (Save, Live Preview, User Profile & Sign Out) -->
+        <div class="header-actions-group">
+          
+          <!-- 1. Quick Manual Save (Functional) -->
+          <button type="button" class="btn btn-outline" onclick="app.saveCurrentReport(true)" title="Save changes to Cloud & Local Storage">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+            <span>Save</span>
+          </button>
+
+          <!-- 2. Full Live PDF Preview (Functional) -->
+          <button type="button" class="btn btn-primary" onclick="app.openReportModal()" title="Preview full multi-page PDF document">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span>Preview PDF</span>
+          </button>
+
+          <div class="header-divider-v"></div>
+
+          <!-- 3. Authenticated User Profile & Role Badge -->
+          <div id="header-auth-container">
+            <button type="button" class="btn btn-outline btn-header-auth-user" id="btn-header-auth" title="Authenticated User Profile">
+              <span>👤</span>
+              <span>Admin</span>
+              <span class="auth-user-badge-role">Admin</span>
+            </button>
+          </div>
+
+          <!-- 4. Direct Sign Out (Functional) -->
+          <button type="button" class="btn btn-outline btn-header-logout" onclick="app.handleSignOut()" title="Sign out of Firebase Session">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span class="logout-label">Sign Out</span>
+          </button>
+
+          <input type="file" id="json-file-input" accept=".json" style="display: none;" onchange="app.handleJSONImport(this.files)">
+
+        </div>
+      </header>
+
+      <!-- WORKSPACE SECTIONS CONTAINER -->
+      <div class="workspace-body">
+        
+        <!-- ==========================================================================
+             STAGE 01: REPORT & ASSET INFORMATION
+             ========================================================================== -->
+        <section class="workspace-section active" id="step-report-asset">
+          
+          <div class="section-header-banner">
+            <div class="section-title-wrap">
+              <div class="section-num-badge">01</div>
+              <div>
+                <h2>Report & Asset Information</h2>
+                <p>Document identification, customer organization, site location, turbine specifications, operating metrics, and work scope.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 1: Document Reference & Authorization Control -->
+          <div class="form-card" id="card-report-details">
+            <div class="form-card-header">
+              <span class="form-card-title">Document Reference & Authorization Control</span>
+            </div>
+            <div class="form-card-body">
+              <div class="form-grid-2">
+                
+                <!-- 1. Report Document Number (Auto-Generated) -->
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Report Document Number</label>
+                    <span class="badge-auto-gen">🔒 AUTO-GENERATED</span>
+                  </div>
+                  <input type="text" class="form-control font-mono font-bold text-primary locked-input" data-path="meta.reportDocNo" id="f-doc-no" readonly title="Report Document Number is automatically generated and collision-safe.">
+                </div>
+
+                <!-- 2. Report Date (Master Calendar Date) -->
+                <div class="form-group">
+                  <label class="form-label">Report Date</label>
+                  <input type="date" class="form-control font-semibold" id="f-report-date-calendar" onchange="app.onGlobalDateChange(this.value)">
+                </div>
+
+                <!-- 3. Prepared By -->
+                <div class="form-group">
+                  <label class="form-label">Prepared By</label>
+                  <input type="text" class="form-control font-semibold" data-path="meta.preparedBy" id="f-meta-prepared" placeholder="Enter name">
+                </div>
+
+                <!-- 4. Released By -->
+                <div class="form-group">
+                  <label class="form-label">Released By</label>
+                  <input type="text" class="form-control font-semibold" data-path="meta.releasedBy" id="f-meta-released" placeholder="Enter name">
+                </div>
+
+                <!-- 5. Gearbox -->
+                <div class="form-group full-col">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <label class="form-label" style="margin-bottom: 0;">Gearbox</label>
+                    <button type="button" class="btn-table-photo-add" onclick="app.openRowPhotoModal('report-info', 'slot_gearbox_cover', 'Gearbox', 'Gearbox', true)" title="Upload Gearbox Photo Proof">
+                      📷 + Add Photo
+                    </button>
+                  </div>
+                  <input type="text" class="form-control font-mono font-semibold" data-path="meta.gearboxPartNo" id="f-gearbox-nameplate" placeholder="e.g. 4178.010.034 / EH804AG" style="margin-bottom: 6px;">
+                  <div id="gearbox-nameplate-photos-container" class="table-photos-cell-wrap"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Customer & Intervention Scope -->
+          <div class="form-card" id="card-customer-site">
+            <div class="form-card-header">
+              <span class="form-card-title">Customer & Intervention Scope</span>
+            </div>
+            <div class="form-card-body">
+              
+              <!-- 1. Intervention Type & 2. Customer Name -->
+              <div class="form-grid-2" style="margin-bottom: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Intervention Type</label>
+                  <select class="form-control font-semibold" data-path="generalInfo.interventionType" id="f-intervention-type">
+                    <option value="">Select intervention type</option>
+                    <option value="BoreScope Inspection">BoreScope Inspection</option>
+                    <option value="Flushing & Oil Replacement">Flushing & Oil Replacement</option>
+                    <option value="General Inspection">General Inspection</option>
+                    <option value="Inspection & Repair">Inspection & Repair</option>
+                    <option value="Inspection Filter">Inspection Filter</option>
+                    <option value="Inspection Magnet">Inspection Magnet</option>
+                    <option value="Magnet Sump Sweep">Magnet Sump Sweep</option>
+                    <option value="Proactive Repair / Upgrade">Proactive Repair / Upgrade</option>
+                    <option value="Repair">Repair</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Customer Name</label>
+                  <input type="text" class="form-control font-semibold" data-path="generalInfo.customerName" id="f-customer-name" placeholder="Enter customer name">
+                </div>
+              </div>
+
+              <!-- 3. Site Name & 4. Country -->
+              <div class="form-grid-2" style="margin-bottom: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Site Name</label>
+                  <input type="text" class="form-control font-semibold" data-path="generalInfo.siteName" id="f-site-name" placeholder="Enter site name">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Country</label>
+                  <select class="form-control font-semibold" data-path="generalInfo.country" id="f-country">
+                    <option value="">Select country</option>
+                    <option value="IN - India">IN - India</option>
+                    <option value="HR - Croatia">HR - Croatia</option>
+                    <option value="DE - Germany">DE - Germany</option>
+                    <option value="DK - Denmark">DK - Denmark</option>
+                    <option value="ES - Spain">ES - Spain</option>
+                    <option value="US - United States">US - United States</option>
+                    <option value="GB - United Kingdom">GB - United Kingdom</option>
+                    <option value="AU - Australia">AU - Australia</option>
+                    <option value="AT - Austria">AT - Austria</option>
+                    <option value="BE - Belgium">BE - Belgium</option>
+                    <option value="BR - Brazil">BR - Brazil</option>
+                    <option value="CA - Canada">CA - Canada</option>
+                    <option value="CL - Chile">CL - Chile</option>
+                    <option value="CN - China">CN - China</option>
+                    <option value="EG - Egypt">EG - Egypt</option>
+                    <option value="FI - Finland">FI - Finland</option>
+                    <option value="FR - France">FR - France</option>
+                    <option value="GR - Greece">GR - Greece</option>
+                    <option value="IE - Ireland">IE - Ireland</option>
+                    <option value="IT - Italy">IT - Italy</option>
+                    <option value="JP - Japan">JP - Japan</option>
+                    <option value="KR - South Korea">KR - South Korea</option>
+                    <option value="MX - Mexico">MX - Mexico</option>
+                    <option value="MA - Morocco">MA - Morocco</option>
+                    <option value="NL - Netherlands">NL - Netherlands</option>
+                    <option value="NZ - New Zealand">NZ - New Zealand</option>
+                    <option value="NO - Norway">NO - Norway</option>
+                    <option value="PH - Philippines">PH - Philippines</option>
+                    <option value="PL - Poland">PL - Poland</option>
+                    <option value="PT - Portugal">PT - Portugal</option>
+                    <option value="RO - Romania">RO - Romania</option>
+                    <option value="SA - Saudi Arabia">SA - Saudi Arabia</option>
+                    <option value="ZA - South Africa">ZA - South Africa</option>
+                    <option value="SE - Sweden">SE - Sweden</option>
+                    <option value="CH - Switzerland">CH - Switzerland</option>
+                    <option value="TH - Thailand">TH - Thailand</option>
+                    <option value="TR - Turkey">TR - Turkey</option>
+                    <option value="AE - United Arab Emirates">AE - United Arab Emirates</option>
+                    <option value="VN - Vietnam">VN - Vietnam</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Service Engineer & Report Reviewer Names (2-column layout) -->
+              <div class="form-grid-2" style="margin-bottom: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Service Engineer (Prepared By)</label>
+                  <input type="text" class="form-control font-semibold" data-path="meta.preparedBy" id="f-service-engineer" placeholder="Enter service engineer name">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Report Reviewer (Released By)</label>
+                  <input type="text" class="form-control font-semibold" data-path="meta.releasedBy" id="f-report-reviewer" placeholder="Enter report reviewer name">
+                </div>
+              </div>
+
+              <!-- Intervention Start Date & Intervention End Date (Side-by-side on desktop) -->
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">Intervention Start Date</label>
+                  <input type="date" class="form-control font-semibold" id="f-start-date-calendar" onchange="app.onDirectDateChange('generalInfo.startDate', this.value)">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Intervention End Date</label>
+                  <input type="date" class="form-control font-semibold" id="f-end-date-calendar" onchange="app.onDirectDateChange('generalInfo.endDate', this.value)">
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Block 2: Turbine Technical Specification Table -->
+          <div class="form-card">
+            <div class="form-card-header">
+              <span class="form-card-title">2.1 Turbine / Absorption Technical Specifications</span>
+            </div>
+            <div class="form-card-body">
+              
+              <div class="form-subgroup-title">Operating Meters & Energy Production</div>
+              <div class="form-grid-2" style="margin-bottom: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Total Cumulative Production</label>
+                  <div class="input-unit-wrap">
+                    <input type="text" class="form-control font-mono font-bold text-primary" data-path="turbine.totalProductionKwh" id="f-prod-kwh" placeholder="e.g. 13092101">
+                    <span class="input-unit-badge">kWh</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Total Operating Run Hours</label>
+                  <div class="input-unit-wrap">
+                    <input type="text" class="form-control font-mono font-bold text-primary" data-path="turbine.runHours" id="f-run-hours" placeholder="e.g. 16959">
+                    <span class="input-unit-badge">hrs</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Commissioning Date</label>
+                  <input type="date" class="form-control font-semibold" id="f-comm-date-calendar" onchange="app.onDirectDateChange('turbine.commissioningDate', this.value)">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Generator Name</label>
+                  <input type="text" class="form-control font-semibold" data-path="turbine.gen1Manufacturer" id="f-gen-name" placeholder="e.g. Vestas / ABB Generator">
+                </div>
+              </div>
+
+              <div class="form-subgroup-title">Turbine & Gearbox Asset Identity</div>
+              <div class="form-grid-3" style="margin-bottom: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Turbine Number</label>
+                  <input type="text" class="form-control font-mono font-bold text-primary" data-path="turbine.turbineNumber" id="f-turbine-num" placeholder="e.g. CN18D064">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">WTG Pad Number</label>
+                  <input type="text" class="form-control font-mono font-semibold" data-path="turbine.padNumber" id="f-pad-num" placeholder="e.g. KUT-035">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Turbine Model / OEM Type</label>
+                  <input type="text" class="form-control font-semibold" data-path="turbine.turbineType" id="f-turbine-type" placeholder="e.g. Vestas V110 - 2.0MW">
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Gearbox Nameplate</label>
+                    <button type="button" class="btn-table-photo-add" onclick="app.openRowPhotoModal('turbine-info', 'slot_gearbox_turbine', 'Gearbox Nameplate', 'Gearbox Nameplate', true)" title="Upload Gearbox Nameplate Photo Proof">
+                      📷 + Add Photo
+                    </button>
+                  </div>
+                  <input type="text" class="form-control font-mono font-semibold" data-path="meta.gearboxPartNo" id="f-gearbox-part" placeholder="e.g. 4178.010.034 / EH804AG" style="margin-bottom: 6px;">
+                  <div id="gearbox-turbine-photos-container" class="table-photos-cell-wrap"></div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Customer Serial Number</label>
+                  <input type="text" class="form-control font-mono font-semibold" data-path="meta.customerSerialNo" id="f-cust-serial" placeholder="e.g. CM0307">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Turbine Location Type</label>
+                  <input type="text" class="form-control" data-path="turbine.turbineLocationType" id="f-turb-location" placeholder="e.g. STV">
+                </div>
+              </div>
+
+              <div class="form-subgroup-title">Operational Status & Diagnostics</div>
+              <div class="form-grid-3" style="margin-bottom: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Status Before Intervention</label>
+                  <select class="form-control font-semibold" data-path="turbine.runStatusBefore" id="f-status-before">
+                    <option value="">Select status</option>
+                    <option value="STOP">STOP (Parked / Tripped)</option>
+                    <option value="RUN">RUN (Normal Generation)</option>
+                    <option value="TRIPPED">TRIPPED (Fault Code)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Status Upon Arrival</label>
+                  <select class="form-control font-semibold" data-path="turbine.runStatusUponArrival" id="f-status-arrival">
+                    <option value="">Select status</option>
+                    <option value="STOP">STOP (LOTO active)</option>
+                    <option value="RUN">RUN (Rotating upon arrival)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Status After Completion</label>
+                  <select class="form-control font-bold" data-path="turbine.runStatusAfter" id="f-status-after">
+                    <option value="">Select status</option>
+                    <option value="RUN">RUN (Returned to Commercial Operation)</option>
+                    <option value="STOP">STOP (Under Maintenance / Lockout)</option>
+                    <option value="TESTING">TESTING (Trial Run)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- 2.3 Customer Complaint & Operating Anomaly Scope -->
+              <div class="form-subgroup-title" style="margin-top: 20px;">Customer Complaint & Anomaly Scope</div>
+              
+              <div class="form-grid-2" style="margin-bottom: 16px;">
+                
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Complaint Category / Primary Concern</label>
+                  </div>
+                  <select class="form-control font-semibold text-primary" data-path="generalInfo.complaintCategory" id="f-complaint-cat">
+                    <option value="">Select category</option>
+                    <option value="Metallic Debris on Magnetic Plug">Metallic Debris on Magnetic Plug</option>
+                    <option value="Abnormal Noise / Acoustic Knocking">Abnormal Noise / Acoustic Knocking</option>
+                    <option value="High Vibration / Sensor Alarm">High Vibration / Sensor Alarm</option>
+                    <option value="Oil Contamination / Filter Clogging">Oil Contamination / Filter Clogging</option>
+                    <option value="Overheating / High Temperature Alarm">Overheating / High Temperature Alarm</option>
+                    <option value="Turbine Trip / Fault Code Trigger">Turbine Trip / Fault Code Trigger</option>
+                    <option value="Routine Scheduled Maintenance / Borescope Audit">Routine Scheduled Maintenance / Borescope Audit</option>
+                    <option value="Proactive Upgrade / Overhaul Inspection">Proactive Upgrade / Overhaul Inspection</option>
+                    <option value="Other Anomaly">Other Anomaly</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Customer Urgency / Severity Level</label>
+                  </div>
+                  <select class="form-control font-bold" data-path="generalInfo.complaintSeverity" id="f-complaint-sev">
+                    <option value="">Select severity</option>
+                    <option value="Moderate">Moderate (Operational Anomaly Noted)</option>
+                    <option value="Critical">Critical (Turbine Stopped / Immediate Action Required)</option>
+                    <option value="High">High (High Alarm / Derated Operation)</option>
+                    <option value="Low">Low (Routine Preventive Check)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">SCADA Alarm Code / Trigger Reference</label>
+                  </div>
+                  <input type="text" class="form-control font-mono font-semibold" data-path="generalInfo.scadaAlarmCode" id="f-scada-alarm" placeholder="e.g. ALM-4108 Gearbox Over-Temp / ERR-204">
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Complaint Logged Date</label>
+                  </div>
+                  <input type="date" class="form-control font-semibold" id="f-complaint-date-calendar" onchange="app.onDirectDateChange('generalInfo.complaintReportedDate', this.value)">
+                </div>
+
+                <div class="form-group full-col">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Detailed Customer Complaint / Reason for Intervention</label>
+                    <button type="button" class="btn-table-photo-add" onclick="app.openRowPhotoModal('turbine-info', 'slot_customer_complaint', 'Customer Complaint / SCADA Proof', 'Customer complaint evidence / SCADA alarm log proof', true)" title="Upload Complaint / Alarm Proof Photos">
+                      📷 + Photo Proof
+                    </button>
+                  </div>
+                  <textarea class="form-control" data-path="generalInfo.customerComplaint" id="f-complaint" placeholder="e.g. Routine 12-month borescope audit; minor metal particles observed on magnetic stick during quarterly inspection." style="min-height: 72px; margin-bottom: 6px;"></textarea>
+                  <div id="complaint-photos-container" class="table-photos-cell-wrap"></div>
+                </div>
+
+              </div>
+
+              <!-- 2.4 Work Performed / Intervention Actions Taken -->
+              <div class="form-subgroup-title" style="margin-top: 24px;">Work Performed & Service Execution Summary</div>
+
+              <div class="form-grid-2" style="margin-bottom: 16px;">
+                
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Work Execution Status / Outcome</label>
+                  </div>
+                  <select class="form-control font-bold text-primary" data-path="generalInfo.workExecutionStatus" id="f-work-status">
+                    <option value="">Select status</option>
+                    <option value="Completed Successfully">Completed Successfully (Within Standards)</option>
+                    <option value="Completed with Observations">Completed with Observations / Action Required</option>
+                    <option value="Partially Completed">Partially Completed (Pending Spares / Crane)</option>
+                    <option value="Inspection Only">Inspection Only (No Repair Undertaken)</option>
+                    <option value="Follow-Up Mandatory">Follow-Up Mandatory</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Turbine Handover & Clearance</label>
+                  </div>
+                  <select class="form-control font-bold" data-path="generalInfo.handoverClearance" id="f-handover-clearance">
+                    <option value="">Select clearance</option>
+                    <option value="Cleared for Commercial Power Generation">Cleared for Commercial Power Generation</option>
+                    <option value="Cleared for Trial Run / Monitoring">Cleared for Trial Run / Monitoring</option>
+                    <option value="Derated Operation (Speed / Load Restricted)">Derated Operation (Speed / Load Restricted)</option>
+                    <option value="LOTO Active (Turbine Stopped - Unsafe to Run)">LOTO Active (Turbine Stopped - Unsafe to Run)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Primary Work Scope Executed</label>
+                  </div>
+                  <select class="form-control font-semibold" data-path="generalInfo.workScopeCategory" id="f-work-scope-cat">
+                    <option value="">Select work scope</option>
+                    <option value="Borescope Inspection">Borescope Inspection</option>
+                    <option value="Bearing Replacement">Bearing Replacement</option>
+                    <option value="Shaft Replacement">Shaft Replacement</option>
+                    <option value="Pump Replacement">Pump Replacement</option>
+                    <option value="3rd Stage / Helical Replacement">3rd Stage / Helical Replacement</option>
+                    <option value="Magnetic Stick Cleaning & Debris Audit">Magnetic Stick Cleaning & Debris Audit</option>
+                    <option value="Oil Sample Extraction for Lab Analysis">Oil Sample Extraction for Lab Analysis</option>
+                    <option value="Filter Element Replacement & Housing Flush">Filter Element Replacement & Housing Flush</option>
+                    <option value="Minor In-Situ Repair / Deburring">Minor In-Situ Repair / Deburring</option>
+                    <option value="Shaft Laser Alignment & Torque Check">Shaft Laser Alignment & Torque Check</option>
+                    <option value="Comprehensive Service & Audit">Comprehensive Service & Audit</option>
+                    <option value="Other Maintenance Work">Other Maintenance Work</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Work Completion / Handover Date</label>
+                  </div>
+                  <input type="date" class="form-control font-semibold" id="f-work-comp-date" onchange="app.onDirectDateChange('generalInfo.workCompletionDate', this.value)">
+                </div>
+
+                <div class="form-group full-col">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Detailed Summary of Work Performed</label>
+                    <button type="button" class="btn-table-photo-add" onclick="app.openRowPhotoModal('turbine-info', 'slot_work_performed', 'Work Performed / Service Proof', 'Work execution proof / On-site service photo', true)" title="Upload Work Performed Proof Photos">
+                      📷 + Photo Proof
+                    </button>
+                  </div>
+                  <textarea class="form-control" data-path="generalInfo.workPerformed" id="f-work-performed" placeholder="e.g. 1. Applied LOTO and locked rotor. 2. Performed full borescope inspection of HSS, IMS, and Planetary stages. 3. Cleaned magnetic plug and removed metal particulate. 4. Collected oil sample for ISO 4406 analysis. 5. Normalized turbine and returned to commercial generation." style="min-height: 80px; margin-bottom: 6px;"></textarea>
+                  <div id="work-performed-photos-container" class="table-photos-cell-wrap"></div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==========================================================================
+             DASHBOARD 02: TECHNICAL INSPECTION
+             ========================================================================== -->
+        <section class="workspace-section" id="step-technical-inspection">
+          
+          <div class="section-header-banner">
+            <div class="section-title-wrap">
+              <div class="section-num-badge">02</div>
+              <div>
+                <h2>Technical Inspection</h2>
+                <p>Comprehensive kinematic inspection: lubrication dynamics, bearing health matrix, gear flanks, auxiliaries, and custom subsystems.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 1: Lubrication & Operating Dynamics -->
+          <div class="form-card" id="card-lubrication">
+            <div class="form-card-header">
+              <span class="form-card-title">Gearbox Oil & Filtration Inspection</span>
+            </div>
+            <div class="form-card-body">
+              
+              <!-- 1. Oil Specification & Sump Monitoring -->
+              <div class="form-subgroup-title">Oil Specification & Sump Monitoring</div>
+              <div class="form-grid-2" style="margin-bottom: 24px;">
+                <div class="form-group full-col">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Gearbox Oil Brand & Grade</label>
+                  </div>
+                  <select class="form-control font-semibold text-primary" data-path="lubrication.gearboxOilType" id="f-oil-type">
+                    <option value="">Select oil brand & grade</option>
+                    <option value="Castrol Optigear Synthetic CT 320">Castrol Optigear Synthetic CT 320</option>
+                    <option value="Castrol Optigear Synthetic A 320">Castrol Optigear Synthetic A 320</option>
+                    <option value="Castrol Optigear Synthetic PD 320">Castrol Optigear Synthetic PD 320</option>
+                    <option value="Castrol Optigear Synthetic RO 320">Castrol Optigear Synthetic RO 320</option>
+                    <option value="Castrol Optigear Synthetic X 320">Castrol Optigear Synthetic X 320</option>
+                    <option value="Castrol Optigear Synthetic X VG320">Castrol Optigear Synthetic X VG320</option>
+                    <option value="Castrol Optigear Synthetic ZX 320">Castrol Optigear Synthetic ZX 320</option>
+                    <option value="Castrol Optigear MX 320">Castrol Optigear MX 320</option>
+                    <option value="Castrol Optigear RMO 320">Castrol Optigear RMO 320</option>
+                    <option value="Optigear Synthetic X">Optigear Synthetic X</option>
+                    <option value="Mobilgear SHC 320">Mobilgear SHC 320</option>
+                    <option value="Mobilgear SHC XMP 320">Mobilgear SHC XMP 320</option>
+                    <option value="Mobilgear ISO VG320">Mobilgear ISO VG320</option>
+                    <option value="Shell Omala S4 GX 320">Shell Omala S4 GX 320</option>
+                    <option value="Shell Omala HD">Shell Omala HD</option>
+                    <option value="Shell Omala F CLP320">Shell Omala F CLP320</option>
+                    <option value="Omala S5 Wind 320">Omala S5 Wind 320</option>
+                    <option value="Omala S4 GX 320">Omala S4 GX 320</option>
+                    <option value="Omala F 320">Omala F 320</option>
+                    <option value="Meropa 320">Meropa 320</option>
+                    <option value="Meropa WM 320">Meropa WM 320</option>
+                    <option value="Renolin 320">Renolin 320</option>
+                    <option value="Synthetic Amsoil PTN ISO VG320">Synthetic Amsoil PTN ISO VG320</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Oil Level at Sight Glass Check</label>
+                    <button type="button" class="btn-table-photo-add" onclick="app.openRowPhotoModal('lubrication', 'slot_oil_level', 'Oil Level at Sight Glass', 'Oil level verification at sight glass', true)" title="Upload photo proof for oil level">
+                      📷 + Photo Proof
+                    </button>
+                  </div>
+                  <input type="text" class="form-control" data-path="lubrication.oilLevelAtInspection" id="f-oil-level" placeholder="e.g. Normal (Above Minimum Mark)" style="margin-bottom: 6px;">
+                  <div id="oil-level-photos-container" class="table-photos-cell-wrap"></div>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Oil Visual Appearance</label>
+                  </div>
+                  <input type="text" class="form-control" data-path="lubrication.oilCondition" id="f-oil-cond" placeholder="e.g. Clear / Normal viscosity, no emulsification">
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Oil Cooler & Pump Function</label>
+                  </div>
+                  <input type="text" class="form-control" data-path="lubrication.oilCoolerFunction" id="f-oil-cooler" placeholder="e.g. Normal circulation & cooling fan operating">
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Other Detection Oil</label>
+                  </div>
+                  <input type="text" class="form-control" data-path="lubrication.otherDetectionOil" id="f-other-detection-oil" placeholder="e.g. Normal, no foaming / water ingress / discoloration">
+                </div>
+              </div>
+
+              <!-- 2. Contamination & Particle Debris Assessment -->
+              <div class="form-subgroup-title">Contamination & Particle Debris Assessment</div>
+              <div class="form-grid-2" style="margin-bottom: 24px;">
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Debris on Magnetic Stick / Drain Plug</label>
+                    <button type="button" class="btn-table-photo-add" onclick="app.openRowPhotoModal('lubrication', 'slot_magnet_debris', 'Magnetic Stick Debris', 'Debris inspection on magnetic stick / drain plug', true)" title="Upload photo proof for magnetic stick debris">
+                      📷 + Photo Proof
+                    </button>
+                  </div>
+                  <select class="form-control font-bold" data-path="lubrication.debrisOnMagnet" id="f-debris-magnet" style="margin-bottom: 6px;">
+                    <option value="">Select debris level</option>
+                    <option value="None">None (Clean)</option>
+                    <option value="Minor">Minor (Normal operating fines)</option>
+                    <option value="Many">Many (Metal particle swarf)</option>
+                    <option value="Heavy Flakes">Heavy Flakes (Severe Wear)</option>
+                  </select>
+                  <div id="magnet-debris-photos-container" class="table-photos-cell-wrap"></div>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Debris in Main Inline Filter Housing</label>
+                    <button type="button" class="btn-table-photo-add" onclick="app.openRowPhotoModal('lubrication', 'slot_filter_debris', 'Inline Filter Debris', 'Inline filter element particle inspection', true)" title="Upload photo proof for filter debris">
+                      📷 + Photo Proof
+                    </button>
+                  </div>
+                  <select class="form-control font-bold" data-path="lubrication.debrisInFilter" id="f-debris-filter" style="margin-bottom: 6px;">
+                    <option value="">Select debris state</option>
+                    <option value="No">No (Clean element)</option>
+                    <option value="Yes">Yes (Particulate trapped in pre-filter mesh)</option>
+                  </select>
+                  <div id="filter-debris-photos-container" class="table-photos-cell-wrap"></div>
+                </div>
+              </div>
+
+              <!-- 3. Dynamics, Vibration & Acoustics -->
+              <div class="form-subgroup-title">Dynamics, Vibration & Acoustics</div>
+              <div class="form-grid-2" style="margin-bottom: 24px;">
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Vibration Level (ISO 10816)</label>
+                  </div>
+                  <select class="form-control font-semibold" data-path="lubrication.vibrations" id="f-vibrations">
+                    <option value="">Select vibration level</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Caution">Caution</option>
+                    <option value="High">High</option>
+                    <option value="Very High">Very High</option>
+                    <option value="Unknown">Unknown</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Acoustic / Gear Meshing Sound</label>
+                  </div>
+                  <select class="form-control font-semibold" data-path="lubrication.noise" id="f-noise">
+                    <option value="">Select sound level</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Caution">Caution</option>
+                    <option value="High Pitched">High Pitched</option>
+                    <option value="Rough / Loud">Rough / Loud</option>
+                    <option value="Unknown">Unknown</option>
+                  </select>
+                </div>
+
+                <div class="form-group full-col">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Shaft Alignment Remarks</label>
+                  </div>
+                  <input type="text" class="form-control" data-path="lubrication.remarksAlignment" id="f-align-remarks" placeholder="e.g. Within OEM tolerances">
+                </div>
+              </div>
+
+              <!-- 4. Maintenance & Change Intervals -->
+              <div class="form-subgroup-title">Maintenance & Change Intervals</div>
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Date Last Oil Change</label>
+                  </div>
+                  <input type="date" class="form-control font-semibold" id="f-last-oil-calendar" onchange="app.onDirectDateChange('lubrication.dateLastOilChange', this.value)">
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Date Last Filter Change</label>
+                  </div>
+                  <input type="date" class="form-control font-semibold" id="f-last-filter-calendar" onchange="app.onDirectDateChange('lubrication.dateLastFilterChange', this.value)">
+                </div>
+
+                <div class="form-group">
+                  <div style="display: flex; justify-content: space-between; align-items: center; min-height: 28px; margin-bottom: 4px;">
+                    <label class="form-label" style="margin-bottom: 0;">Date Last Alignment</label>
+                  </div>
+                  <input type="date" class="form-control font-semibold" id="f-last-align-calendar" onchange="app.onDirectDateChange('lubrication.dateLastAlignment', this.value)">
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Card 2: Condition of Bearings (Health Matrix) -->
+          <div class="form-card" id="card-bearings" style="margin-top: 24px;">
+            <div class="form-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <span class="form-card-title">Condition of Bearings (Health Matrix)</span>
+                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-top: 2px;">High Speed (HSS), Intermediate (IS), and Planetary Stage bearing borescope ratings and raceway findings.</div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="app.addBearingRow()">
+                  + Add Bearing Row
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="app.markAllComponents('bearingAssessment', 'Acceptable')">
+                  ✓ Mark All Acceptable
+                </button>
+              </div>
+            </div>
+            <div class="form-card-body" style="padding: 0;">
+              <div class="table-responsive">
+                <table class="technical-inspection-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 28%;">Bearing Location</th>
+                      <th style="width: 36%;">Damage / Borescope Findings</th>
+                      <th style="width: 18%;">Decision</th>
+                      <th style="width: 14%;">Photo Evidence</th>
+                      <th style="width: 4%; text-align: center;">✕</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bearing-inspection-tbody">
+                    <!-- Injected dynamically via app.renderBearingsTable() -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card" style="margin-top: 20px;">
+            <div class="form-card-header">
+              <span class="form-card-title">General Engineering Remarks on Bearings</span>
+            </div>
+            <div class="form-card-body">
+              <textarea class="form-control" data-path="bearingRemarks" id="f-bearing-remarks" placeholder="e.g. Indentations observed on LSS RS roller raceway. Monitoring recommended at next 2-month vibration audit."></textarea>
+            </div>
+          </div>
+
+          <!-- Card 3: Condition of Gears & Auxiliaries -->
+          <div class="form-card" id="card-gears" style="margin-top: 24px;">
+            <div class="form-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <span class="form-card-title">Condition of Gears & Auxiliary Components</span>
+                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-top: 2px;">Tooth surface condition, contact pattern, micropitting, housing bores, and shaft journals.</div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="app.addGearRow()">
+                  + Add Gear Row
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="app.markAllComponents('gearAssessment', 'Acceptable')">
+                  ✓ Mark All Acceptable
+                </button>
+              </div>
+            </div>
+            <div class="form-card-body" style="padding: 0;">
+              <div class="table-responsive">
+                <table class="technical-inspection-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 28%;">Gear Mesh Stage</th>
+                      <th style="width: 36%;">Damage / Tooth Contact Findings</th>
+                      <th style="width: 18%;">Decision</th>
+                      <th style="width: 14%;">Photo Evidence</th>
+                      <th style="width: 4%; text-align: center;">✕</th>
+                    </tr>
+                  </thead>
+                  <tbody id="gear-inspection-tbody">
+                    <!-- Injected dynamically via app.renderGearsTable() -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card" style="margin-top: 16px;">
+            <div class="form-card-header">
+              <span class="form-card-title">General Engineering Remarks on Gear Flanks</span>
+            </div>
+            <div class="form-card-body">
+              <textarea class="form-control" data-path="gearRemarks" id="f-gear-remarks" placeholder="e.g. All planetary and intermediate gear flanks exhibit healthy full-contact tooth mesh patterns. No scuffing or tooth root distress observed."></textarea>
+            </div>
+          </div>
+
+          <!-- Auxiliary Components: Bores & Shafts -->
+          <div class="form-card" style="margin-top: 20px;">
+            <div class="form-card-header">
+              <span class="form-card-title">Housing Bores & Structural Seats</span>
+            </div>
+            <div class="form-card-body" style="padding: 0;">
+              <div class="table-responsive">
+                <table class="technical-inspection-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 32%;">Bore Location</th>
+                      <th style="width: 38%;">Inspection Observation</th>
+                      <th style="width: 18%;">Decision</th>
+                      <th style="width: 12%;">Photo</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bore-inspection-tbody">
+                    <!-- Injected dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card" style="margin-top: 20px;">
+            <div class="form-card-header">
+              <span class="form-card-title">Shafts, Journals & Carrier Assembly</span>
+            </div>
+            <div class="form-card-body" style="padding: 0;">
+              <div class="table-responsive">
+                <table class="technical-inspection-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 32%;">Shaft / Component</th>
+                      <th style="width: 38%;">Inspection Observation</th>
+                      <th style="width: 18%;">Decision</th>
+                      <th style="width: 12%;">Photo</th>
+                    </tr>
+                  </thead>
+                  <tbody id="shaft-inspection-tbody">
+                    <!-- Injected dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Custom / Subsystem Inspection Hub -->
+          <div class="form-card" id="card-inspections" style="margin-top: 24px;">
+            <div class="form-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <span class="form-card-title">Custom / Subsystem Inspection Hub</span>
+                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-top: 2px;">Log custom component findings across all subsystems: Condition of, Location, Severity, Damage, Decision, and Remarks.</div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="app.addNewInspectionItem()">
+                  + Add Inspection
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="app.markAllComponents('customInspections', 'Acceptable')">
+                  ✓ Mark All Acceptable
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Inspection Entry Card -->
+          <div class="form-card" style="margin-bottom: 20px; border-left: 4px solid var(--primary, #0284c7);">
+            <div class="form-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="form-card-title">⚡ Quick Inspection Logger</span>
+              <span class="badge" style="background: #e0f2fe; color: #0369a1; font-size: 7.5pt; font-weight: 700; padding: 2px 8px; border-radius: 4px; border: 0.5px solid #bae6fd;">Direct Subsystem Entry</span>
+            </div>
+            <div class="form-card-body">
+              <div class="form-grid-3">
+                <div class="form-group">
+                  <label class="form-label">Condition of (Subsystem)</label>
+                  <select class="form-control font-semibold" id="quick-insp-condition">
+                    <option value="">Select Subsystem</option>
+                    <option value="Bearings">Bearings</option>
+                    <option value="Gears & Meshes">Gears & Meshes</option>
+                    <option value="Shafts & Couplings">Shafts & Couplings</option>
+                    <option value="Housing & Structural Frame">Housing & Structural Frame</option>
+                    <option value="Lubrication & Distribution Pump">Lubrication & Distribution Pump</option>
+                    <option value="Filtration & Magnetic Separation">Filtration & Magnetic Separation</option>
+                    <option value="Seals, Gaskets & Bores">Seals, Gaskets & Bores</option>
+                    <option value="Brake & Yaw Mechanism">Brake & Yaw Mechanism</option>
+                    <option value="Sensors & Electrical Telemetry">Sensors & Electrical Telemetry</option>
+                    <option value="Generator Connection">Generator Connection</option>
+                    <option value="Other Subsystem">Other Subsystem</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Location</label>
+                  <input type="text" class="form-control font-semibold" id="quick-insp-location" placeholder="e.g. HSS Generator Side, IMS Shaft, Housing Bore...">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Severity</label>
+                  <select class="form-control font-bold" id="quick-insp-severity">
+                    <option value="">Select Severity</option>
+                    <option value="Normal">Normal / Baseline</option>
+                    <option value="Low">Low (Minor Trace)</option>
+                    <option value="Moderate">Moderate (Observation)</option>
+                    <option value="High">High (Degraded)</option>
+                    <option value="Critical">Critical (Urgent / Unsafe)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Damage / Finding</label>
+                  <select class="form-control font-semibold" id="quick-insp-damage">
+                    <!-- Populated in app.js -->
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Decision</label>
+                  <select class="form-control font-bold" id="quick-insp-decision">
+                    <option value="">Select Decision</option>
+                    <option value="Acceptable">✓ Acceptable</option>
+                    <option value="Reuse">Reuse (Rework by hand)</option>
+                    <option value="Regrind">Regrind (Teeth regrinding)</option>
+                    <option value="Rework">Rework (Surface rework)</option>
+                    <option value="Replace by Upgrade">Replace by Upgrade</option>
+                    <option value="Rework to Upgrade">Rework to Upgrade</option>
+                    <option value="Replace by Oversize">Replace by Oversize</option>
+                    <option value="Oversize">Oversize (Oversize bore)</option>
+                    <option value="Flip">Flip (Flank reversal)</option>
+                    <option value="Scrap">Scrap (Replace by new part)</option>
+                    <option value="Scrap(Rework Gear)">Scrap(Rework Gear)</option>
+                    <option value="std replacement part">std replacement part</option>
+                    <option value="Caution">⚠️ Caution</option>
+                    <option value="Not Acceptable">✕ Not Acceptable</option>
+                    <option value="Monitor">👁️ Monitor</option>
+                    <option value="Replace">🔄 Replace</option>
+                    <option value="Further Inspection Required">🔍 Further Inspection</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Engineering Remark</label>
+                  <input type="text" class="form-control" id="quick-insp-remark" placeholder="e.g. Surface polished, raceway pattern uniform...">
+                </div>
+              </div>
+              <div style="margin-top: 12px; display: flex; justify-content: flex-end;">
+                <button type="button" class="btn btn-primary" onclick="app.submitQuickInspection()" style="padding: 7px 18px;">
+                  + Add Inspection Record
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inspection Matrix Table -->
+          <div class="form-card">
+            <div class="form-card-header">
+              <span class="form-card-title">Active Inspection Records Dashboard</span>
+            </div>
+            <div class="form-card-body" style="padding: 0;">
+              <div class="table-responsive">
+                <table class="technical-inspection-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 15%;">Condition of</th>
+                      <th style="width: 18%;">Location</th>
+                      <th style="width: 11%;">Severity</th>
+                      <th style="width: 18%;">Damage / Finding</th>
+                      <th style="width: 14%;">Decision</th>
+                      <th style="width: 14%;">Remark</th>
+                      <th style="width: 7%;">Photo</th>
+                      <th style="width: 3%; text-align: center;">✕</th>
+                    </tr>
+                  </thead>
+                  <tbody id="custom-inspection-tbody">
+                    <!-- Injected dynamically via app.renderCustomInspectionsTable() -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==========================================================================
+             DASHBOARD 03: FINDINGS, EVIDENCE & FINAL REPORT
+             ========================================================================== -->
+        <section class="workspace-section" id="step-finalize-report">
+          
+          <div class="section-header-banner">
+            <div class="section-title-wrap">
+              <div class="section-num-badge">03</div>
+              <div>
+                <h2>Findings, Evidence & Final Report</h2>
+                <p>Evidence gallery hub, executive summary findings, lubricant and gearbox recommendations, digital signatures, and release validation.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 1: Photo Evidence Hub -->
+          <div class="form-card" id="card-photos" style="margin-bottom: 24px;">
+            <div class="form-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <span class="form-card-title">Photo Evidence Hub</span>
+                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-top: 2px;">Attach optical borescope captures, nameplate photos, and meter readings. Max 6 photos per A4 page.</div>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <span class="photo-count-pill" id="photo-hub-count-badge">Photos Added: 0</span>
+                <button type="button" class="btn btn-primary btn-sm" onclick="app.openAddPhotoModal()">
+                  + Add Photos
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="CameraManager.openCameraModal(null, 'Live Photo Capture')">
+                  📷 Camera
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('batch-photo-input').click()">
+                  📁 Batch Upload
+                </button>
+                <input type="file" id="batch-photo-input" multiple accept="image/*" style="display: none;" onchange="app.handleBatchUpload(this.files)">
+              </div>
+            </div>
+            <div class="form-card-body">
+              <!-- Attached Photos Container -->
+              <div id="photo-evidence-container">
+                <!-- Injected dynamically: either empty state box or attached photo grid -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Executive Summary & Technical Directives -->
+          <div class="form-card" id="card-findings-signoff" style="margin-bottom: 24px;">
+            <div class="form-card-header">
+              <span class="form-card-title">Executive Summary & Maintenance Recommendations</span>
+            </div>
+            <div class="form-card-body">
+              <div class="form-group">
+                <label class="form-label">Executive Findings Summary</label>
+                <textarea class="form-control" style="min-height: 90px;" data-path="summary.summaryText" id="f-summary-text" placeholder="e.g. Based on the borescope inspection conducted on Vestas V110 gearbox CM0307, the overall health of internal gears and bearings is operational with minor raceway indentations noted on LSS RS bearing."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actionable Maintenance Directives -->
+          <div class="form-card" style="margin-bottom: 24px;">
+            <div class="form-card-header">
+              <span class="form-card-title">Actionable Maintenance Directives</span>
+            </div>
+            <div class="form-card-body">
+              <div class="form-grid-2">
+                
+                <div class="form-group full-col">
+                  <label class="form-label">Gearbox Actionable Recommendation</label>
+                  <textarea class="form-control" data-path="summary.gearboxRecommendation" id="f-rec-gearbox" placeholder="e.g. Re-inspect LSS RS bearing after 2 months or 1500 operational run hours. Perform continuous vibration spectrum monitoring on high speed channels."></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Further Jobs Required Status</label>
+                  <select class="form-control font-bold text-primary" data-path="summary.furtherJobs" id="f-further-jobs">
+                    <option value="">Select further jobs status</option>
+                    <option value="MONITORING NECESSARY">MONITORING NECESSARY</option>
+                    <option value="GEARBOX IN GOOD CONDITION">GEARBOX IN GOOD CONDITION</option>
+                    <option value="GEARBOX NEEDS TO BE REPLACED">GEARBOX NEEDS TO BE REPLACED</option>
+                    <option value="NEW INTERVENTION NECESSARY">NEW INTERVENTION NECESSARY</option>
+                    <option value="ROUTINE MONITORING">ROUTINE MONITORING</option>
+                    <option value="NO FURTHER ACTION REQUIRED">NO FURTHER ACTION REQUIRED</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Lubricant Recommendation</label>
+                  <input type="text" class="form-control" data-path="summary.lubricantRecommendation" id="f-rec-oil" placeholder="e.g. Replace main 10-micron filter element and clean magnetic plug.">
+                </div>
+
+                <div class="form-group full-col">
+                  <label class="form-label">General Remarks & Follow-Up</label>
+                  <textarea class="form-control" data-path="summary.generalRemarks" id="f-remarks" placeholder="e.g. Next quarterly audit scheduled for Q4. Lab oil sample dispatched for particle count ISO 4406 analysis."></textarea>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Digital Signatures & Authorization -->
+          <div class="form-card" id="card-signatures" style="margin-bottom: 24px;">
+            <div class="form-card-header">
+              <span class="form-card-title">Digital Signatures & Authorization Sign-Off</span>
+            </div>
+            <div class="form-card-body">
+              <div class="form-grid-2">
+                <!-- Lead Field Engineer Signature -->
+                <div class="signature-box-card" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; background: var(--bg-card-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <label class="form-label font-bold" style="margin-bottom: 0;">Lead Field Engineer Signature</label>
+                    <div style="display: flex; gap: 6px;">
+                      <label class="btn btn-outline btn-sm" style="margin: 0; cursor: pointer;" title="Upload signature image">
+                        📁 Upload
+                        <input type="file" accept="image/*" style="display: none;" onchange="app.onSignatureFileUpload('engineer', this)">
+                      </label>
+                      <button type="button" class="btn btn-outline btn-sm" onclick="app.clearSignature('engineer')">✕ Clear</button>
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-helper">Signatory Name</label>
+                    <input type="text" class="form-control font-semibold" data-path="meta.preparedBy" id="sig-engineer-name" placeholder="Lead Engineer Name">
+                  </div>
+                  <div class="sig-canvas-container" style="background: #ffffff; border: 1.5px dashed var(--border-color); border-radius: 6px; position: relative; height: 110px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <canvas id="sig-canvas-engineer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair;"></canvas>
+                    <img id="sig-preview-img-engineer" style="max-height: 100px; max-width: 90%; object-fit: contain; display: none; z-index: 2; pointer-events: none;">
+                    <div id="sig-placeholder-engineer" style="color: var(--text-muted); font-size: 0.8rem; pointer-events: none;">Draw signature here with mouse or touchscreen</div>
+                  </div>
+                </div>
+
+                <!-- Technical Reviewer Signature -->
+                <div class="signature-box-card" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; background: var(--bg-card-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <label class="form-label font-bold" style="margin-bottom: 0;">Technical Reviewer / Approver Signature</label>
+                    <div style="display: flex; gap: 6px;">
+                      <label class="btn btn-outline btn-sm" style="margin: 0; cursor: pointer;" title="Upload signature image">
+                        📁 Upload
+                        <input type="file" accept="image/*" style="display: none;" onchange="app.onSignatureFileUpload('reviewer', this)">
+                      </label>
+                      <button type="button" class="btn btn-outline btn-sm" onclick="app.clearSignature('reviewer')">✕ Clear</button>
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 8px;">
+                    <label class="form-helper">Reviewer Name</label>
+                    <input type="text" class="form-control font-semibold" data-path="meta.releasedBy" id="sig-reviewer-name" placeholder="Technical Reviewer Name">
+                  </div>
+                  <div class="sig-canvas-container" style="background: #ffffff; border: 1.5px dashed var(--border-color); border-radius: 6px; position: relative; height: 110px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <canvas id="sig-canvas-reviewer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair;"></canvas>
+                    <img id="sig-preview-img-reviewer" style="max-height: 100px; max-width: 90%; object-fit: contain; display: none; z-index: 2; pointer-events: none;">
+                    <div id="sig-placeholder-reviewer" style="color: var(--text-muted); font-size: 0.8rem; pointer-events: none;">Draw signature here with mouse or touchscreen</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Quality Review & Pre-Release Checklist -->
+          <div class="form-card" id="card-review-release" style="margin-bottom: 24px;">
+            <div class="form-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <span class="form-card-title">Quality Check & Official Release Workflow</span>
+                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-top: 2px;">Verify all required technical sections, inspection findings, and directives prior to finalizing the client PDF.</div>
+              </div>
+              <button type="button" class="btn btn-success btn-sm" onclick="app.openReleaseModal()">
+                📄 Confirm Release & Download PDF
+              </button>
+            </div>
+            <div class="form-card-body" style="padding: 0;">
+              <!-- Quality Scorecard -->
+              <div class="review-scorecard" style="margin: 0; border: none; border-radius: 0;">
+                <div class="scorecard-header">
+                  <div class="scorecard-title">
+                    <h3>Technical Quality Check Checklist</h3>
+                    <p>Click on any section to jump directly and edit details.</p>
+                  </div>
+                  <span class="report-lifecycle-badge badge-ready" id="review-overall-badge">Ready for Review</span>
+                </div>
+
+                <div class="scorecard-list" id="review-scorecard-items">
+                  <!-- Injected dynamically via app.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Final Pre-Release Summary Box -->
+          <div class="form-card" style="margin-bottom: 24px;">
+            <div class="form-card-header">
+              <span class="form-card-title">Report Release Metadata Summary</span>
+            </div>
+            <div class="form-card-body">
+              <div class="form-grid-3">
+                <div>
+                  <span class="form-helper">Report Number</span>
+                  <div class="font-mono font-bold text-primary" id="rev-doc-no">TWT-10826</div>
+                </div>
+                <div>
+                  <span class="form-helper">Turbine Asset</span>
+                  <div class="font-mono font-bold" id="rev-turbine-id">CN18D064 (Pad: KUT-035)</div>
+                </div>
+                <div>
+                  <span class="form-helper">Customer Organization</span>
+                  <div class="font-semibold" id="rev-customer">Customer Organization</div>
+                </div>
+                <div>
+                  <span class="form-helper">Release Date</span>
+                  <div class="font-bold" id="rev-date">DD.MM.YYYY</div>
+                </div>
+                <div>
+                  <span class="form-helper">Prepared By</span>
+                  <div class="font-bold" id="rev-prepared">—</div>
+                </div>
+                <div>
+                  <span class="form-helper">Released By</span>
+                  <div class="font-bold" id="rev-released">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5: Appendix & Technical Definitions -->
+          <div class="form-card" id="card-appendix" style="margin-bottom: 24px;">
+            <div class="form-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span class="form-card-title">📖 APPENDIX - List of Engineering Definitions & Protocols</span>
+                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal; margin-top: 2px;">Standard OEM component abbreviations, positional identification codes, and engineering decision operational definitions.</div>
+              </div>
+              <span class="badge-system-info">OEM Standards</span>
+            </div>
+            <div class="form-card-body">
+              <div class="appendix-ref-grid">
+                <div class="appendix-ref-item"><span class="app-code">HSS</span><span>High Speed Shaft</span></div>
+                <div class="appendix-ref-item"><span class="app-code">PINION</span><span>Shaft with Integrated Gear</span></div>
+                <div class="appendix-ref-item"><span class="app-code">HS-IS</span><span>High Speed Intermediate Shaft</span></div>
+                <div class="appendix-ref-item"><span class="app-code">GS</span><span>Generator Side</span></div>
+                <div class="appendix-ref-item"><span class="app-code">HS-IG</span><span>High Speed Intermediate Gear</span></div>
+                <div class="appendix-ref-item"><span class="app-code">RS</span><span>Rotor Side</span></div>
+                <div class="appendix-ref-item"><span class="app-code">LS-IS</span><span>Low Speed Intermediate Shaft</span></div>
+                <div class="appendix-ref-item"><span class="app-code">TRB</span><span>Tapered Roller Bearing</span></div>
+                <div class="appendix-ref-item"><span class="app-code">LS-IG</span><span>Low Speed Intermediate Gear</span></div>
+                <div class="appendix-ref-item"><span class="app-code">CRB</span><span>Cylindrical Roller Bearing</span></div>
+                <div class="appendix-ref-item"><span class="app-code">RG</span><span>Ring Gear</span></div>
+                <div class="appendix-ref-item"><span class="app-code">IR</span><span>Inner Ring</span></div>
+                <div class="appendix-ref-item"><span class="app-code">PP</span><span>Planet Pin</span></div>
+                <div class="appendix-ref-item"><span class="app-code">OR</span><span>Outer Ring</span></div>
+                <div class="appendix-ref-item"><span class="app-code">PG</span><span>Planetary Gear</span></div>
+                <div class="appendix-ref-item"><span class="app-code">WT</span><span>Within Tolerance</span></div>
+                <div class="appendix-ref-item"><span class="app-code">PC</span><span>Planet Carrier</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Location Identification Examples -->
+          <div class="form-card" style="margin-bottom: 20px;">
+            <div class="form-card-header">
+              <span class="form-card-title">🏷️ Inspection Position Tagging Examples</span>
+            </div>
+            <div class="form-card-body">
+              <div class="appendix-examples-box">
+                <div class="example-row"><strong class="font-mono text-primary" style="min-width: 150px;">PG2GS_1 :</strong><span>Planet Gear Stage 2 Generator Side_Planet 1</span></div>
+                <div class="example-row"><strong class="font-mono text-primary" style="min-width: 150px;">BPG1GS-GS_3 :</strong><span>Bearing Planet gear STG1 Generator Side - Generator Side_Planet 3</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Description of Decisions per Inspected Component -->
+          <div class="form-card">
+            <div class="form-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="form-card-title">⚙️ Description of Decisions per Inspected Component</span>
+              <span class="badge-system-info">Action Protocols</span>
+            </div>
+            <div class="form-card-body" style="padding: 0;">
+              <div class="table-responsive">
+                <table class="technical-inspection-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 24%;">Decision Code</th>
+                      <th style="width: 76%;">Engineering Operational Definition</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="font-bold text-success">Reuse</td>
+                      <td>A part will be reused or reworked by hand</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-primary">Regrind</td>
+                      <td>By regrinding the teeth, this part can be reused again</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-primary">Rework</td>
+                      <td>By reworking (surfaces besides the teeth), this part can be reused again</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-primary">Replace by Upgrade</td>
+                      <td>Part will be replaced by an upgraded part (independent of the current damage)</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-primary">Rework to Upgrade</td>
+                      <td>Part needs to be reworked to the latest upgrade</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-danger">Replace by Oversize</td>
+                      <td>Current part is scrap and will be replaced by a new (oversized) part</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-primary">Oversize</td>
+                      <td>Part will be reworked to an oversize bore</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-primary">Flip</td>
+                      <td>Part will be reworked so the unloaded flank will become the loaded flank</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-danger">Scrap</td>
+                      <td>Part is not reused and will be replaced by a new part</td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold text-danger">Scrap(Rework Gear)</td>
+                      <td>
+                        Integrated planet bearings (roller elements and inner ring) are integrated with the planet wheels.<br>
+                        If the teeth of the planet wheels need to be reworked or reground, then the decision for the planet bearings is <em>"scrap (rework gear)"</em>.<br>
+                        In all other situations, e.g. planet wheels are <em>"scrap"</em> or <em>"reused"</em>, then the planet bearings are <em>"scrap"</em>.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="font-bold" style="color: #475569;">std replacement part</td>
+                      <td>Smaller parts will be replaced without inspection, independent of the damage. Example: sealings, bolts, nuts...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==========================================================================
+             SECTION 11: SAVED REPORTS HISTORY & ARCHIVE (30-Day Retention)
+             ========================================================================== -->
+        <section class="workspace-section" id="step-history">
+          
+          <div class="section-header-banner">
+            <div class="section-title-wrap">
+              <div class="section-icon-badge">🗂</div>
+              <div>
+                <h2>Report History & Local Archive</h2>
+                <p>Locally stored wind turbine service reports within the 30-day automatic retention lifecycle.</p>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn btn-outline" onclick="document.getElementById('json-file-input').click()" title="Import external JSON backup">
+                📥 Import JSON
+              </button>
+              <button type="button" class="btn btn-primary" onclick="app.createNewCleanReport()">
+                <span>+</span> New Turbine Report
+              </button>
+            </div>
+          </div>
+
+          <!-- History Quick Search & Filter Controls -->
+          <div class="history-controls-card">
+            <div class="history-search-row">
+              <div class="history-search-input-wrap">
+                <span class="history-search-icon">🔍</span>
+                <input type="text" class="history-search-input" id="history-search-input" placeholder="Search by Document Number (e.g. TWT-10826), Turbine ID, Client, Site, or Serial No..." oninput="app.filterHistory(this.value)">
+                <button type="button" class="history-search-clear-btn" onclick="document.getElementById('history-search-input').value=''; app.filterHistory('');" title="Clear search">✕</button>
+              </div>
+
+              <div class="history-sort-wrap">
+                <label class="form-label" style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">Sort:</label>
+                <select class="form-control form-control-sm" id="history-sort-select" onchange="app.setHistorySort(this.value)" style="min-width: 140px;">
+                  <option value="latest">Latest Modified</option>
+                  <option value="date">Service Date</option>
+                  <option value="turbine">Turbine Asset</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Filter Badges / Tabs -->
+            <div class="history-filters-row">
+              <button type="button" class="history-filter-btn active" data-filter="all" onclick="app.setHistoryFilter('all')">
+                All Reports (<span id="history-stat-total">0</span>)
+              </button>
+              <button type="button" class="history-filter-btn" data-filter="released" onclick="app.setHistoryFilter('released')">
+                ✓ Released (<span id="history-stat-released">0</span>)
+              </button>
+              <button type="button" class="history-filter-btn" data-filter="in_progress" onclick="app.setHistoryFilter('in_progress')">
+                ⏳ In Progress (<span id="history-stat-inprog">0</span>)
+              </button>
+              <button type="button" class="history-filter-btn" data-filter="expiring_soon" onclick="app.setHistoryFilter('expiring_soon')">
+                ⚠️ Expiring Soon (<span id="history-stat-expiring">0</span>)
+              </button>
+            </div>
+          </div>
+
+          <!-- Retention Notice Banner -->
+          <div class="history-retention-notice">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>🛡️</span>
+              <span><strong>30-Day Auto-Retention Active:</strong> Reports are safely preserved in local browser storage and automatically pruned after 30 days from release.</span>
+            </div>
+          </div>
+
+          <!-- History Report Cards Grid Container -->
+          <div class="history-cards-grid" id="history-cards-container">
+            <!-- Injected dynamically via app.renderHistorySection() -->
+          </div>
+
+        </section>
+
+        <!-- ==========================================================================
+             ADMIN: USER & ACCESS MANAGEMENT (PRODUCTION GRADE)
+             ========================================================================== -->
+        <section class="workspace-section" id="step-users">
+          <div class="user-mgmt-container">
+            
+            <!-- 1. Page Header -->
+            <div class="user-mgmt-header">
+              <div class="user-mgmt-title-group">
+                <div class="user-mgmt-badge">
+                  <span class="badge-live-dot"></span>
+                  <span>System Administration</span>
+                </div>
+                <h1 class="user-mgmt-title">User Management</h1>
+                <p class="user-mgmt-subtitle">Manage authorized user accounts, system roles, and access credentials across Cloud Firestore and Firebase Authentication.</p>
+              </div>
+              <div class="user-mgmt-header-actions">
+                <button type="button" class="btn btn-outline btn-mgmt-refresh" onclick="app.renderUsersSection()" title="Refresh user records from Firestore">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                  </svg>
+                  <span>Refresh</span>
+                </button>
+                <button type="button" class="btn btn-primary btn-mgmt-create" onclick="app.openCreateUserModal()">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  <span>Create User</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. Overview / Summary KPI Cards -->
+            <div class="user-summary-grid">
+              
+              <div class="user-summary-card card-accent-primary">
+                <div class="summary-card-top">
+                  <span class="summary-card-label">Total Users</span>
+                  <div class="summary-card-icon-wrap icon-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="summary-card-value" id="users-stat-total">—</div>
+                <div class="summary-card-bottom">
+                  <span class="summary-card-hint">Registered team accounts</span>
+                </div>
+              </div>
+
+              <div class="user-summary-card card-accent-success">
+                <div class="summary-card-top">
+                  <span class="summary-card-label">Active Users</span>
+                  <div class="summary-card-icon-wrap icon-success">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                  </div>
+                </div>
+                <div class="summary-card-value text-success" id="users-stat-active">—</div>
+                <div class="summary-card-bottom">
+                  <span class="summary-card-hint"><span class="hint-dot-green"></span> Authorized for sign-in</span>
+                </div>
+              </div>
+
+              <div class="user-summary-card card-accent-danger">
+                <div class="summary-card-top">
+                  <span class="summary-card-label">Inactive Users</span>
+                  <div class="summary-card-icon-wrap icon-danger">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                    </svg>
+                  </div>
+                </div>
+                <div class="summary-card-value text-danger" id="users-stat-inactive">—</div>
+                <div class="summary-card-bottom">
+                  <span class="summary-card-hint"><span class="hint-dot-red"></span> Access deactivated</span>
+                </div>
+              </div>
+
+              <div class="user-summary-card card-accent-purple">
+                <div class="summary-card-top">
+                  <span class="summary-card-label">Administrators</span>
+                  <div class="summary-card-icon-wrap icon-purple">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="summary-card-value text-purple" id="users-stat-admins">—</div>
+                <div class="summary-card-bottom">
+                  <span class="summary-card-hint">Full workspace control</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- 3. Main Users Workspace Card -->
+            <div class="user-workspace-card">
+              
+              <!-- Toolbar -->
+              <div class="user-workspace-toolbar">
+                <div class="toolbar-left">
+                  <span class="toolbar-title">Authorized Team</span>
+                  <span class="users-badge-pill" id="users-badge-total-pill">0 accounts</span>
+                </div>
+
+                <div class="toolbar-right">
+                  <div class="user-search-wrap">
+                    <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="users-search-input" class="user-search-input" placeholder="Search by name, email, role..." oninput="app.handleUsersSearch(this.value)" autocomplete="off">
+                    <button type="button" class="search-clear-btn" id="users-search-clear" onclick="app.clearUsersSearch()" style="display: none;" title="Clear search">✕</button>
+                  </div>
+
+                  <div class="user-filter-select-wrap">
+                    <select id="users-role-filter" class="form-select user-filter-dropdown" onchange="app.setUsersRoleFilter(this.value)">
+                      <option value="all">All Roles</option>
+                      <option value="engineer">Engineers</option>
+                      <option value="reviewer">Reviewers</option>
+                      <option value="admin">Administrators</option>
+                    </select>
+                  </div>
+
+                  <div class="user-filter-select-wrap">
+                    <select id="users-status-filter" class="form-select user-filter-dropdown" onchange="app.setUsersStatusFilter(this.value)">
+                      <option value="all">All Status</option>
+                      <option value="active">Active Status</option>
+                      <option value="inactive">Inactive Status</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Desktop & Tablet Table Container -->
+              <div class="user-table-responsive">
+                <table class="user-management-table">
+                  <thead>
+                    <tr>
+                      <th style="min-width: 220px;">User</th>
+                      <th style="min-width: 200px;">Email</th>
+                      <th style="min-width: 130px;">System Role</th>
+                      <th style="min-width: 120px;">Access Status</th>
+                      <th style="min-width: 120px;">Created Date</th>
+                      <th style="min-width: 180px; text-align: right;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="users-table-body">
+                    <!-- Dynamic user rows or skeleton injected via JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Table Footer with Info & Pagination Indicator -->
+              <div class="user-table-footer">
+                <div class="footer-left">
+                  <span id="users-count-display">Showing 0 users</span>
+                </div>
+                <div class="footer-right">
+                  <span class="footer-sync-tag">
+                    <span class="sync-dot"></span> Firestore Synced
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+
+      <!-- WORKSPACE BOTTOM STEPPER NAVIGATION -->
+      <footer class="workspace-bottom-nav">
+        <button type="button" class="btn btn-outline" id="btn-step-prev" onclick="app.prevSection()">
+          ← Previous Section
+        </button>
+
+        <span class="step-indicator-pill" id="bottom-step-indicator">
+          Section 1 of 9 • Report Information
+        </span>
+
+        <button type="button" class="btn btn-primary" id="btn-step-next" onclick="app.nextSection()">
+          Save & Continue →
+        </button>
+      </footer>
+
+    </main>
+
+  </div>
+
+  <!-- ==========================================================================
+       MODALS
+       ========================================================================== -->
+
+  <!-- 1. FULLSCREEN LIVE PDF PREVIEW MODAL -->
+  <div id="report-modal" class="app-modal">
+    <div class="pdf-modal-dialog">
+      <div class="app-modal-header">
+        <div class="app-modal-title" style="display: flex; align-items: center; gap: 8px;">
+          <span>📄</span> Multi-Page Technical PDF Preview
+          <span id="preview-save-indicator" class="autosave-indicator saved" title="Live Auto-Save Status">● Saved</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="app.prevModalPage()">◄</button>
+          <select id="modal-page-select" class="form-control font-semibold" style="width: auto; padding: 4px 8px; font-size: 0.8rem;" onchange="app.scrollModalToPage(parseInt(this.value))">
+            <!-- Injected by app.js -->
+          </select>
+          <button type="button" class="btn btn-outline btn-sm" onclick="app.nextModalPage()">►</button>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="app.zoomOut()" title="Zoom Out">−</button>
+          <span id="zoom-val-text" style="font-size: 0.8rem; font-weight: 700; min-width: 44px; text-align: center;">100%</span>
+          <button type="button" class="btn btn-outline btn-sm" onclick="app.zoomIn()" title="Zoom In">+</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="app.zoomReset()" title="Fit to Screen">Fit</button>
+          
+          <button type="button" class="btn btn-outline btn-sm font-semibold" id="btn-toggle-edit-preview" onclick="app.toggleEditPreviewMode()" title="Toggle live inline editing mode on PDF preview">
+            ✏️ Edit Preview
+          </button>
+
+          <button type="button" class="btn btn-primary btn-sm" onclick="PDFExporter.downloadPDF('report-preview-container', (app.currentData.meta.reportDocNo || 'TWT-10826') + '_' + (app.currentData.meta.edition || 'A') + '.pdf')">
+            📄 Download PDF
+          </button>
+          <button type="button" class="btn-delete-item" onclick="app.closeReportModal()" title="Close Preview">✕</button>
+        </div>
+      </div>
+
+      <div class="pdf-modal-body">
+        <!-- Hidden input for direct photo replacement in preview -->
+        <input type="file" id="preview-photo-replace-input" accept="image/*" style="display: none;" onchange="app.onPreviewPhotoFileSelected(this)">
+        
+        <div id="report-preview-container">
+          <!-- Dynamic A4 Report rendered here by ReportTemplate -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ADD / ATTACH PHOTO EVIDENCE MODAL -->
+  <div id="add-photo-modal" class="app-modal">
+    <div class="app-modal-dialog">
+      <div class="app-modal-header">
+        <div class="app-modal-title">
+          <span>📷</span> Attach Visual Evidence Photo
+        </div>
+        <button type="button" class="btn-delete-item" onclick="app.closeAddPhotoModal()">✕</button>
+      </div>
+      <div class="app-modal-body">
+        
+        <!-- File Picker / Dropzone -->
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Select Photo File(s) <span class="form-helper" style="display:inline; margin-left: 6px;">(You can select multiple photos)</span></label>
+          <input type="file" id="modal-photo-file-input" accept="image/*" multiple class="form-control" onchange="app.previewModalPhotoFile(this.files)">
+        </div>
+
+        <!-- Image Preview Frame -->
+        <div id="modal-photo-preview-wrap" style="height: 160px; background: #0f172a; border-radius: var(--radius-md); overflow: hidden; display: none; margin-bottom: 14px; position: relative;">
+          <img id="modal-photo-preview-img" src="" alt="Selected Preview" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+
+        <!-- Category Selector -->
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">What is this photo related to?</label>
+          <select id="modal-photo-category-select" class="form-control font-semibold" onchange="app.onModalPhotoCategoryChange(this.value)">
+            <option value="Identification">🏷️ Asset Identification & Nameplate</option>
+            <option value="Operating Meters">📟 Operating Meters (kWh & Hours)</option>
+            <option value="Lubrication">🛢️ Oil Level & Magnetic Plug</option>
+            <option value="Borescope Bearings">🔬 High Speed Bearings (HSS & HS-IS)</option>
+            <option value="Planet Bearings">🪐 Planet Bearings (Planet 1-3 & PC)</option>
+            <option value="Gear Teeth">⚙️ Gear Teeth & Mesh Flanks</option>
+            <option value="Custom">✨ Custom Inspection Point</option>
+          </select>
+        </div>
+
+        <!-- Specific Inspection Point -->
+        <div class="form-group" id="modal-photo-slot-group" style="margin-bottom: 12px;">
+          <label class="form-label">Specific Inspection Point</label>
+          <select id="modal-photo-slot-select" class="form-control font-semibold" onchange="app.onModalPhotoSlotChange(this.value)">
+            <!-- Injected dynamically based on category -->
+          </select>
+        </div>
+
+        <!-- Custom Slot Title (Shown only when Custom is chosen) -->
+        <div class="form-group" id="modal-photo-custom-title-group" style="display: none; margin-bottom: 12px;">
+          <label class="form-label">Custom Inspection Title</label>
+          <input type="text" class="form-control font-semibold" id="modal-photo-custom-title" placeholder="e.g. Brake Disc Wear, Coupling Misalignment">
+        </div>
+
+        <!-- Caption Input -->
+        <div class="form-group">
+          <label class="form-label">Photo Caption / Finding Description</label>
+          <input type="text" class="form-control" id="modal-photo-caption" placeholder="Enter component caption...">
+        </div>
+
+      </div>
+      <div class="app-modal-footer">
+        <button type="button" class="btn btn-outline" onclick="app.closeAddPhotoModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="app.confirmAttachModalPhoto()">
+          ✓ Attach Photo to Report
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. REAL-TIME DEVICE CAMERA MODAL -->
+  <div id="camera-modal" class="app-modal">
+    <div class="app-modal-dialog">
+      <div class="app-modal-header">
+        <div class="app-modal-title">
+          <span>📷</span> Real-Time Inspection Photo Capture
+        </div>
+        <button type="button" class="btn-delete-item" onclick="CameraManager.closeCameraModal()">✕</button>
+      </div>
+      <div class="app-modal-body" style="padding: 0; background: #0f172a;">
+        <div style="width: 100%; height: 320px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+          <video id="camera-video" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover;"></video>
+        </div>
+      </div>
+      <div class="app-modal-footer">
+        <button type="button" class="btn btn-outline" onclick="CameraManager.closeCameraModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="app.onCameraCapture()">📸 Snap & Attach</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. TEMPLATE CHANGE CONFIRMATION MODAL -->
+  <div id="template-modal" class="app-modal">
+    <div class="app-modal-dialog" style="max-width: 500px;">
+      <div class="app-modal-header">
+        <div class="app-modal-title">
+          <span>📋</span> Load Report Template Preset
+        </div>
+        <button type="button" class="btn-delete-item" onclick="app.closeTemplateModal()">✕</button>
+      </div>
+      <div class="app-modal-body">
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;">
+          Select an OEM report preset. Warning: Loading a preset will replace the active report form.
+        </p>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Available Inspection Presets</label>
+          <select id="modal-template-select" class="form-control font-semibold">
+            <option value="borescope_inspection_v110">Vestas V110 Gearbox Borescope Inspection (Full OEM Standard)</option>
+            <option value="gear_replacement_template">Up-Tower Gear / Pinion Replacement</option>
+            <option value="clean_blank_report">Clean / Blank Service Form</option>
+          </select>
+        </div>
+      </div>
+      <div class="app-modal-footer">
+        <button type="button" class="btn btn-outline" onclick="app.closeTemplateModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="app.confirmLoadTemplate()">
+          Load Preset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. PRE-RELEASE AUTHORIZATION MODAL -->
+  <div id="release-modal" class="app-modal">
+    <div class="app-modal-dialog" style="max-width: 540px;">
+      <div class="app-modal-header">
+        <div class="app-modal-title">
+          <span>📋</span> Confirm Report Release & Authorization
+        </div>
+        <button type="button" class="btn-delete-item" onclick="app.closeReleaseModal()">✕</button>
+      </div>
+      <div class="app-modal-body">
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 16px;">
+          These authorization details will be printed on document headers and the sign-off block in the production PDF:
+        </p>
+
+        <div class="form-grid-2">
+          <div class="form-group full-col">
+            <label class="form-label" style="color: var(--primary);">Official Release Date</label>
+            <div style="display: flex; gap: 6px;">
+              <input type="date" class="form-control font-bold" id="modal-rel-date-calendar" style="flex: 1;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="app.setModalTodayDate()" title="Today">📅 Today</button>
+            </div>
+          </div>
+
+          <div class="form-group full-col">
+            <label class="form-label" style="color: var(--primary);">Prepared By (Lead Field Engineer)</label>
+            <input type="text" class="form-control font-bold" id="modal-rel-prepared" placeholder="Enter engineer name">
+          </div>
+
+          <div class="form-group full-col">
+            <label class="form-label" style="color: var(--primary);">Released By (Technical Reviewer / Approver)</label>
+            <input type="text" class="form-control font-bold" id="modal-rel-released" placeholder="Enter reviewer name">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Equipment ID</label>
+            <input type="text" class="form-control font-mono font-semibold" id="modal-rel-equipment" placeholder="146845407">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Report Edition</label>
+            <input type="text" class="form-control font-semibold text-center" id="modal-rel-edition" placeholder="A">
+          </div>
+        </div>
+      </div>
+      <div class="app-modal-footer">
+        <button type="button" class="btn btn-outline" onclick="app.closeReleaseModal()">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="app.confirmReleaseAndDownload()">
+          ✓ Confirm & Download Production PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. REPORTS & REVISIONS MANAGEMENT MODAL -->
+  <div id="reports-manager-modal" class="app-modal">
+    <div class="app-modal-dialog" style="max-width: 860px; width: 95%;">
+      <div class="app-modal-header">
+        <div class="app-modal-title">
+          <span>📂</span> Local Turbine Service Reports & Revisions
+        </div>
+        <button type="button" class="btn-delete-item" onclick="app.closeReportsManager()">✕</button>
+      </div>
+      <div class="app-modal-body">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px;">
+          <input type="text" class="form-control" id="reports-search-input" placeholder="🔍 Search reports by Doc No, Turbine ID, Customer, or Site..." style="max-width: 450px;" oninput="app.filterReportsTable(this.value)">
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="app.createNewReportPrompt()">
+              + New Turbine Report
+            </button>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+          <table class="reports-table">
+            <thead>
+              <tr>
+                <th style="width: 16%;">Doc Ref</th>
+                <th style="width: 8%;">Edition</th>
+                <th style="width: 22%;">Turbine Asset</th>
+                <th style="width: 22%;">Customer / Site</th>
+                <th style="width: 14%;">Status</th>
+                <th style="width: 18%; text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reports-table-body">
+              <!-- Rendered dynamically by app.js -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="app-modal-footer">
+        <button type="button" class="btn btn-outline" onclick="app.closeReportsManager()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. SINGLE PHOTO FULLSCREEN PREVIEW MODAL -->
+  <div id="single-photo-preview-modal" class="app-modal">
+    <div class="app-modal-dialog" style="max-width: 800px; width: 90%; background: #0f172a; border-color: #334155;">
+      <div class="app-modal-header" style="background: #1e293b; border-color: #334155; color: #ffffff;">
+        <div class="app-modal-title" style="color: #ffffff;">
+          <span>🔍</span> Visual Inspection Photo Preview
+        </div>
+        <button type="button" class="btn-delete-item" onclick="document.getElementById('single-photo-preview-modal').classList.remove('active')">✕</button>
+      </div>
+      <div class="app-modal-body" style="padding: 16px; display: flex; align-items: center; justify-content: center; background: #0f172a;">
+        <img id="single-photo-preview-img" src="" alt="Inspection Preview" style="max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 4px;">
+      </div>
+      <div class="app-modal-footer" style="background: #1e293b; border-color: #334155;">
+        <button type="button" class="btn btn-outline" style="color: #ffffff; border-color: #475569;" onclick="document.getElementById('single-photo-preview-modal').classList.remove('active')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. UNSAVED CHANGES SAFETY MODAL -->
+  <div id="unsaved-changes-modal" class="app-modal">
+    <div class="app-modal-dialog" style="max-width: 520px; width: 90%;">
+      <div class="app-modal-header" style="background: #fef2f2; border-color: #fecaca; color: #991b1b;">
+        <div class="app-modal-title" style="color: #991b1b;">
+          <span>⚠️</span> Unsaved Changes in Current Report
+        </div>
+        <button type="button" class="btn-delete-item" onclick="app.closeUnsavedChangesModal()">✕</button>
+      </div>
+      <div class="app-modal-body" style="padding: 20px;">
+        <p style="margin-bottom: 12px; font-weight: 600; color: var(--text-heading);">
+          You have active modifications in the currently opened report.
+        </p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          Would you like to save your current report changes to History before opening the new report, or discard recent changes?
+        </p>
+      </div>
+      <div class="app-modal-footer" style="justify-content: space-between;">
+        <button type="button" class="btn btn-outline" onclick="app.closeUnsavedChangesModal()">
+          Cancel
+        </button>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn btn-outline btn-text-danger" onclick="app.confirmDiscardAndOpenHistory()">
+            Discard & Open
+          </button>
+          <button type="button" class="btn btn-primary" onclick="app.confirmSaveAndOpenHistory()">
+            ✓ Save & Open
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. FIREBASE AUTHENTICATION & PROFILE MODAL -->
+  <div id="auth-modal" class="app-modal">
+    <div class="app-modal-dialog" style="max-width: 440px;">
+      <div class="app-modal-header">
+        <div class="app-modal-title" style="display: flex; align-items: center; gap: 8px;">
+          <span>🛡️</span> <span id="auth-modal-title">Engineer Authorization</span>
+        </div>
+        <button type="button" class="btn-delete-item" onclick="app.closeAuthModal()">✕</button>
+      </div>
+      <div class="app-modal-body">
+        
+        <!-- Authenticated Profile View -->
+        <div id="auth-profile-view" style="display: none;">
+          <div style="text-align: center; padding: 12px 0 18px;">
+            <div style="width: 54px; height: 54px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin: 0 auto 10px;" id="auth-user-avatar">
+              👤
+            </div>
+            <div style="font-weight: 700; font-size: 1.1rem; color: var(--text-dark);" id="auth-user-name">Engineer Name</div>
+            <div style="font-size: 0.84rem; color: var(--text-muted);" id="auth-user-email">engineer@thendral.com</div>
+            <div style="margin-top: 6px;">
+              <span class="report-lifecycle-badge badge-released" id="auth-user-role">Lead Field Engineer</span>
+            </div>
+          </div>
+          <div style="border-top: 1px solid var(--border-color); padding-top: 14px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Organization: <strong>Thendral Wind Services</strong></span>
+            <button type="button" class="btn btn-outline btn-sm btn-text-danger" onclick="app.handleSignOut()">
+              🚪 Sign Out
+            </button>
+          </div>
+        </div>
+
+        <!-- Login / Register Form View -->
+        <div id="auth-form-view">
+          <div class="auth-tabs-row" style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+            <button type="button" class="btn-tab-auth active" id="tab-auth-login" onclick="app.switchAuthTab('login')" style="flex: 1; padding: 7px 12px; font-weight: 700; border-radius: 4px; border: none; background: #e0f2fe; color: #0284c7; cursor: pointer;">
+              Sign In
+            </button>
+            <button type="button" class="btn-tab-auth" id="tab-auth-register" onclick="app.switchAuthTab('register')" style="flex: 1; padding: 7px 12px; font-weight: 700; border-radius: 4px; border: none; background: transparent; color: var(--text-muted); cursor: pointer;">
+              Create Account
+            </button>
+          </div>
+
+          <form id="firebase-auth-form" onsubmit="app.handleAuthFormSubmit(event)">
+            <div class="form-group" id="auth-group-name" style="display: none; margin-bottom: 12px;">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control font-semibold" id="auth-input-name" placeholder="e.g. Kamaraj Munusamy">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-control font-semibold" id="auth-input-email" required placeholder="engineer@thendral.com">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 14px;">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-control font-semibold" id="auth-input-password" required placeholder="••••••••" minlength="6">
+            </div>
+
+            <div id="auth-error-box" style="display: none; padding: 8px 12px; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; border-radius: 4px; font-size: 0.8rem; margin-bottom: 12px;"></div>
+
+            <button type="submit" class="btn btn-primary" id="btn-auth-submit" style="width: 100%; justify-content: center; padding: 9px 16px;">
+              Sign In
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. TWO-STEP DELETE CONFIRMATION SAFETY MODAL -->
+  <div id="delete-confirm-modal" class="app-modal">
+    <div class="app-modal-dialog" style="max-width: 500px; width: 90%;">
+      
+      <!-- Step 1: Confirm Report Selection -->
+      <div id="del-modal-step-1">
+        <div class="app-modal-header" style="background: #fff1f2; border-color: #fecdd3; color: #9f1239;">
+          <div class="app-modal-title" style="color: #9f1239; display: flex; align-items: center; gap: 8px;">
+            <span>🗑️</span> Delete Service Report (Step 1 of 2)
+          </div>
+          <button type="button" class="btn-delete-item" onclick="app.closeDeleteModal()">✕</button>
+        </div>
+        <div class="app-modal-body" style="padding: 20px;">
+          <p style="font-size: 0.88rem; color: var(--text-dark); margin-bottom: 14px; font-weight: 600;">
+            Are you sure you want to delete this technical service report?
+          </p>
+
+          <div style="background: var(--bg-card-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; margin-bottom: 16px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.82rem;">
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.72rem; text-transform: uppercase;">Document Ref</span>
+                <strong class="font-mono" style="color: var(--primary); font-size: 0.92rem;" id="del-modal-doc-no">—</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.72rem; text-transform: uppercase;">Turbine Asset</span>
+                <strong class="font-mono" style="color: var(--text-dark);" id="del-modal-turbine">—</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.72rem; text-transform: uppercase;">Customer</span>
+                <span style="color: var(--text-dark); font-weight: 600;" id="del-modal-customer">—</span>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); display: block; font-size: 0.72rem; text-transform: uppercase;">Site Location</span>
+                <span style="color: var(--text-dark); font-weight: 600;" id="del-modal-site">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="app-modal-footer">
+          <button type="button" class="btn btn-outline" onclick="app.closeDeleteModal()">Cancel</button>
+          <button type="button" class="btn btn-danger" onclick="app.proceedDeleteStep2()" style="background: #e11d48; color: #ffffff; border-color: #be123c;">
+            Continue to Step 2 →
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Final Destructive Confirmation -->
+      <div id="del-modal-step-2" style="display: none;">
+        <div class="app-modal-header" style="background: #881337; border-color: #4c0519; color: #ffffff;">
+          <div class="app-modal-title" style="color: #ffffff; display: flex; align-items: center; gap: 8px;">
+            <span>⚠️</span> Final Confirmation — Report Removal (Step 2 of 2)
+          </div>
+          <button type="button" class="btn-delete-item" style="color: #ffffff;" onclick="app.closeDeleteModal()">✕</button>
+        </div>
+        <div class="app-modal-body" style="padding: 20px;">
+          <div style="background: #fff1f2; border: 1.5px solid #f43f5e; border-radius: var(--radius-md); padding: 14px; margin-bottom: 14px;">
+            <strong style="color: #9f1239; display: block; font-size: 0.88rem; margin-bottom: 4px;">Confirm permanent report removal?</strong>
+            <p style="font-size: 0.82rem; color: #881337; line-height: 1.45; margin: 0;">
+              Document <strong class="font-mono" id="del-modal-doc-no-2">—</strong> will be removed from Cloud Firestore and local storage. This report will no longer appear in your active report history.
+            </p>
+          </div>
+        </div>
+        <div class="app-modal-footer">
+          <button type="button" class="btn btn-outline" onclick="app.closeDeleteModal()">Cancel</button>
+          <button type="button" class="btn btn-danger" id="btn-del-final-confirm" onclick="app.executeConfirmedDelete()" style="background: #be123c; color: #ffffff; border-color: #9f1239; font-weight: 700;">
+            🗑️ Confirm Permanent Delete
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 11. SAVE / EDIT CONFIRMATION MODAL -->
+  <div id="save-confirm-modal" class="app-modal">
+    <div class="app-modal-dialog" style="max-width: 480px; width: 90%;">
+      <div class="app-modal-header" style="background: #f0f9ff; border-color: #bae6fd; color: #0369a1;">
+        <div class="app-modal-title" style="color: #0369a1; display: flex; align-items: center; gap: 8px;">
+          <span>💾</span> Save Report Changes
+        </div>
+        <button type="button" class="btn-delete-item" onclick="app.closeSaveModal()">✕</button>
+      </div>
+      <div class="app-modal-body" style="padding: 20px;">
+        <p style="font-size: 0.88rem; color: var(--text-dark); margin-bottom: 14px; font-weight: 600;">
+          Save changes to Report <span class="font-mono" id="save-modal-doc-no" style="color: var(--primary);">TWT-10826</span>?
+        </p>
+
+        <div style="background: var(--bg-card-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 14px; font-size: 0.82rem;">
+          <div style="margin-bottom: 6px;">
+            <span style="color: var(--text-muted);">Turbine Asset:</span>
+            <strong class="font-mono" id="save-modal-turbine" style="margin-left: 6px;">—</strong>
+          </div>
+          <div>
+            <span style="color: var(--text-muted);">Status:</span>
+            <strong id="save-modal-status" style="margin-left: 6px; color: var(--primary);">Draft</strong>
+          </div>
+        </div>
+
+        <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; margin: 0;">
+          Existing report data in Cloud Firestore and local storage will be updated with your latest changes.
+        </p>
+      </div>
+      <div class="app-modal-footer">
+        <button type="button" class="btn btn-outline" onclick="app.closeSaveModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btn-save-modal-confirm" onclick="app.executeConfirmedSave()">
+          ✓ Confirm Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE USER MODAL -->
+  <div id="create-user-modal" class="app-modal-overlay">
+    <div class="app-modal" style="max-width: 540px;">
+      <div class="app-modal-header">
+        <div class="app-modal-title">
+          <span>👤</span> Create Authenticated Team User
+        </div>
+        <button type="button" class="modal-close-btn" onclick="app.closeCreateUserModal()">✕</button>
+      </div>
+      <form id="create-user-form" onsubmit="app.submitCreateUser(event)">
+        <div class="app-modal-body" style="padding: 24px;">
+          
+          <div id="create-user-error-box" class="login-error-box" style="display: none; margin-bottom: 16px;"></div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label required">Full Name</label>
+            <input type="text" id="new-user-fullname" class="form-input" placeholder="e.g. S. Bhuvaneshwaran" required>
+            <span class="field-hint">Used for report attribution, 'Prepared By', and digital signatures.</span>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label required">Email Address (Login Username)</label>
+            <input type="email" id="new-user-email" class="form-input" placeholder="e.g. engineer@thendral.com" required autocomplete="off">
+            <span class="field-hint">Must be a valid email for Firebase Authentication sign-in.</span>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label required">Initial Password</label>
+            <div class="login-input-group" style="position: relative;">
+              <input type="password" id="new-user-password" class="form-input" placeholder="Minimum 6 characters" required autocomplete="new-password" style="padding-right: 42px;">
+              <button type="button" class="btn-toggle-pass" onclick="app.togglePasswordVisibility('new-user-password', 'btn-toggle-new-user-pass')" id="btn-toggle-new-user-pass" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted);">
+                👁️
+              </button>
+            </div>
+            <span class="field-hint">Registered directly with Firebase Authentication (never stored in database).</span>
+          </div>
+
+          <div class="form-grid-2" style="margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label required">System Role</label>
+              <select id="new-user-role" class="form-select" required>
+                <option value="engineer" selected>Engineer (Field Inspection)</option>
+                <option value="reviewer">Reviewer (Quality &amp; Release)</option>
+                <option value="admin">Administrator (Full Control)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label required">Account Status</label>
+              <select id="new-user-status" class="form-select" required>
+                <option value="active" selected>Active (Can Sign In)</option>
+                <option value="inactive">Inactive (Disabled)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-md); padding: 12px; font-size: 0.78rem; color: var(--text-muted); line-height: 1.45;">
+            🔒 <strong>Production Security Note:</strong> Account credentials are created in Firebase Authentication. The matching profile record is stored in Firestore <code style="font-family: var(--font-mono); color: var(--primary);">users/{uid}</code>.
+          </div>
+
+        </div>
+        <div class="app-modal-footer">
+          <button type="button" class="btn btn-outline" onclick="app.closeCreateUserModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-create-user">
+            <span>+</span> <span>Create User Account</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="app-toast" class="toast-notification"></div>
+
+  <!-- FIREBASE PRODUCTION SDKS (v10.13.1 Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-storage-compat.js"></script>
+  <script src="js/firebase-service.js?v=2"></script>
+
+  <!-- APPLICATION SCRIPTS -->
+  <script src="js/diagrams.js?v=2"></script>
+  <script src="js/camera-manager.js?v=2"></script>
+  <script src="js/photo-manager.js?v=2"></script>
+  <script src="js/sample-data.js?v=2"></script>
+  <script src="js/logo-data.js?v=2"></script>
+  <script src="js/report-template.js?v=2"></script>
+  <script src="js/pdf-exporter.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
+
+</body>
+</html>
