@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/styles/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=86400, stale-while-revalidate"
+      },
+      "dest": "/styles/$1"
+    },
+    {
+      "src": "/js/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=86400, stale-while-revalidate"
+      },
+      "dest": "/js/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

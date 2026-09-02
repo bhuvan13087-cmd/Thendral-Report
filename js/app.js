@@ -180,6 +180,7 @@ class ThendralReportStore {
 
 const ReportDB = new ThendralReportStore();
 window.ReportDB = ReportDB;
+window.ThendralDB = ReportDB;
 
 // ==========================================
 // MAIN DASHBOARD APPLICATION CONTROLLER
@@ -253,7 +254,7 @@ class DashboardApp {
     }
   }
 
-  onAuthStateChanged(user, profile) {
+  async onAuthStateChanged(user, profile) {
     const landingScreen = document.getElementById('login-landing-screen');
     const workspaceLayout = document.getElementById('workspace-layout');
     const btnAuth = document.getElementById('btn-header-auth');
@@ -262,13 +263,25 @@ class DashboardApp {
 
     if (user) {
       this.isAuthenticated = true;
+      this.currentUser = user;
+
+      const role = (profile?.role || window.firebaseService?.userProfile?.role || 'admin').toLowerCase();
+      const status = (profile?.status || window.firebaseService?.userProfile?.status || 'active').toLowerCase();
+
+      this.userProfile = profile || {
+        uid: user.uid,
+        email: user.email || '',
+        displayName: user.displayName || (user.email ? user.email.split('@')[0] : 'Engineer'),
+        role: role,
+        status: status,
+        organization: 'Thendral Wind Tech LLP Dindigul'
+      };
+
       try {
         document.documentElement.classList.add('session-active');
         localStorage.setItem('thendral_has_session', 'true');
       } catch (e) {}
 
-      const role = (profile?.role || 'admin').toLowerCase();
-      const status = (profile?.status || 'active').toLowerCase();
       const validRoles = ['admin', 'engineer', 'reviewer'];
 
       // Check for deactivated/inactive status
@@ -319,14 +332,22 @@ class DashboardApp {
         return;
       }
 
-      // Apply Admin UI privilege class
-      if (role === 'admin') {
-        document.documentElement.classList.add('is-admin');
+      // Apply Role UI privilege classes
+      if (role === 'engineer') {
+        document.documentElement.classList.remove('is-admin', 'is-reviewer');
+        document.documentElement.classList.add('is-engineer');
+        try { localStorage.setItem('thendral_cached_role', 'engineer'); } catch(e) {}
+      } else if (role === 'reviewer') {
+        document.documentElement.classList.remove('is-admin', 'is-engineer');
+        document.documentElement.classList.add('is-reviewer');
+        try { localStorage.setItem('thendral_cached_role', 'reviewer'); } catch(e) {}
       } else {
-        document.documentElement.classList.remove('is-admin');
+        document.documentElement.classList.remove('is-engineer', 'is-reviewer');
+        document.documentElement.classList.add('is-admin');
+        try { localStorage.setItem('thendral_cached_role', 'admin'); } catch(e) {}
       }
 
-      const displayName = profile?.displayName || user.displayName || user.email.split('@')[0] || 'Admin';
+      const displayName = this.userProfile?.displayName || user.displayName || (user.email ? user.email.split('@')[0] : 'Admin');
       const roleLabel = role === 'admin' ? 'Admin' : role === 'reviewer' ? 'Reviewer' : 'Engineer';
 
       console.log(`[AUTH_09_WORKSPACE_REDIRECT] Unlocking protected workspace for ${displayName} [${roleLabel}]`);
@@ -334,6 +355,13 @@ class DashboardApp {
       // Transition from Login Landing Screen to Full Workspace
       if (landingScreen) landingScreen.style.display = 'none';
       if (workspaceLayout) workspaceLayout.style.display = 'flex';
+
+      // Clear any landing hash from URL bar
+      if (window.location.hash && window.location.hash.startsWith('#landing')) {
+        try {
+          history.replaceState(null, '', window.location.pathname);
+        } catch (e) {}
+      }
 
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -349,33 +377,43 @@ class DashboardApp {
         `;
       }
 
-      // Auto-populate Prepared By with logged-in engineer's name if empty or default placeholder
-      if (this.currentData && this.currentData.meta) {
-        if (!this.currentData.meta.preparedBy || this.currentData.meta.preparedBy === '—') {
-          this.currentData.meta.preparedBy = displayName;
-          this.setElValue('f-meta-prepared', displayName);
-          this.setElValue('f-service-engineer', displayName);
-          this.setElValue('sig-engineer-name', displayName);
-        }
-      }
+      // Load user-scoped persistent active draft from Cloud Firestore / Local Cache
+      await this.loadUserScopedActiveDraft(user.uid);
 
       this.updateCloudSyncBadge('synced');
 
       // Restore active workspace section across refresh
       const savedSection = sessionStorage.getItem('thendral_active_section');
-      const targetSection = (savedSection && savedSection !== 'step-dashboard') ? savedSection : 'step-report-asset';
+      const targetSection = (savedSection && savedSection !== 'step-dashboard' && (savedSection !== 'step-users' || role === 'admin')) 
+        ? savedSection 
+        : 'step-report-asset';
       this.switchSection(targetSection);
 
       console.log('[AUTH_10_LOGIN_COMPLETE] Workspace successfully initialized on section:', targetSection);
     } else {
       this.isAuthenticated = false;
+      this.currentUser = null;
+      this.userProfile = null;
+      this.currentData = null;
+      this.currentReportId = null;
+
       try {
-        document.documentElement.classList.remove('session-active');
+        document.documentElement.classList.remove('session-active', 'is-admin', 'is-engineer', 'is-reviewer');
+        document.body.classList.remove('session-active', 'is-admin', 'is-engineer', 'is-reviewer');
         localStorage.removeItem('thendral_has_session');
+        localStorage.removeItem('thendral_cached_role');
+        localStorage.removeItem('thendral_active_report_id');
+        localStorage.removeItem('thendral_report_draft');
+        sessionStorage.removeItem('thendral_active_section');
+        history.replaceState(null, '', window.location.pathname);
+        window.scrollTo(0, 0);
       } catch (e) {}
 
       // Transition to Login Landing Screen and guard Workspace
-      if (landingScreen) landingScreen.style.display = 'flex';
+      if (landingScreen) {
+        landingScreen.style.display = 'flex';
+        landingScreen.scrollTop = 0;
+      }
       if (workspaceLayout) workspaceLayout.style.display = 'none';
 
       // Clear password field and reset submit button
@@ -396,6 +434,113 @@ class DashboardApp {
     this.updateReportsCountBadge();
     if (this.currentSection === 'step-history') {
       this.renderHistorySection();
+    }
+  }
+
+  // ==========================================
+  // CANONICAL LOGIN MODAL CONTROLLER
+  // ==========================================
+  openLoginModal() {
+    const modal = document.getElementById('login-modal');
+    if (!modal) return;
+    const errBox = document.getElementById('modal-login-error-box');
+    const passInput = document.getElementById('modal-login-password');
+    if (errBox) errBox.style.display = 'none';
+    if (passInput) passInput.value = '';
+
+    modal.classList.add('active');
+    try {
+      document.body.style.overflow = 'hidden';
+    } catch (e) {}
+
+    setTimeout(() => {
+      const emailInput = document.getElementById('modal-login-email');
+      if (emailInput && !emailInput.value) {
+        emailInput.focus();
+      } else if (passInput) {
+        passInput.focus();
+      }
+    }, 120);
+  }
+
+  closeLoginModal() {
+    const modal = document.getElementById('login-modal');
+    if (modal) modal.classList.remove('active');
+    try {
+      document.body.style.overflow = '';
+    } catch (e) {}
+  }
+
+  async handleModalLoginSubmit(e) {
+    if (e) e.preventDefault();
+    const emailInput = document.getElementById('modal-login-email');
+    const passInput = document.getElementById('modal-login-password');
+    const errBox = document.getElementById('modal-login-error-box');
+    const submitBtn = document.getElementById('modal-btn-login-submit');
+
+    const email = emailInput ? emailInput.value.trim() : '';
+    const password = passInput ? passInput.value : '';
+
+    if (!email || !password) {
+      if (errBox) {
+        errBox.innerText = 'Please enter your email and password.';
+        errBox.style.display = 'flex';
+      }
+      return;
+    }
+
+    if (errBox) errBox.style.display = 'none';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span class="login-spinner"></span> <span>Authenticating with Firebase...</span>`;
+    }
+
+    console.log(`[AUTH_01_MODAL_LOGIN_SUBMIT] Initiating modal login for: ${email}`);
+
+    try {
+      if (!window.firebaseService) {
+        throw new Error('Firebase Service is not available in this browser session.');
+      }
+
+      // 10-second timeout guarantee
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Authentication request timed out after 10 seconds. Please check your internet connection.')), 10000)
+      );
+
+      const authResult = await Promise.race([
+        window.firebaseService.signIn(email, password),
+        timeoutPromise
+      ]);
+
+      console.log(`[AUTH_03_FIREBASE_AUTH_SUCCESS] Firebase sign-in resolved for UID: ${authResult.user?.uid}`);
+      this.closeLoginModal();
+      this.showToast('✓ Signed in successfully. Welcome to Thendral Workspace.');
+
+      // Directly unlock workspace immediately
+      this.onAuthStateChanged(authResult.user, authResult.profile);
+    } catch (err) {
+      console.error('[AUTH_ERROR] Firebase Modal Login failed:', err.code, err.message, err);
+      if (errBox) {
+        let msg = 'Authentication failed. Please check your credentials.';
+        if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
+          msg = 'Invalid email or password. Please verify the credentials registered in Firebase Console.';
+        } else if (err.code === 'auth/invalid-email') {
+          msg = 'Please enter a valid email address.';
+        } else if (err.code === 'auth/user-disabled') {
+          msg = 'This engineer account has been disabled. Please contact your supervisor.';
+        } else if (err.code === 'auth/too-many-requests') {
+          msg = 'Too many unsuccessful login attempts. Please wait a moment and try again.';
+        } else if (err.message) {
+          msg = err.message;
+        }
+        errBox.innerText = msg;
+        errBox.style.display = 'flex';
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Sign In to Workspace</span> <span class="btn-arrow">→</span>`;
+      }
     }
   }
 
@@ -530,31 +675,144 @@ class DashboardApp {
     }
   }
 
-  async loadInitialData() {
-    // 1. Try loading last active report ID
-    const activeId = localStorage.getItem('thendral_active_report_id');
+  // ==========================================
+  // USER-SCOPED PERSISTENT DRAFT CONTROLLER
+  // ==========================================
+  async loadUserScopedActiveDraft(uid) {
+    if (!uid) return;
 
-    if (activeId) {
-      const record = await ReportDB.getReportById(activeId);
-      if (record && (record.reportData || record.data)) {
-        this.currentReportId = record.id;
-        this.currentData = record.reportData || record.data;
+    console.log(`[DRAFT_01_USER_QUERY] Querying persistent active draft for UID: ${uid}`);
+    let loadedData = null;
+    let loadedId = null;
+
+    // 1. Query Cloud Firestore for user's latest in-progress draft
+    if (window.firebaseService && window.firebaseService.isOnline && typeof window.firebaseService.getUserLatestDraftFromCloud === 'function') {
+      try {
+        const cloudDraft = await window.firebaseService.getUserLatestDraftFromCloud(uid);
+        if (cloudDraft && (cloudDraft.reportData || cloudDraft.data)) {
+          loadedId = cloudDraft.id || cloudDraft.reportId;
+          loadedData = cloudDraft.reportData || cloudDraft.data;
+          console.log(`[DRAFT_02_FIRESTORE_RESTORE] Restored draft ${loadedId} from Firestore for UID: ${uid}`);
+        }
+      } catch (cloudErr) {
+        console.warn('[DRAFT_FIRESTORE_QUERY_WARN] Firestore draft query fallback:', cloudErr);
       }
     }
 
-    // 2. Fallback to localStorage draft
-    if (!this.currentData) {
-      const saved = localStorage.getItem('thendral_report_draft');
-      if (saved) {
-        try {
-          this.currentData = JSON.parse(saved);
-        } catch (e) {
-          console.warn('Draft load error:', e);
+    // 2. Fallback to user-scoped localStorage draft cache
+    if (!loadedData) {
+      const userCachedId = localStorage.getItem(`thendral_active_report_id_${uid}`);
+      if (userCachedId) {
+        const record = await ReportDB.getReportById(userCachedId);
+        if (record && (record.reportData || record.data) && (record.createdByUid === uid || !record.createdByUid)) {
+          loadedId = record.id;
+          loadedData = record.reportData || record.data;
+          console.log(`[DRAFT_03_LOCAL_CACHE_RESTORE] Restored draft from user-scoped IndexedDB: ${loadedId}`);
+        }
+      }
+      if (!loadedData) {
+        const userDraftJson = localStorage.getItem(`thendral_report_draft_${uid}`);
+        if (userDraftJson) {
+          try {
+            const parsed = JSON.parse(userDraftJson);
+            if (parsed && (parsed.createdByUid === uid || !parsed.createdByUid)) {
+              loadedData = parsed;
+              loadedId = parsed.meta?.reportId || `rep_${Date.now()}`;
+              console.log(`[DRAFT_04_LOCAL_JSON_RESTORE] Restored draft from user-scoped localStorage for UID: ${uid}`);
+            }
+          } catch (e) {}
         }
       }
     }
 
-    // 3. Fallback to clean blank report
+    // 3. If no draft exists for this user, generate a pristine clean blank report
+    if (!loadedData) {
+      console.log(`[DRAFT_05_CLEAN_INIT] Initializing fresh clean blank report for UID: ${uid}`);
+      loadedData = JSON.parse(JSON.stringify(SAMPLE_REPORTS.clean_blank_report));
+      const allReps = await ReportDB.getAllReports();
+      const newDocNo = ReportIdManager.generateDocumentNumber(new Date(), allReps);
+      const newReportId = ReportIdManager.generateInternalReportId();
+
+      if (!loadedData.meta) loadedData.meta = {};
+      loadedData.meta.reportDocNo = newDocNo;
+      loadedData.meta.reportId = newReportId;
+      loadedData.meta.edition = 'A';
+      loadedData.meta.status = 'Draft';
+      loadedData.meta.reportDate = this.getTodayDateFormatted();
+      loadedData.createdByUid = uid;
+      loadedId = newReportId;
+    }
+
+    // 4. Attach creator metadata and user name & ensure immutable Report Document Number
+    if (!loadedData.meta) loadedData.meta = {};
+    const docNo = (loadedData.meta.reportDocNo && loadedData.meta.reportDocNo.trim() !== '' && loadedData.meta.reportDocNo !== '—')
+      ? loadedData.meta.reportDocNo
+      : (loadedData.documentNumber || cloudDraft?.documentNumber || cloudDraft?.metadata?.reportDocNo || 'TWT-10826');
+    loadedData.meta.reportDocNo = docNo;
+    loadedData.documentNumber = docNo;
+
+    const displayName = this.userProfile?.displayName || this.currentUser?.displayName || (this.currentUser?.email ? this.currentUser.email.split('@')[0] : 'Engineer');
+    if (!loadedData.meta.preparedBy || loadedData.meta.preparedBy === '—') {
+      loadedData.meta.preparedBy = displayName;
+    }
+    if (!loadedData.generalInfo) loadedData.generalInfo = {};
+    if (!loadedData.generalInfo.serviceEngineer || loadedData.generalInfo.serviceEngineer === '—') {
+      loadedData.generalInfo.serviceEngineer = displayName;
+    }
+    if (!loadedData.generalInfo.inspectorName || loadedData.generalInfo.inspectorName === '—') {
+      loadedData.generalInfo.inspectorName = displayName;
+    }
+    if (!loadedData.generalInfo.inspector || loadedData.generalInfo.inspector === '—') {
+      loadedData.generalInfo.inspector = displayName;
+    }
+
+    loadedData.createdByUid = uid;
+    this.currentReportId = loadedId;
+    this.currentData = loadedData;
+
+    // 5. Merge any locally cached photo blobs from PhotoDB
+    try {
+      const localPhotos = await PhotoDB.getAllPhotos();
+      if (Array.isArray(localPhotos) && localPhotos.length > 0) {
+        const localMap = new Map(localPhotos.map(p => [p.id || p.photoId, p]));
+        (this.currentData.photos || []).forEach(p => {
+          const key = p.photoId || p.id;
+          if (key && localMap.has(key)) {
+            const cached = localMap.get(key);
+            if (cached && cached.url && (!p.url || p.url.trim().length === 0)) {
+              p.url = cached.url;
+            }
+          }
+        });
+      }
+    } catch (e) {
+      console.warn('Local PhotoDB merge notice:', e);
+    }
+
+    // 6. Cache user-scoped keys
+    try {
+      localStorage.setItem(`thendral_active_report_id_${uid}`, this.currentReportId);
+      localStorage.setItem(`thendral_report_draft_${uid}`, JSON.stringify(this.currentData));
+    } catch (e) {}
+
+    ThendralReportStore.sanitizeReportData(this.currentData);
+    PhotoManager.populateSamplePhotos(this.currentData);
+
+    // 7. Render UI
+    this.renderWorkspace();
+    this.renderPreview();
+    this.updateSectionIndicators();
+  }
+
+  async loadInitialData() {
+    // Basic startup fallback before authentication resolves
+    const saved = localStorage.getItem('thendral_report_draft');
+    if (saved && !this.currentData) {
+      try {
+        this.currentData = JSON.parse(saved);
+      } catch (e) {}
+    }
+
     if (!this.currentData) {
       this.currentData = JSON.parse(JSON.stringify(SAMPLE_REPORTS.clean_blank_report));
     }
@@ -585,6 +843,7 @@ class DashboardApp {
     const meta = this.currentData.meta || {};
     const turb = this.currentData.turbine || {};
     const gen = this.currentData.generalInfo || {};
+    const uid = this.currentUser?.uid || this.currentData.createdByUid;
 
     const record = {
       id: this.currentReportId,
@@ -599,13 +858,18 @@ class DashboardApp {
       siteName: gen.siteName || '',
       reportDate: meta.reportDate || '',
       status: status || meta.status || 'Draft',
+      createdByUid: uid,
+      updatedByUid: uid,
       updatedAt: new Date().toISOString(),
       reportData: this.currentData
     };
 
-    // 1. Always save to local IndexedDB fallback
+    // 1. Always save to local IndexedDB fallback and user-scoped storage
     await ReportDB.saveReport(record);
-    localStorage.setItem('thendral_active_report_id', this.currentReportId);
+    if (uid) {
+      localStorage.setItem(`thendral_active_report_id_${uid}`, this.currentReportId);
+      localStorage.setItem(`thendral_report_draft_${uid}`, JSON.stringify(this.currentData));
+    }
 
     // 2. Cloud Firestore Sync (if user is authenticated)
     if (window.firebaseService && window.firebaseService.currentUser && window.firebaseService.isOnline) {
@@ -622,7 +886,7 @@ class DashboardApp {
     this.updateReportsCountBadge();
   }
 
-  saveCurrentReport(showConfirm = true) {
+  saveCurrentReport(showConfirm = false) {
     if (showConfirm) {
       this.promptSaveConfirmation();
     } else {
@@ -661,13 +925,19 @@ class DashboardApp {
     this.closeSaveModal();
     this.setSaveStatus('saving');
     this.syncFormToCurrentData();
-    await this.syncActiveReportToDB();
-    this.setSaveStatus('saved');
-    this.renderPreview();
-    if (this.currentSection === 'step-history') {
-      this.renderHistorySection();
+    try {
+      await this.syncActiveReportToDB();
+      this.setSaveStatus('saved');
+      this.renderPreview();
+      if (this.currentSection === 'step-history') {
+        this.renderHistorySection();
+      }
+      this.showToast('✓ Report successfully saved to Cloud Firestore & Local Storage.');
+    } catch (err) {
+      console.error('[REPORT_SAVE_ERROR]', err);
+      this.setSaveStatus('unsaved');
+      this.showToast(`⚠️ Save Notice: ${err.message || 'Saved to Local Storage'}`);
     }
-    this.showToast('✓ Report successfully saved to Cloud & Local Storage.');
   }
 
   async updateReportsCountBadge() {
@@ -713,6 +983,15 @@ class DashboardApp {
   }
 
   switchSection(sectionId) {
+    // Unauthenticated Navigation Guard
+    if (!this.isAuthenticated && !window.firebaseService?.currentUser) {
+      const landingScreen = document.getElementById('login-landing-screen');
+      const workspaceLayout = document.getElementById('workspace-layout');
+      if (landingScreen) landingScreen.style.display = 'flex';
+      if (workspaceLayout) workspaceLayout.style.display = 'none';
+      return;
+    }
+
     const SECTION_MAP = {
       'step-report-asset': { target: 'step-report-asset', anchor: null },
       'step-report-details': { target: 'step-report-asset', anchor: 'card-report-details' },
@@ -738,6 +1017,9 @@ class DashboardApp {
       const userRole = (this.userProfile?.role || window.firebaseService?.userProfile?.role || 'engineer').toLowerCase();
       if (userRole !== 'admin') {
         this.showToast('⚠️ Access Denied: Administrator privileges required.');
+        if (this.currentSection === 'step-users') {
+          this.switchSection('step-report-asset');
+        }
         return;
       }
     }
@@ -863,14 +1145,22 @@ class DashboardApp {
   // ==========================================
   renderWorkspace() {
     const data = this.currentData || {};
-    const meta = data.meta || {};
+    if (!data.meta) data.meta = {};
+    const meta = data.meta;
     const gen = data.generalInfo || {};
     const turb = data.turbine || {};
     const lub = data.lubrication || {};
     const sum = data.summary || {};
 
+    // Ensure Report Document Number is resolved and never blank
+    const docNo = (meta.reportDocNo && meta.reportDocNo.trim() !== '' && meta.reportDocNo !== '—')
+      ? meta.reportDocNo
+      : (data.documentNumber || 'TWT-10826');
+    meta.reportDocNo = docNo;
+    data.documentNumber = docNo;
+
     // 1. Header Badges & Identity
-    this.setElValue('hdr-report-no', meta.reportDocNo || 'TWT-10826');
+    this.setElValue('hdr-report-no', docNo);
     this.setElValue('hdr-turbine-id', turb.turbineNumber || '—');
 
     const statusBadge = document.getElementById('hdr-status-badge');
@@ -888,7 +1178,9 @@ class DashboardApp {
     const prepBy = meta.preparedBy || gen.serviceEngineer || gen.inspectorName || gen.inspector || '';
     const relBy = meta.releasedBy || gen.reviewer || gen.reportReviewer || '';
 
-    this.setElValue('f-doc-no', meta.reportDocNo || 'TWT-10826');
+    this.setElValue('f-doc-no', docNo);
+    this.setElValue('rev-doc-no', docNo);
+    this.setElValue('save-modal-doc-no', docNo);
     this.setElValue('f-meta-prepared', prepBy);
     this.setElValue('f-meta-released', relBy);
     this.setElValue('f-gearbox-nameplate', meta.gearboxPartNo || '');
@@ -1363,6 +1655,13 @@ class DashboardApp {
     ThendralReportStore.sanitizeReportData(this.currentData);
     this.currentReportId = record.id || record.reportId;
 
+    if (!this.currentData.meta) this.currentData.meta = {};
+    const docNo = (this.currentData.meta.reportDocNo && this.currentData.meta.reportDocNo.trim() !== '' && this.currentData.meta.reportDocNo !== '—')
+      ? this.currentData.meta.reportDocNo
+      : (record.documentNumber || record.metadata?.reportDocNo || 'TWT-10826');
+    this.currentData.meta.reportDocNo = docNo;
+    this.currentData.documentNumber = docNo;
+
     if (!this.currentData.photos) {
       this.currentData.photos = record.photos || [];
     }
@@ -1685,15 +1984,67 @@ class DashboardApp {
   }
 
   async handleSignOut() {
+    const logoutBtns = document.querySelectorAll('.btn-header-logout, #btn-header-logout');
+    logoutBtns.forEach(b => {
+      b.disabled = true;
+      b.innerHTML = `<span>⏳</span> <span class="logout-label">Signing out...</span>`;
+    });
+
     try {
       sessionStorage.removeItem('thendral_active_section');
+      localStorage.removeItem('thendral_has_session');
+      localStorage.removeItem('thendral_cached_role');
+      localStorage.removeItem('thendral_active_report_id');
+      localStorage.removeItem('thendral_report_draft');
+      document.documentElement.classList.remove('session-active', 'is-admin', 'is-engineer', 'is-reviewer');
+      document.body.classList.remove('session-active', 'is-admin', 'is-engineer', 'is-reviewer');
+
+      // Clear in-memory active report and photo state
+      this.currentData = null;
+      this.currentReportId = null;
+      this.selectedPhotoId = null;
+
+      // Clear input fields across the DOM
+      const inputs = document.querySelectorAll('[data-path]');
+      inputs.forEach(inp => {
+        if (inp.type === 'checkbox' || inp.type === 'radio') {
+          inp.checked = false;
+        } else {
+          inp.value = '';
+        }
+      });
     } catch (e) {}
 
-    if (window.firebaseService) {
-      await window.firebaseService.signOut();
-      this.closeAuthModal();
-      this.showToast('✓ Signed out successfully.');
-      this.renderHistorySection();
+    this.closeAuthModal();
+
+    try {
+      if (window.firebaseService) {
+        await window.firebaseService.signOut();
+      }
+      this.onAuthStateChanged(null, null);
+      this.showToast('✓ Signed out of Firebase Session successfully.');
+    } catch (err) {
+      console.error('[AUTH_SIGNOUT_ERROR]', err);
+      this.showToast(`⚠️ Sign out notice: ${err.message || 'Session terminated'}`);
+      this.onAuthStateChanged(null, null);
+    } finally {
+      try {
+        history.replaceState(null, '', window.location.pathname);
+        window.scrollTo(0, 0);
+        const ls = document.getElementById('login-landing-screen');
+        if (ls) ls.scrollTop = 0;
+      } catch (e) {}
+      logoutBtns.forEach(b => {
+        b.disabled = false;
+        b.innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span class="logout-label">Sign Out</span>
+        `;
+      });
     }
   }
 
@@ -3387,6 +3738,19 @@ class DashboardApp {
         dropdownWrap.classList.remove('active');
       }
     });
+
+    // 4. Global Escape key to dismiss modals cleanly
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeLoginModal();
+        this.closeReportModal();
+        this.closeAddPhotoModal();
+        this.closeDeleteModal();
+        this.closeSaveModal();
+        this.closeCreateUserModal();
+        this.closeAuthModal();
+      }
+    });
   }
 
   setObjectPath(obj, path, value) {
@@ -3399,8 +3763,18 @@ class DashboardApp {
     }
     curr[parts[parts.length - 1]] = value;
 
-    // Cross-sync Engineer and Reviewer names across meta and generalInfo
-    if (path === 'meta.preparedBy' || path === 'generalInfo.serviceEngineer' || path === 'generalInfo.inspectorName' || path === 'generalInfo.inspector') {
+    if (path === 'meta.reportDocNo') {
+      if (!value || value.trim() === '') {
+        // Prevent accidental wiping of reportDocNo
+        return;
+      }
+      curr[parts[parts.length - 1]] = value;
+      if (obj) obj.documentNumber = value;
+      this.setElValue('f-doc-no', value);
+      this.setElValue('hdr-report-no', value);
+      this.setElValue('rev-doc-no', value);
+      this.setElValue('save-modal-doc-no', value);
+    } else if (path === 'meta.preparedBy' || path === 'generalInfo.serviceEngineer' || path === 'generalInfo.inspectorName' || path === 'generalInfo.inspector') {
       if (!obj.meta) obj.meta = {};
       obj.meta.preparedBy = value;
       if (!obj.generalInfo) obj.generalInfo = {};
@@ -3456,6 +3830,10 @@ class DashboardApp {
     inputs.forEach(input => {
       const path = input.getAttribute('data-path');
       if (path) {
+        if (path === 'meta.reportDocNo' && (!input.value || input.value.trim() === '')) {
+          // Never wipe reportDocNo if input is temporarily blank in DOM
+          return;
+        }
         const val = input.value;
         this.setObjectPath(this.currentData, path, val);
       }
@@ -4297,6 +4675,7 @@ class DashboardApp {
       setElTxt('users-badge-total-pill', `${total} account${total === 1 ? '' : 's'}`);
 
       this.renderUsersTable();
+      this.populateTeamDatalists();
     } catch (err) {
       console.error('[USER_RENDER_ERROR] Error fetching users from Firestore:', err);
       const setElDash = (id) => {
@@ -4336,6 +4715,25 @@ class DashboardApp {
           </tr>
         `;
       }
+    }
+  }
+
+  populateTeamDatalists() {
+    const engDatalist = document.getElementById('team-engineers-datalist');
+    const revDatalist = document.getElementById('team-reviewers-datalist');
+    const users = this.allCloudUsers || [];
+
+    if (engDatalist) {
+      engDatalist.innerHTML = users
+        .map(u => `<option value="${u.fullName || u.displayName || u.email}">${u.role ? `[${u.role.toUpperCase()}] ` : ''}${u.email || ''}</option>`)
+        .join('');
+    }
+
+    if (revDatalist) {
+      const reviewers = users.filter(u => ['reviewer', 'admin'].includes((u.role || '').toLowerCase()));
+      revDatalist.innerHTML = (reviewers.length ? reviewers : users)
+        .map(u => `<option value="${u.fullName || u.displayName || u.email}">${u.role ? `[${u.role.toUpperCase()}] ` : ''}${u.email || ''}</option>`)
+        .join('');
     }
   }
 
@@ -4597,6 +4995,8 @@ class DashboardApp {
     const role = roleSelect ? roleSelect.value : 'engineer';
     const status = statusSelect ? statusSelect.value : 'active';
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!fullName) {
       if (errBox) {
         errBox.innerText = 'Please enter the user full name.';
@@ -4604,9 +5004,9 @@ class DashboardApp {
       }
       return;
     }
-    if (!email || !email.includes('@')) {
+    if (!email || !emailRegex.test(email)) {
       if (errBox) {
-        errBox.innerText = 'Please enter a valid email address.';
+        errBox.innerText = 'Please enter a valid email address (e.g. engineer@thendral.com).';
         errBox.style.display = 'flex';
       }
       return;
@@ -4619,7 +5019,10 @@ class DashboardApp {
       return;
     }
 
-    if (errBox) errBox.style.display = 'none';
+    if (errBox) {
+      errBox.style.display = 'none';
+      errBox.innerText = '';
+    }
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.innerHTML = `<span>⏳ Creating in Firebase Auth...</span>`;

@@ -152,10 +152,12 @@ class FirebaseService {
         });
 
       } else {
+        this.currentUser = null;
         this.userProfile = null;
         this.isAuthResolved = true;
         try {
           localStorage.removeItem('thendral_has_session');
+          localStorage.removeItem('thendral_cached_role');
         } catch (e) {}
 
         if (this._resolveAuth) {
@@ -236,6 +238,13 @@ class FirebaseService {
   async signOut() {
     if (!this.auth) return;
     console.log('[AUTH_SIGNOUT] Signing out of Firebase Auth...');
+    try {
+      localStorage.removeItem('thendral_has_session');
+      localStorage.removeItem('thendral_cached_role');
+      if (this.currentUser) {
+        localStorage.removeItem(`thendral_user_profile_${this.currentUser.uid}`);
+      }
+    } catch (e) {}
     await this.auth.signOut();
     this.currentUser = null;
     this.userProfile = null;
@@ -332,10 +341,8 @@ class FirebaseService {
     if (!this.auth || !this.db) {
       throw new Error('Firebase services are not initialized.');
     }
-    if (!this.currentUser) {
-      throw new Error('You must be signed in as an Administrator to create users.');
-    }
-    if (this.userProfile?.role !== 'admin') {
+    const currentRole = (this.userProfile?.role || window.app?.userProfile?.role || '').toLowerCase();
+    if (currentRole !== 'admin') {
       throw new Error('Unauthorized: Only administrators have permission to create team users.');
     }
 
@@ -410,8 +417,8 @@ class FirebaseService {
         organization: 'Thendral Wind Tech LLP Dindigul',
         createdAt: serverTs,
         updatedAt: serverTs,
-        createdBy: this.currentUser.uid,
-        createdByEmail: this.currentUser.email || ''
+        createdBy: this.currentUser ? this.currentUser.uid : 'admin_initial',
+        createdByEmail: this.currentUser ? (this.currentUser.email || '') : 'admin@thendral.com'
       };
 
       await this.db.collection('users').doc(newUid).set(userDoc);
@@ -430,7 +437,6 @@ class FirebaseService {
 
   async getAllUsersFromCloud() {
     if (!this.db) return [];
-    if (!this.currentUser) return [];
 
     try {
       console.log('[USER_FETCH_START] Fetching all user profiles from Firestore collection users...');
@@ -455,14 +461,15 @@ class FirebaseService {
       console.log(`[USER_FETCH_SUCCESS] Fetched ${users.length} users from Firestore.`);
       return users;
     } catch (err) {
-      console.error('[USER_FETCH_ERROR] Error fetching users from Firestore:', err);
-      throw err;
+      console.warn('[USER_FETCH_WARN] Error fetching users from Firestore:', err.message);
+      return [];
     }
   }
 
   async updateUserStatusInCloud(uid, newStatus) {
     if (!this.db || !this.currentUser) throw new Error('Not authenticated');
-    if (this.userProfile?.role !== 'admin') throw new Error('Unauthorized');
+    const role = (this.userProfile?.role || window.app?.userProfile?.role || '').toLowerCase();
+    if (role !== 'admin') throw new Error('Unauthorized: Admin access required');
 
     const cleanStatus = (newStatus || 'active').toLowerCase();
     const serverTs = (typeof firebase !== 'undefined' && firebase.firestore?.FieldValue?.serverTimestamp)
@@ -478,7 +485,8 @@ class FirebaseService {
 
   async updateUserRoleInCloud(uid, newRole) {
     if (!this.db || !this.currentUser) throw new Error('Not authenticated');
-    if (this.userProfile?.role !== 'admin') throw new Error('Unauthorized');
+    const role = (this.userProfile?.role || window.app?.userProfile?.role || '').toLowerCase();
+    if (role !== 'admin') throw new Error('Unauthorized: Admin access required');
 
     const cleanRole = (newRole || 'engineer').toLowerCase();
     const serverTs = (typeof firebase !== 'undefined' && firebase.firestore?.FieldValue?.serverTimestamp)
@@ -494,7 +502,8 @@ class FirebaseService {
 
   async deleteUserFromCloud(uid) {
     if (!this.db || !this.currentUser) throw new Error('Not authenticated');
-    if (this.userProfile?.role !== 'admin') throw new Error('Unauthorized');
+    const role = (this.userProfile?.role || window.app?.userProfile?.role || '').toLowerCase();
+    if (role !== 'admin') throw new Error('Unauthorized: Admin access required');
     if (this.currentUser.uid === uid) throw new Error('You cannot delete your own Administrator account.');
 
     await this.db.collection('users').doc(uid).delete();
@@ -742,6 +751,46 @@ class FirebaseService {
     } catch (err) {
       console.warn('Error fetching cloud reports:', err);
       return [];
+    }
+  }
+
+  async getUserLatestDraftFromCloud(userId = null) {
+    const uid = userId || this.currentUser?.uid;
+    if (!this.db || !uid) return null;
+
+    try {
+      const reportsRef = this.db.collection('reports');
+      // Query by user's UID (single index query, 100% reliable without custom composite indexes)
+      const snap = await reportsRef
+        .where('createdByUid', '==', uid)
+        .get();
+
+      if (snap.empty) return null;
+
+      const userReports = [];
+      snap.forEach((doc) => {
+        const d = doc.data();
+        if (d && d.isDeleted !== true) {
+          userReports.push({
+            id: d.reportId || doc.id,
+            ...d,
+            reportData: d.reportData || d
+          });
+        }
+      });
+
+      if (userReports.length === 0) return null;
+
+      // Prioritize active in-progress drafts, otherwise take most recent report
+      const drafts = userReports.filter(r => (r.status || '').toLowerCase() !== 'released');
+      const listToPickFrom = drafts.length > 0 ? drafts : userReports;
+
+      // Sort by updatedAt descending to get the most recently updated draft
+      listToPickFrom.sort((a, b) => new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+      return listToPickFrom[0];
+    } catch (err) {
+      console.warn('[FIRESTORE_USER_DRAFT_NOTICE] Could not fetch user draft from cloud:', err);
+      return null;
     }
   }
 

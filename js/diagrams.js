@@ -310,26 +310,26 @@ const DIAGRAMS = {
       <!-- Top Land -->
       <line x1="300" y1="50" x2="300" y2="20" stroke="#1565c0" stroke-width="1.5" />
       <rect x="235" y="5" width="130" height="24" rx="4" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" />
-      <text x="300" y="21" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0d47a1" text-anchor="middle">Top Land</text>
+      <text x="300" y="21" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#0d47a1" text-anchor="middle">Top Land</text>
 
       <!-- Addendum -->
       <line x1="400" y1="100" x2="480" y2="100" stroke="#1565c0" stroke-width="1.5" />
       <rect x="485" y="88" width="120" height="24" rx="4" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" />
-      <text x="545" y="104" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0d47a1" text-anchor="middle">Addendum</text>
+      <text x="545" y="104" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#0d47a1" text-anchor="middle">Addendum</text>
 
       <!-- Pitchline label -->
       <rect x="485" y="138" width="120" height="24" rx="4" fill="#ffebee" stroke="#d32f2f" stroke-width="1.2" />
-      <text x="545" y="154" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#b71c1c" text-anchor="middle">Pitchline</text>
+      <text x="545" y="154" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#b71c1c" text-anchor="middle">Pitchline</text>
 
       <!-- Dedendum -->
       <line x1="435" y1="200" x2="480" y2="200" stroke="#1565c0" stroke-width="1.5" />
       <rect x="485" y="188" width="120" height="24" rx="4" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" />
-      <text x="545" y="204" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0d47a1" text-anchor="middle">Dedendum</text>
+      <text x="545" y="204" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#0d47a1" text-anchor="middle">Dedendum</text>
 
       <!-- Active Profile -->
       <line x1="190" y1="120" x2="90" y2="120" stroke="#1565c0" stroke-width="1.5" />
       <rect x="10" y="108" width="120" height="24" rx="4" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" />
-      <text x="70" y="124" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0d47a1" text-anchor="middle">Active Profile</text>
+      <text x="70" y="124" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#0d47a1" text-anchor="middle">Active Profile</text>
     </svg>
   `,
 
@@ -362,20 +362,20 @@ const DIAGRAMS = {
 
       <!-- Schematic Labels -->
       <rect x="120" y="15" width="90" height="24" rx="3" fill="#e0f2fe" stroke="#0284c7" stroke-width="1" />
-      <text x="165" y="31" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0369a1" text-anchor="middle">HSS-GS OB</text>
+      <text x="165" y="31" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#0369a1" text-anchor="middle">HSS-GS OB</text>
       <line x1="162" y1="39" x2="162" y2="55" stroke="#0284c7" stroke-width="1.2" />
 
       <rect x="195" y="15" width="90" height="24" rx="3" fill="#e0f2fe" stroke="#0284c7" stroke-width="1" />
-      <text x="240" y="31" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#0369a1" text-anchor="middle">HSS-GS IB</text>
+      <text x="240" y="31" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#0369a1" text-anchor="middle">HSS-GS IB</text>
       <line x1="237" y1="39" x2="237" y2="55" stroke="#0284c7" stroke-width="1.2" />
 
       <rect x="400" y="15" width="95" height="24" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1" />
-      <text x="447" y="31" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#b45309" text-anchor="middle">HSS-RS</text>
+      <text x="447" y="31" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" fill="#b45309" text-anchor="middle">HSS-RS</text>
       <line x1="447" y1="39" x2="447" y2="55" stroke="#d97706" stroke-width="1.2" />
 
       <!-- Side Labels -->
-      <text x="110" y="200" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#37474f">◄ Generator Side (GS)</text>
-      <text x="450" y="200" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#37474f">Rotor Side (RS) ►</text>
+      <text x="110" y="200" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#37474f">◄ Generator Side (GS)</text>
+      <text x="450" y="200" font-family="'Inter', sans-serif" font-size="12" font-weight="bold" fill="#37474f">Rotor Side (RS) ►</text>
     </svg>
   `,
 
@@ -399,8 +399,8 @@ const DIAGRAMS = {
         <circle cx="0" cy="0" r="1.5" fill="#0284c7" />
       </g>
       <!-- Brand Text -->
-      <text x="60" y="25" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="900" fill="#0f172a" letter-spacing="1">THENDRAL</text>
-      <text x="60" y="42" font-family="'Segoe UI', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#0284c7" letter-spacing="2">WIND SERVICES</text>
+      <text x="60" y="25" font-family="'Inter', -apple-system, sans-serif" font-size="18" font-weight="900" fill="#0f172a" letter-spacing="1">THENDRAL</text>
+      <text x="60" y="42" font-family="'Inter', -apple-system, sans-serif" font-size="10.5" font-weight="700" fill="#0284c7" letter-spacing="2">WIND SERVICES</text>
     </svg>
   `
 };

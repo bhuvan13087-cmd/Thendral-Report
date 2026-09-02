@@ -226,21 +226,28 @@ html_content = re.sub(
     html_content
 )
 
-# Save final standalone file
-target_filename = "THENDRAL_WIND_SERVICES_SERVICE_REPORT.html"
-with open(target_filename, "w") as f:
+# Save final standalone build into dist/ and project root for direct access
+os.makedirs("dist", exist_ok=True)
+target_path = os.path.join("dist", "Thendral_Wind_Service_Report.html")
+with open(target_path, "w") as f:
     f.write(html_content)
 
-# Also write backward compatible filename
+# Also write to root for direct local opening
+with open("THENDRAL_WIND_SERVICES_SERVICE_REPORT.html", "w") as f:
+    f.write(html_content)
+
 with open("Thendral_Wind_Service_Report.html", "w") as f:
     f.write(html_content)
 
-print(f"Generated standalone {target_filename} successfully ({os.path.getsize(target_filename) / 1024:.1f} KB).")
+print(f"Generated standalone distribution build successfully ({os.path.getsize(target_path) / 1024:.1f} KB).")
 
-# Copy to user's Downloads folder
-downloads_path = f"/Users/sribhuvan/Downloads/{target_filename}"
-shutil.copy(target_filename, downloads_path)
-print(f"Copied to {downloads_path} successfully ({os.path.getsize(downloads_path) / 1024:.1f} KB).")
+# Copy to user's Downloads folder for offline distribution
+try:
+    downloads_path = "/Users/sribhuvan/Downloads/THENDRAL_WIND_SERVICES_SERVICE_REPORT.html"
+    shutil.copy(target_path, downloads_path)
+    shutil.copy(target_path, "/Users/sribhuvan/Downloads/Thendral_Wind_Service_Report.html")
+    print(f"Copied to {downloads_path} successfully.")
+except Exception as e:
+    print(f"Notice: Could not copy to Downloads folder ({e}).")
 
-# Also copy to Downloads/Thendral_Wind_Service_Report.html
-shutil.copy("Thendral_Wind_Service_Report.html", "/Users/sribhuvan/Downloads/Thendral_Wind_Service_Report.html")
+
