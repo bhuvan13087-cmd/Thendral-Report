@@ -570,6 +570,59 @@ class FirebaseService {
     // Clean sanitized reportData to prevent Firestore rejecting undefined values
     const sanitizedData = JSON.parse(JSON.stringify(rawData));
 
+    // Upload any remaining Base64 photos to Firebase Cloud Storage to keep Firestore document under 1MB limit
+    if (this.storage && this.currentUser && Array.isArray(sanitizedData.photos)) {
+      for (const photo of sanitizedData.photos) {
+        if (photo && photo.url && typeof photo.url === 'string' && photo.url.startsWith('data:image')) {
+          try {
+            const photoId = photo.photoId || photo.id || `p_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+            photo.photoId = photoId;
+            const downloadUrl = await this.uploadPhotoToStorage(reportId, photoId, photo.url);
+            if (downloadUrl && downloadUrl.startsWith('http')) {
+              photo.url = downloadUrl;
+              // Synchronize live in-memory report state
+              if (window.app && window.app.currentData && Array.isArray(window.app.currentData.photos)) {
+                const livePhoto = window.app.currentData.photos.find(p => p && (p.photoId === photoId || p.id === photoId));
+                if (livePhoto) livePhoto.url = downloadUrl;
+              }
+              // Update local PhotoDB cache with cloud URL
+              if (window.PhotoDB && typeof window.PhotoDB.savePhoto === 'function') {
+                window.PhotoDB.savePhoto({ id: photoId, ...photo, url: downloadUrl }).catch(() => {});
+              }
+            }
+          } catch (uploadErr) {
+            console.warn('Background Cloud Storage upload during report save notice:', uploadErr);
+          }
+        }
+      }
+    }
+
+    // Upload any signatures to Cloud Storage if in Base64
+    if (this.storage && this.currentUser && sanitizedData.signatures) {
+      if (sanitizedData.signatures.engineerSigUrl && sanitizedData.signatures.engineerSigUrl.startsWith('data:image')) {
+        try {
+          const sigUrl = await this.uploadSignatureToStorage(reportId, 'engineer', sanitizedData.signatures.engineerSigUrl);
+          if (sigUrl && sigUrl.startsWith('http')) {
+            sanitizedData.signatures.engineerSigUrl = sigUrl;
+            if (window.app && window.app.currentData && window.app.currentData.signatures) {
+              window.app.currentData.signatures.engineerSigUrl = sigUrl;
+            }
+          }
+        } catch (e) {}
+      }
+      if (sanitizedData.signatures.reviewerSigUrl && sanitizedData.signatures.reviewerSigUrl.startsWith('data:image')) {
+        try {
+          const revUrl = await this.uploadSignatureToStorage(reportId, 'reviewer', sanitizedData.signatures.reviewerSigUrl);
+          if (revUrl && revUrl.startsWith('http')) {
+            sanitizedData.signatures.reviewerSigUrl = revUrl;
+            if (window.app && window.app.currentData && window.app.currentData.signatures) {
+              window.app.currentData.signatures.reviewerSigUrl = revUrl;
+            }
+          }
+        } catch (e) {}
+      }
+    }
+
     const reportDoc = {
       reportId: reportId,
       documentNumber: docNumber,
@@ -791,11 +844,13 @@ class FirebaseService {
   // ==========================================
   // FIREBASE CLOUD STORAGE (PHOTOS & SIGNATURES)
   // ==========================================
-  async uploadPhotoToStorage(reportId, photoId, base64DataUrl) {
+  async uploadPhotoToStorage(reportId, photoId, base64DataUrl, onProgress = null) {
     if (!this.storage || !base64DataUrl || !base64DataUrl.startsWith('data:image')) {
+      if (typeof onProgress === 'function') onProgress(100);
       return base64DataUrl; // Return as-is if storage unavailable or already a URL
     }
     if (!this.currentUser) {
+      if (typeof onProgress === 'function') onProgress(100);
       return base64DataUrl; // Fallback to local data URL if unauthenticated
     }
 
@@ -815,7 +870,7 @@ class FirebaseService {
       }
       const blob = new Blob([ab], { type: mimeString });
 
-      const uploadTask = await storageRef.put(blob, {
+      const uploadTask = storageRef.put(blob, {
         contentType: mimeString,
         customMetadata: {
           reportId: cleanReportId,
@@ -825,10 +880,22 @@ class FirebaseService {
         }
       });
 
-      const downloadURL = await uploadTask.ref.getDownloadURL();
+      if (typeof onProgress === 'function') {
+        uploadTask.on('state_changed', (snapshot) => {
+          if (snapshot.totalBytes > 0) {
+            const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+            onProgress(progress);
+          }
+        });
+      }
+
+      await uploadTask;
+      const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+      if (typeof onProgress === 'function') onProgress(100);
       return downloadURL;
     } catch (err) {
       console.warn('Storage upload warning, fallback to Base64 data URL:', err);
+      if (typeof onProgress === 'function') onProgress(100);
       return base64DataUrl;
     }
   }

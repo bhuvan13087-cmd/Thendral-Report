@@ -59,11 +59,10 @@ class ReportTemplate {
   static renderFullReport(data) {
     if (!data) return '<div style="padding: 20px; color: #dc2626; font-weight: 700; text-align: center;">No report data loaded.</div>';
 
-    // 1. Process uploaded photos for Photo Evidence section (Exclude Report Info Cover Photo)
+    // 1. Process uploaded photos for Photo Evidence section (Exclude only Report Info Cover Photo)
     const uploadedPhotos = (data.photos || []).filter(p => {
-      if (!p || !p.url || p.url.trim().length === 0) return false;
+      if (!p || !p.url || typeof p.url !== 'string' || p.url.trim().length === 0) return false;
       if (p.slotId === 'slot_gearbox_cover' || p.sectionId === 'report-info') return false;
-      if (p.slotId === 'slot_gearbox_nameplate' && p.sectionId !== 'turbine-info' && p.sectionId !== 'turbine-specs') return false;
       return true;
     });
     const customSlots = data.customSlots || [];

@@ -1363,8 +1363,31 @@ class DashboardApp {
     ThendralReportStore.sanitizeReportData(this.currentData);
     this.currentReportId = record.id || record.reportId;
 
-    // Restore photo mapping
+    if (!this.currentData.photos) {
+      this.currentData.photos = record.photos || [];
+    }
+
+    // Restore photo mapping and ensure all photos have unique IDs
     PhotoManager.populateSamplePhotos(this.currentData);
+
+    // Merge any locally cached photo data from PhotoDB
+    try {
+      const localPhotos = await PhotoDB.getAllPhotos();
+      if (Array.isArray(localPhotos) && localPhotos.length > 0) {
+        const localMap = new Map(localPhotos.map(p => [p.id || p.photoId, p]));
+        (this.currentData.photos || []).forEach(p => {
+          const key = p.photoId || p.id;
+          if (key && localMap.has(key)) {
+            const cached = localMap.get(key);
+            if (cached && cached.url && (!p.url || p.url.trim().length === 0)) {
+              p.url = cached.url;
+            }
+          }
+        });
+      }
+    } catch (e) {
+      console.warn('Local PhotoDB merge notice:', e);
+    }
 
     localStorage.setItem('thendral_active_report_id', this.currentReportId);
     localStorage.setItem('thendral_report_draft', JSON.stringify(this.currentData));
@@ -2881,8 +2904,9 @@ class DashboardApp {
       return;
     }
 
-    const captionVal = document.getElementById('modal-photo-caption').value.trim();
-    const timestamp = CameraManager.getFormattedTimestamp();
+    this.uploadProgressMap = this.uploadProgressMap || new Map();
+    const captionVal = (document.getElementById('modal-photo-caption')?.value || '').trim();
+    const timestamp = CameraManager.getFormattedTimestamp ? CameraManager.getFormattedTimestamp() : new Date().toLocaleString('en-GB');
 
     if (this.activePhotoTarget) {
       // Row-Level Photo Target (Bearings, Gears, etc.)
@@ -2905,14 +2929,26 @@ class DashboardApp {
         const attached = PhotoManager.attachPhotoToItem(this.currentData, photoMeta, true);
         await PhotoDB.savePhoto({ id: attached.photoId, ...attached });
 
-        // Asynchronous Firebase Cloud Storage upload
+        // Asynchronous Firebase Cloud Storage upload with progress tracking
+        const pId = attached.photoId;
         if (window.firebaseService && window.firebaseService.currentUser && window.firebaseService.isOnline) {
-          window.firebaseService.uploadPhotoToStorage(this.currentReportId, attached.photoId, attached.url).then(url => {
+          this.uploadProgressMap.set(pId, 0);
+          window.firebaseService.uploadPhotoToStorage(this.currentReportId, pId, attached.url, (pct) => {
+            this.uploadProgressMap.set(pId, pct);
+          }).then(async (url) => {
+            this.uploadProgressMap.set(pId, 100);
             if (url && url.startsWith('http')) {
-              attached.url = url;
-              this.syncActiveReportToDB();
+              const livePhoto = (this.currentData.photos || []).find(p => p && (p.photoId === pId || p.id === pId));
+              if (livePhoto) {
+                livePhoto.url = url;
+                await PhotoDB.savePhoto({ id: livePhoto.photoId, ...livePhoto });
+                this.debouncedSaveAndRender(false);
+              }
             }
-          }).catch(e => console.warn('Background photo storage upload notice:', e));
+          }).catch(e => {
+            this.uploadProgressMap.set(pId, 100);
+            console.warn('Background photo storage upload notice:', e);
+          });
         }
       }
 
@@ -2929,11 +2965,11 @@ class DashboardApp {
     }
 
     // General Category / Custom Photo
-    const cat = document.getElementById('modal-photo-category-select').value;
+    const cat = document.getElementById('modal-photo-category-select')?.value || 'Custom';
     let slotId, label, caption;
 
     if (cat === 'Custom') {
-      const customTitle = document.getElementById('modal-photo-custom-title').value.trim() || 'Custom Inspection Point';
+      const customTitle = (document.getElementById('modal-photo-custom-title')?.value || '').trim() || 'Custom Inspection Point';
       slotId = 'custom_' + Date.now();
       label = customTitle;
       caption = captionVal || customTitle;
@@ -2948,7 +2984,7 @@ class DashboardApp {
         isCustom: true
       });
     } else {
-      slotId = document.getElementById('modal-photo-slot-select').value;
+      slotId = document.getElementById('modal-photo-slot-select')?.value || 'slot_general';
       const slot = PhotoManager.getSlotById(slotId, this.currentData.customSlots || []);
       label = slot ? slot.label : 'Inspection Point';
       caption = captionVal || (slot ? slot.defaultCaption : 'Inspection Photo');
@@ -2969,14 +3005,26 @@ class DashboardApp {
       const attached = PhotoManager.attachPhotoToItem(this.currentData, newRecord, true);
       await PhotoDB.savePhoto({ id: attached.photoId, ...attached });
 
-      // Asynchronous Firebase Cloud Storage upload
+      // Asynchronous Firebase Cloud Storage upload with progress tracking
+      const pId = attached.photoId;
       if (window.firebaseService && window.firebaseService.currentUser && window.firebaseService.isOnline) {
-        window.firebaseService.uploadPhotoToStorage(this.currentReportId, attached.photoId, attached.url).then(url => {
+        this.uploadProgressMap.set(pId, 0);
+        window.firebaseService.uploadPhotoToStorage(this.currentReportId, pId, attached.url, (pct) => {
+          this.uploadProgressMap.set(pId, pct);
+        }).then(async (url) => {
+          this.uploadProgressMap.set(pId, 100);
           if (url && url.startsWith('http')) {
-            attached.url = url;
-            this.syncActiveReportToDB();
+            const livePhoto = (this.currentData.photos || []).find(p => p && (p.photoId === pId || p.id === pId));
+            if (livePhoto) {
+              livePhoto.url = url;
+              await PhotoDB.savePhoto({ id: livePhoto.photoId, ...livePhoto });
+              this.debouncedSaveAndRender(false);
+            }
           }
-        }).catch(e => console.warn('Background photo storage upload notice:', e));
+        }).catch(e => {
+          this.uploadProgressMap.set(pId, 100);
+          console.warn('Background photo storage upload notice:', e);
+        });
       }
     }
 
@@ -2988,6 +3036,123 @@ class DashboardApp {
     this.debouncedSaveAndRender();
     this.updateSectionIndicators();
     this.showToast(`✓ Attached ${b64List.length} photo(s) to ${label}`);
+  }
+
+  // Batch Upload Multiple Inspection Photos
+  async handleBatchUpload(fileList) {
+    if (!fileList || fileList.length === 0) return;
+    const files = Array.from(fileList);
+    this.showToast(`⏳ Processing ${files.length} photo(s)...`);
+
+    this.uploadProgressMap = this.uploadProgressMap || new Map();
+    const timestamp = CameraManager.getFormattedTimestamp ? CameraManager.getFormattedTimestamp() : new Date().toLocaleString('en-GB');
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      try {
+        const base64 = await PhotoManager.processImageFile(file);
+        const cleanName = file.name ? file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ') : `Photo ${i + 1}`;
+        const photoMeta = {
+          sectionId: 'general',
+          category: 'Custom',
+          label: cleanName,
+          pointName: cleanName,
+          caption: cleanName,
+          url: base64,
+          timestamp: timestamp
+        };
+
+        const attached = PhotoManager.attachPhotoToItem(this.currentData, photoMeta, true);
+        await PhotoDB.savePhoto({ id: attached.photoId, ...attached });
+
+        const pId = attached.photoId;
+        if (window.firebaseService && window.firebaseService.currentUser && window.firebaseService.isOnline) {
+          this.uploadProgressMap.set(pId, 0);
+          window.firebaseService.uploadPhotoToStorage(this.currentReportId, pId, attached.url, (pct) => {
+            this.uploadProgressMap.set(pId, pct);
+          }).then(async (url) => {
+            this.uploadProgressMap.set(pId, 100);
+            if (url && url.startsWith('http')) {
+              const livePhoto = (this.currentData.photos || []).find(p => p && (p.photoId === pId || p.id === pId));
+              if (livePhoto) {
+                livePhoto.url = url;
+                await PhotoDB.savePhoto({ id: livePhoto.photoId, ...livePhoto });
+                this.debouncedSaveAndRender(false);
+              }
+            }
+          }).catch(e => {
+            this.uploadProgressMap.set(pId, 100);
+            console.warn('Batch photo storage upload notice:', e);
+          });
+        }
+      } catch (err) {
+        console.error('Error processing batch image file:', file.name, err);
+      }
+    }
+
+    const batchInput = document.getElementById('batch-photo-input');
+    if (batchInput) batchInput.value = '';
+
+    this.renderBearingsTable();
+    this.renderGearsTable();
+    this.renderAuxiliaryTables();
+    this.renderSectionPhotos();
+    this.renderPhotoGrid();
+    this.debouncedSaveAndRender();
+    this.updateSectionIndicators();
+    this.showToast(`✓ Added ${files.length} photo(s) to report`);
+  }
+
+  // Real-Time Camera Snap & Attach Handler
+  async onCameraCapture() {
+    const snap = CameraManager.capturePhoto();
+    if (!snap || !snap.url) return;
+
+    this.uploadProgressMap = this.uploadProgressMap || new Map();
+    const timestamp = snap.timestamp || (CameraManager.getFormattedTimestamp ? CameraManager.getFormattedTimestamp() : new Date().toLocaleString('en-GB'));
+    const photoMeta = {
+      sectionId: 'general',
+      inspectionItemId: snap.slotId || ('cam_' + Date.now()),
+      category: 'General',
+      label: 'Camera Capture',
+      pointName: 'Camera Capture',
+      caption: `Live Inspection Capture (${timestamp})`,
+      url: snap.url,
+      timestamp: timestamp
+    };
+
+    const attached = PhotoManager.attachPhotoToItem(this.currentData, photoMeta, true);
+    await PhotoDB.savePhoto({ id: attached.photoId, ...attached });
+
+    const pId = attached.photoId;
+    if (window.firebaseService && window.firebaseService.currentUser && window.firebaseService.isOnline) {
+      this.uploadProgressMap.set(pId, 0);
+      window.firebaseService.uploadPhotoToStorage(this.currentReportId, pId, attached.url, (pct) => {
+        this.uploadProgressMap.set(pId, pct);
+      }).then(async (url) => {
+        this.uploadProgressMap.set(pId, 100);
+        if (url && url.startsWith('http')) {
+          const livePhoto = (this.currentData.photos || []).find(p => p && (p.photoId === pId || p.id === pId));
+          if (livePhoto) {
+            livePhoto.url = url;
+            await PhotoDB.savePhoto({ id: livePhoto.photoId, ...livePhoto });
+            this.debouncedSaveAndRender(false);
+          }
+        }
+      }).catch(e => {
+        this.uploadProgressMap.set(pId, 100);
+        console.warn('Camera photo storage upload notice:', e);
+      });
+    }
+
+    this.renderBearingsTable();
+    this.renderGearsTable();
+    this.renderAuxiliaryTables();
+    this.renderSectionPhotos();
+    this.renderPhotoGrid();
+    this.debouncedSaveAndRender();
+    this.updateSectionIndicators();
+    this.showToast('✓ Photo captured and attached to report');
   }
 
   updatePhotoCaption(itemId, newCaption) {

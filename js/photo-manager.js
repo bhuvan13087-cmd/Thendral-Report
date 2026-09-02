@@ -268,7 +268,7 @@ const PhotoManager = {
     }
     
     const normalizedRecord = {
-      photoId: (existingIndex >= 0 && report.photos[existingIndex].photoId) ? report.photos[existingIndex].photoId : (photoMeta.photoId || 'p_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6)),
+      photoId: (existingIndex >= 0 && report.photos[existingIndex].photoId) ? report.photos[existingIndex].photoId : (photoMeta.photoId || 'p_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9)),
       reportId: (report.meta && (report.meta.reportId || report.meta.reportDocNo)) || 'TWS-REP',
       sectionId: photoMeta.sectionId || 'general',
       inspectionItemId: itemId || '',
