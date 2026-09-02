@@ -1698,6 +1698,27 @@ textarea.form-control {
   max-width: 100%;
 }
 
+.report-page-footer {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-size: 7.5pt !important;
+  color: #64748b !important;
+  border-top: 0.8px solid #cbd5e1 !important;
+  padding-top: 1.2mm !important;
+  margin-top: 1.2mm !important;
+  flex-shrink: 0 !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+
+.footer-page-num {
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  text-align: center !important;
+  margin: 0 auto !important;
+}
+
 /* Toast */
 .toast-notification {
   position: fixed;
