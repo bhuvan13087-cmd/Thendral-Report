@@ -286,11 +286,8 @@ class ReportTemplate {
   // STANDARD PAGE FOOTER WITH DYNAMIC TOTAL PAGES
   // ==========================================
   static renderFooter(pageNum, totalPages, data) {
-    const meta = (data && data.meta) || {};
-    const company = this.safeVal(meta.companyName, 'Thendral Wind Power Engineering Services Pvt Ltd');
     return `
       <div class="report-page-footer">
-        <span class="footer-company-tag">${company} — CONFIDENTIAL TECHNICAL REPORT</span>
         <span class="footer-page-num">Page ${pageNum} of ${totalPages}</span>
       </div>
     `;
