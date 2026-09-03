@@ -3972,56 +3972,62 @@ class DashboardApp {
   }
 
   renderSignaturesUI() {
-    this.initSignaturePads();
+    if (this._isRenderingSignatures) return;
+    this._isRenderingSignatures = true;
+    try {
+      this.initSignaturePads();
 
-    const sigs = (this.currentData && this.currentData.signatures) || {};
+      const sigs = (this.currentData && this.currentData.signatures) || {};
 
-    // Engineer Signature UI
-    const engImg = document.getElementById('sig-preview-img-engineer');
-    const engPh = document.getElementById('sig-placeholder-engineer');
-    const engCanvas = document.getElementById('sig-canvas-engineer');
+      // Engineer Signature UI
+      const engImg = document.getElementById('sig-preview-img-engineer');
+      const engPh = document.getElementById('sig-placeholder-engineer');
+      const engCanvas = document.getElementById('sig-canvas-engineer');
 
-    if (sigs.engineerSigUrl) {
-      if (engImg) {
-        engImg.src = sigs.engineerSigUrl;
-        engImg.style.display = 'block';
+      if (sigs.engineerSigUrl) {
+        if (engImg) {
+          engImg.src = sigs.engineerSigUrl;
+          engImg.style.display = 'block';
+        }
+        if (engPh) engPh.style.display = 'none';
+        if (engCanvas) engCanvas.style.display = 'none';
+      } else {
+        if (engImg) {
+          engImg.src = '';
+          engImg.style.display = 'none';
+        }
+        if (engPh) engPh.style.display = 'block';
+        if (engCanvas) {
+          engCanvas.style.display = 'block';
+          if (this.engSigPad) this.engSigPad.clear();
+        }
       }
-      if (engPh) engPh.style.display = 'none';
-      if (engCanvas) engCanvas.style.display = 'none';
-    } else {
-      if (engImg) {
-        engImg.src = '';
-        engImg.style.display = 'none';
-      }
-      if (engPh) engPh.style.display = 'block';
-      if (engCanvas) {
-        engCanvas.style.display = 'block';
-        if (this.engSigPad) this.engSigPad.clear();
-      }
-    }
 
-    // Reviewer Signature UI
-    const revImg = document.getElementById('sig-preview-img-reviewer');
-    const revPh = document.getElementById('sig-placeholder-reviewer');
-    const revCanvas = document.getElementById('sig-canvas-reviewer');
+      // Reviewer Signature UI
+      const revImg = document.getElementById('sig-preview-img-reviewer');
+      const revPh = document.getElementById('sig-placeholder-reviewer');
+      const revCanvas = document.getElementById('sig-canvas-reviewer');
 
-    if (sigs.reviewerSigUrl) {
-      if (revImg) {
-        revImg.src = sigs.reviewerSigUrl;
-        revImg.style.display = 'block';
+      if (sigs.reviewerSigUrl) {
+        if (revImg) {
+          revImg.src = sigs.reviewerSigUrl;
+          revImg.style.display = 'block';
+        }
+        if (revPh) revPh.style.display = 'none';
+        if (revCanvas) revCanvas.style.display = 'none';
+      } else {
+        if (revImg) {
+          revImg.src = '';
+          revImg.style.display = 'none';
+        }
+        if (revPh) revPh.style.display = 'block';
+        if (revCanvas) {
+          revCanvas.style.display = 'block';
+          if (this.revSigPad) this.revSigPad.clear();
+        }
       }
-      if (revPh) revPh.style.display = 'none';
-      if (revCanvas) revCanvas.style.display = 'none';
-    } else {
-      if (revImg) {
-        revImg.src = '';
-        revImg.style.display = 'none';
-      }
-      if (revPh) revPh.style.display = 'block';
-      if (revCanvas) {
-        revCanvas.style.display = 'block';
-        if (this.revSigPad) this.revSigPad.clear();
-      }
+    } finally {
+      this._isRenderingSignatures = false;
     }
   }
 
