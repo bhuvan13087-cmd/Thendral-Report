@@ -1077,6 +1077,13 @@
   }
 
   /* Hide entire workspace layout (sidebar, header, forms, bottom nav), landing screen, and non-report modals during print */
+  html body #workspace-layout,
+  html body .workspace-layout,
+  body.session-active #workspace-layout,
+  body.session-active .workspace-layout,
+  .session-active #workspace-layout,
+  .session-active .workspace-layout,
+  #workspace-layout,
   .workspace-layout,
   .workspace-bottom-nav,
   .login-landing-screen,
@@ -1088,6 +1095,10 @@
   .app-modal:not(#report-modal),
   #report-modal .app-modal-header {
     display: none !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
   }
 
   .preview-editable {
@@ -1103,6 +1114,7 @@
     box-shadow: none !important;
   }
 
+  html body #report-modal,
   #report-modal,
   #report-modal .pdf-modal-dialog,
   #report-modal .pdf-modal-body {
@@ -1115,6 +1127,7 @@
     background: #ffffff !important;
     overflow: visible !important;
     box-shadow: none !important;
+    border: none !important;
   }
 
   #report-preview-container {
@@ -1127,6 +1140,15 @@
   }
 
   .report-page {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    max-height: 297mm !important;
+    height: 297mm !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    overflow: hidden !important;
     box-shadow: none !important;
     margin: 0 !important;
     padding: 6mm 8mm 5mm 8mm !important;

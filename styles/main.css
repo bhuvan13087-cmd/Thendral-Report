@@ -2771,8 +2771,10 @@ textarea.form-control {
   display: none !important;
 }
 
-.session-active .workspace-layout {
-  display: flex !important;
+@media screen {
+  .session-active .workspace-layout {
+    display: flex !important;
+  }
 }
 
 .login-landing-screen {
