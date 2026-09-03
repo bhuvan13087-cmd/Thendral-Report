@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "outputDirectory": ".",
+  "framework": null,
   "cleanUrls": true,
   "routes": [
     {
