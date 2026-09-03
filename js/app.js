@@ -3767,7 +3767,47 @@ class DashboardApp {
       });
     });
 
-    // 3. Close dropdowns on outside click
+    // 3. Three-Dot dropdown toggle and actions
+    const moreBtn = document.getElementById('btn-header-more');
+    if (moreBtn && !moreBtn._bound) {
+      moreBtn._bound = true;
+      moreBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleOptionsDropdown();
+      });
+    }
+
+    const importBtn = document.getElementById('btn-menu-import-json');
+    if (importBtn && !importBtn._bound) {
+      importBtn._bound = true;
+      importBtn.addEventListener('click', () => this.triggerJSONImport());
+    }
+
+    const exportBtn = document.getElementById('btn-menu-export-json');
+    if (exportBtn && !exportBtn._bound) {
+      exportBtn._bound = true;
+      exportBtn.addEventListener('click', () => this.exportCurrentReportJSON());
+    }
+
+    const templateBtn = document.getElementById('btn-menu-load-template');
+    if (templateBtn && !templateBtn._bound) {
+      templateBtn._bound = true;
+      templateBtn.addEventListener('click', () => this.openTemplateModal());
+    }
+
+    const cleanBtn = document.getElementById('btn-menu-clean-report');
+    if (cleanBtn && !cleanBtn._bound) {
+      cleanBtn._bound = true;
+      cleanBtn.addEventListener('click', () => this.createNewCleanReport());
+    }
+
+    const printBtn = document.getElementById('btn-menu-print-dialog');
+    if (printBtn && !printBtn._bound) {
+      printBtn._bound = true;
+      printBtn.addEventListener('click', () => this.printReportViaBrowserDialog());
+    }
+
+    // 4. Close dropdowns on outside click
     document.addEventListener('click', (e) => {
       const dropdownWrap = document.getElementById('options-dropdown-wrap');
       if (dropdownWrap && !dropdownWrap.contains(e.target)) {
@@ -4152,12 +4192,19 @@ class DashboardApp {
   }
 
   async confirmLoadTemplate() {
-    const templateId = document.getElementById('modal-template-select').value;
+    const templateSelect = document.getElementById('modal-template-select');
+    if (!templateSelect) return;
+    const templateId = templateSelect.value;
     if (SAMPLE_REPORTS[templateId]) {
-      const allReps = await ReportDB.getAllReports();
-      const newDocNo = ReportIdManager.generateDocumentNumber(new Date(), allReps);
-      const newReportId = ReportIdManager.generateInternalReportId();
-      const todayFormatted = ReportIdManager.formatDateDDMMYYYY(new Date());
+      let newDocNo = null;
+      try {
+        const allReps = (typeof ReportDB !== 'undefined' && typeof ReportDB.getAllReports === 'function') ? await ReportDB.getAllReports() : [];
+        newDocNo = (typeof ReportIdManager !== 'undefined') ? ReportIdManager.generateDocumentNumber(new Date(), allReps) : `TWT-${Date.now().toString().slice(-5)}`;
+      } catch (e) {
+        newDocNo = `TWT-${Date.now().toString().slice(-5)}`;
+      }
+      const newReportId = (typeof ReportIdManager !== 'undefined') ? ReportIdManager.generateInternalReportId() : `rep_${Date.now()}`;
+      const todayFormatted = (typeof ReportIdManager !== 'undefined') ? ReportIdManager.formatDateDDMMYYYY(new Date()) : new Date().toLocaleDateString('en-GB');
 
       this.currentData = JSON.parse(JSON.stringify(SAMPLE_REPORTS[templateId]));
       if (!this.currentData.signatures) {
@@ -4171,7 +4218,9 @@ class DashboardApp {
       this.currentData.generalInfo.startDate = todayFormatted;
       this.currentData.generalInfo.endDate = todayFormatted;
 
-      PhotoManager.populateSamplePhotos(this.currentData);
+      if (typeof PhotoManager !== 'undefined' && typeof PhotoManager.populateSamplePhotos === 'function') {
+        PhotoManager.populateSamplePhotos(this.currentData);
+      }
 
       this.currentReportId = newReportId;
       await this.syncActiveReportToDB('In Progress');
@@ -4180,7 +4229,8 @@ class DashboardApp {
       this.closeTemplateModal();
       this.renderWorkspace();
       this.renderPreview();
-      this.showToast(`Loaded Template: ${SAMPLE_REPORTS[templateId].meta.templateName} (${newDocNo})`);
+      this.switchSection('step-report-asset');
+      this.showToast(`Loaded Template: ${SAMPLE_REPORTS[templateId].meta?.templateName || templateId} (${newDocNo})`);
     }
   }
 
@@ -4191,15 +4241,21 @@ class DashboardApp {
     if (confirm('Create a new clean service report? The current report will remain safely saved in your Reports History.')) {
       // 1. Fetch global sequential document number from Firestore atomic counter or fallback
       let newDocNo = null;
-      if (window.firebaseService && window.firebaseService.currentUser && window.firebaseService.isOnline) {
-        newDocNo = await window.firebaseService.getNextGlobalReportNumber();
-      }
+      try {
+        if (window.firebaseService && window.firebaseService.currentUser && window.firebaseService.isOnline) {
+          newDocNo = await window.firebaseService.getNextGlobalReportNumber();
+        }
+      } catch (e) {}
       if (!newDocNo) {
-        const allReps = await ReportDB.getAllReports();
-        newDocNo = ReportIdManager.generateDocumentNumber(new Date(), allReps);
+        try {
+          const allReps = (typeof ReportDB !== 'undefined' && typeof ReportDB.getAllReports === 'function') ? await ReportDB.getAllReports() : [];
+          newDocNo = (typeof ReportIdManager !== 'undefined') ? ReportIdManager.generateDocumentNumber(new Date(), allReps) : `TWT-${Date.now().toString().slice(-5)}`;
+        } catch (e) {
+          newDocNo = `TWT-${Date.now().toString().slice(-5)}`;
+        }
       }
-      const newReportId = ReportIdManager.generateInternalReportId();
-      const todayFormatted = ReportIdManager.formatDateDDMMYYYY(new Date());
+      const newReportId = (typeof ReportIdManager !== 'undefined') ? ReportIdManager.generateInternalReportId() : `rep_${Date.now()}`;
+      const todayFormatted = (typeof ReportIdManager !== 'undefined') ? ReportIdManager.formatDateDDMMYYYY(new Date()) : new Date().toLocaleDateString('en-GB');
 
       this.currentData = JSON.parse(JSON.stringify(SAMPLE_REPORTS.clean_blank_report || SAMPLE_REPORTS.borescope_inspection_v110));
       this.currentData.photos = [];
@@ -4229,7 +4285,7 @@ class DashboardApp {
       this.saveDraftToLocalStorage(this.currentData, this.currentUser?.uid);
       this.renderWorkspace();
       this.renderPreview();
-      this.switchSection('step-report-details');
+      this.switchSection('step-report-asset');
       this.showToast(`✓ Clean service report created: ${newDocNo}`);
     }
   }
@@ -4238,15 +4294,23 @@ class DashboardApp {
     if (files && files[0]) {
       try {
         const data = await PDFExporter.importJSON(files[0]);
+        if (!data || typeof data !== 'object') {
+          throw new Error('Invalid or corrupted JSON file format.');
+        }
         this.currentData = data;
-        PhotoManager.populateSamplePhotos(this.currentData);
-        this.currentReportId = `rep_${Date.now()}`;
-        await this.syncActiveReportToDB('In Progress');
+        if (typeof PhotoManager !== 'undefined' && typeof PhotoManager.populateSamplePhotos === 'function') {
+          PhotoManager.populateSamplePhotos(this.currentData);
+        }
+        this.currentReportId = (data.meta && data.meta.reportId) || `rep_${Date.now()}`;
+        await this.syncActiveReportToDB(data.meta?.status || 'In Progress');
+        this.saveDraftToLocalStorage(this.currentData, this.currentUser?.uid);
         this.renderWorkspace();
         this.renderPreview();
-        this.showToast('✓ Successfully imported report data.');
+        this.switchSection('step-report-asset');
+        this.showToast(`✓ Successfully imported report: ${data.meta?.reportDocNo || 'Custom'}`);
       } catch (err) {
-        alert(err.message);
+        console.error('Import error:', err);
+        alert(`Failed to import JSON: ${err.message}`);
       }
     }
   }

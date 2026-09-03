@@ -625,25 +625,25 @@
               </svg>
             </button>
             <div class="dropdown-menu" id="header-options-menu">
-              <button type="button" class="dropdown-item" onclick="app.triggerJSONImport()">
+              <button type="button" class="dropdown-item" id="btn-menu-import-json" onclick="app.triggerJSONImport()">
                 <span>📥</span>
                 <span>Import JSON Backup</span>
               </button>
-              <button type="button" class="dropdown-item" onclick="app.exportCurrentReportJSON()">
+              <button type="button" class="dropdown-item" id="btn-menu-export-json" onclick="app.exportCurrentReportJSON()">
                 <span>📤</span>
                 <span>Export JSON Backup</span>
               </button>
               <div class="dropdown-divider"></div>
-              <button type="button" class="dropdown-item" onclick="app.openTemplateModal()">
+              <button type="button" class="dropdown-item" id="btn-menu-load-template" onclick="app.openTemplateModal()">
                 <span>📑</span>
                 <span>Load Preset Template</span>
               </button>
-              <button type="button" class="dropdown-item" onclick="app.createNewCleanReport()">
+              <button type="button" class="dropdown-item" id="btn-menu-clean-report" onclick="app.createNewCleanReport()">
                 <span>✨</span>
                 <span>New Clean Report</span>
               </button>
               <div class="dropdown-divider"></div>
-              <button type="button" class="dropdown-item" onclick="app.printReportViaBrowserDialog()">
+              <button type="button" class="dropdown-item" id="btn-menu-print-dialog" onclick="app.printReportViaBrowserDialog()">
                 <span>🖨️</span>
                 <span>Print via Browser Dialog</span>
               </button>

@@ -1076,9 +1076,12 @@
     padding: 0 !important;
   }
 
-  /* Hide workspace UI and modal controls during print */
+  /* Hide landing screen, workspace forms, sidebars, headers, and non-report modals during print */
+  .login-landing-screen,
   .workspace-sidebar,
   .workspace-header,
+  .workspace-body,
+  .workspace-section,
   .workspace-main > .workspace-header,
   .header-actions-group,
   .app-modal-header,
@@ -1086,7 +1089,8 @@
   .btn,
   .camera-modal,
   .preview-photo-controls,
-  .preview-photo-btn {
+  .preview-photo-btn,
+  .app-modal:not(#report-modal) {
     display: none !important;
   }
 
@@ -1103,11 +1107,11 @@
     box-shadow: none !important;
   }
 
-  .app-modal,
-  .pdf-modal-dialog,
-  .pdf-modal-body,
   .workspace-layout,
-  .workspace-main {
+  .workspace-main,
+  #report-modal,
+  #report-modal .pdf-modal-dialog,
+  #report-modal .pdf-modal-body {
     display: block !important;
     position: static !important;
     width: 100% !important;
@@ -1124,7 +1128,7 @@
     gap: 0 !important;
     transform: none !important;
     padding: 0 !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     width: 210mm !important;
   }
 
