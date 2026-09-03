@@ -163,14 +163,16 @@ class SignaturePad {
     }
   }
 
-  clear() {
+  clear(suppressCallback = false) {
     if (!this.ctx || !this.canvas) return;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.hasSignature = false;
-    if (typeof this.onSaveCallback === 'function') {
-      this.onSaveCallback('');
+    if (!suppressCallback) {
+      if (typeof this.onSaveCallback === 'function') {
+        this.onSaveCallback('');
+      }
+      if (window.app) window.app.debouncedSaveAndRender();
     }
-    if (window.app) window.app.debouncedSaveAndRender();
   }
 
   getImageDataUrl() {

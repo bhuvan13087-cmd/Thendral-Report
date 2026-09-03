@@ -2230,7 +2230,7 @@ class DashboardApp {
     const tbody = document.getElementById('bearing-inspection-tbody');
     if (!tbody) return;
     const bearings = this.currentData.bearingAssessment || [];
-    const optionsList = this.constructor.BEARING_FINDINGS_OPTIONS || App.BEARING_FINDINGS_OPTIONS;
+    const optionsList = this.constructor.BEARING_FINDINGS_OPTIONS || DashboardApp.BEARING_FINDINGS_OPTIONS;
 
     tbody.innerHTML = bearings.map((b, i) => {
       if (!b.id) b.id = `b_${i}_${(b.location || '').replace(/\s+/g, '_').toLowerCase()}`;
@@ -2395,7 +2395,7 @@ class DashboardApp {
     const tbody = document.getElementById('gear-inspection-tbody');
     if (!tbody) return;
     const gears = this.currentData.gearAssessment || [];
-    const optionsList = this.constructor.GEAR_FINDINGS_OPTIONS || App.GEAR_FINDINGS_OPTIONS;
+    const optionsList = this.constructor.GEAR_FINDINGS_OPTIONS || DashboardApp.GEAR_FINDINGS_OPTIONS;
 
     tbody.innerHTML = gears.map((g, i) => {
       if (!g.id) g.id = `g_${i}_${(g.location || '').replace(/\s+/g, '_').toLowerCase()}`;
@@ -2631,7 +2631,7 @@ class DashboardApp {
     const tbody = document.getElementById('custom-inspection-tbody');
     if (!tbody) return;
     const inspections = this.currentData.customInspections || [];
-    const damageOptions = this.constructor.BEARING_FINDINGS_OPTIONS || App.BEARING_FINDINGS_OPTIONS;
+    const damageOptions = this.constructor.BEARING_FINDINGS_OPTIONS || DashboardApp.BEARING_FINDINGS_OPTIONS;
 
     // Also populate quick inspection damage select if needed
     const quickDamageSelect = document.getElementById('quick-insp-damage');
@@ -2664,7 +2664,7 @@ class DashboardApp {
           <td>
             <select class="form-control font-semibold" onchange="app.updateCustomInspectionField('${item.id}', 'conditionOf', this.value)">
               <option value="" ${!item.conditionOf ? 'selected' : ''}>Select Subsystem</option>
-              ${App.SUBSYSTEM_TYPES.map(sub => `
+              ${DashboardApp.SUBSYSTEM_TYPES.map(sub => `
                 <option value="${sub}" ${item.conditionOf === sub ? 'selected' : ''}>${sub}</option>
               `).join('')}
             </select>
@@ -2675,7 +2675,7 @@ class DashboardApp {
           <td>
             <select class="form-control font-bold ${sevClass}" onchange="app.updateCustomInspectionField('${item.id}', 'severity', this.value)">
               <option value="" ${!item.severity ? 'selected' : ''}>Select Severity</option>
-              ${App.SEVERITY_LEVELS.map(sev => `
+              ${DashboardApp.SEVERITY_LEVELS.map(sev => `
                 <option value="${sev}" ${item.severity === sev ? 'selected' : ''}>${sev}</option>
               `).join('')}
             </select>
@@ -2692,7 +2692,7 @@ class DashboardApp {
           <td>
             <select class="form-control decision-select ${decClass}" onchange="app.updateCustomInspectionField('${item.id}', 'decision', this.value)">
               <option value="" ${!decision ? 'selected' : ''}>Select Decision</option>
-              ${App.DECISION_OPTIONS.map(d => `
+              ${DashboardApp.DECISION_OPTIONS.map(d => `
                 <option value="${d.value}" ${decision === d.value ? 'selected' : ''}>${d.label}</option>
               `).join('')}
             </select>
@@ -4012,56 +4012,62 @@ class DashboardApp {
   }
 
   renderSignaturesUI() {
-    this.initSignaturePads();
+    if (this._isRenderingSignatures) return;
+    this._isRenderingSignatures = true;
+    try {
+      this.initSignaturePads();
 
-    const sigs = (this.currentData && this.currentData.signatures) || {};
+      const sigs = (this.currentData && this.currentData.signatures) || {};
 
-    // Engineer Signature UI
-    const engImg = document.getElementById('sig-preview-img-engineer');
-    const engPh = document.getElementById('sig-placeholder-engineer');
-    const engCanvas = document.getElementById('sig-canvas-engineer');
+      // Engineer Signature UI
+      const engImg = document.getElementById('sig-preview-img-engineer');
+      const engPh = document.getElementById('sig-placeholder-engineer');
+      const engCanvas = document.getElementById('sig-canvas-engineer');
 
-    if (sigs.engineerSigUrl) {
-      if (engImg) {
-        engImg.src = sigs.engineerSigUrl;
-        engImg.style.display = 'block';
+      if (sigs.engineerSigUrl) {
+        if (engImg) {
+          engImg.src = sigs.engineerSigUrl;
+          engImg.style.display = 'block';
+        }
+        if (engPh) engPh.style.display = 'none';
+        if (engCanvas) engCanvas.style.display = 'none';
+      } else {
+        if (engImg) {
+          engImg.src = '';
+          engImg.style.display = 'none';
+        }
+        if (engPh) engPh.style.display = 'block';
+        if (engCanvas) {
+          engCanvas.style.display = 'block';
+          if (this.engSigPad) this.engSigPad.clear(true);
+        }
       }
-      if (engPh) engPh.style.display = 'none';
-      if (engCanvas) engCanvas.style.display = 'none';
-    } else {
-      if (engImg) {
-        engImg.src = '';
-        engImg.style.display = 'none';
-      }
-      if (engPh) engPh.style.display = 'block';
-      if (engCanvas) {
-        engCanvas.style.display = 'block';
-        if (this.engSigPad) this.engSigPad.clear();
-      }
-    }
 
-    // Reviewer Signature UI
-    const revImg = document.getElementById('sig-preview-img-reviewer');
-    const revPh = document.getElementById('sig-placeholder-reviewer');
-    const revCanvas = document.getElementById('sig-canvas-reviewer');
+      // Reviewer Signature UI
+      const revImg = document.getElementById('sig-preview-img-reviewer');
+      const revPh = document.getElementById('sig-placeholder-reviewer');
+      const revCanvas = document.getElementById('sig-canvas-reviewer');
 
-    if (sigs.reviewerSigUrl) {
-      if (revImg) {
-        revImg.src = sigs.reviewerSigUrl;
-        revImg.style.display = 'block';
+      if (sigs.reviewerSigUrl) {
+        if (revImg) {
+          revImg.src = sigs.reviewerSigUrl;
+          revImg.style.display = 'block';
+        }
+        if (revPh) revPh.style.display = 'none';
+        if (revCanvas) revCanvas.style.display = 'none';
+      } else {
+        if (revImg) {
+          revImg.src = '';
+          revImg.style.display = 'none';
+        }
+        if (revPh) revPh.style.display = 'block';
+        if (revCanvas) {
+          revCanvas.style.display = 'block';
+          if (this.revSigPad) this.revSigPad.clear(true);
+        }
       }
-      if (revPh) revPh.style.display = 'none';
-      if (revCanvas) revCanvas.style.display = 'none';
-    } else {
-      if (revImg) {
-        revImg.src = '';
-        revImg.style.display = 'none';
-      }
-      if (revPh) revPh.style.display = 'block';
-      if (revCanvas) {
-        revCanvas.style.display = 'block';
-        if (this.revSigPad) this.revSigPad.clear();
-      }
+    } finally {
+      this._isRenderingSignatures = false;
     }
   }
 
@@ -5242,13 +5248,15 @@ class DashboardApp {
 
 // Global App Instance
 let app;
+const App = DashboardApp;
 if (typeof window !== 'undefined') {
   window.DashboardApp = DashboardApp;
+  window.App = DashboardApp;
   window.addEventListener('DOMContentLoaded', () => {
     app = new DashboardApp();
     window.app = app;
   });
 }
 if (typeof module !== 'undefined') {
-  module.exports = { DashboardApp };
+  module.exports = { DashboardApp, App: DashboardApp };
 }
