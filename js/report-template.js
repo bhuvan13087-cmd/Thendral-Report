@@ -995,56 +995,81 @@ class ReportTemplate {
   // DYNAMIC PHOTO GALLERY LAYOUT ENGINE
   // ==========================================
 
-  // Splits total uploaded photos into strict maximum 6 photos per A4 page
+  // Dynamic calculation of available A4 printable space and safe rows per page
+  static getPhotoLayoutConfig(isFirstPhotoPage = false) {
+    const A4_HEIGHT_MM = 297;
+    const PAGE_PADDING_V_MM = 11; // 6mm top + 5mm bottom padding
+    const PAGE_BORDER_MM = 0.6;
+    const HEADER_HEIGHT_MM = 18;  // Corporate header + doc ID bar
+    const FOOTER_HEIGHT_MM = 6;   // Page footer
+    const BODY_MARGINS_MM = 3.5;  // 2mm top + 1.5mm bottom body margins
+    const BANNER_HEIGHT_MM = isFirstPhotoPage ? 13 : 8.5; // Photo section banner
+    
+    // Exact available printable height for the photo gallery container
+    const availableHeightMm = A4_HEIGHT_MM - PAGE_PADDING_V_MM - PAGE_BORDER_MM - HEADER_HEIGHT_MM - FOOTER_HEIGHT_MM - BODY_MARGINS_MM - BANNER_HEIGHT_MM;
+    
+    const photosPerRow = 2; // Strict target: 2 photos per row
+    const rowGapMm = 2.5;
+    
+    // Optimal row height: photo box (66mm) + caption box (~9.5mm) + card border/padding (1mm) = 76.5mm
+    const optimalRowHeightMm = 76.5;
+    
+    // Calculate maximum complete safe rows that fit the A4 page without clipping or overflow
+    const maxSafeRows = Math.max(1, Math.floor((availableHeightMm + rowGapMm) / (optimalRowHeightMm + rowGapMm)));
+    const maxPhotosPerPage = maxSafeRows * photosPerRow; // 3 rows * 2 photos = 6 photos per A4 page
+    
+    return {
+      photosPerRow,
+      maxSafeRows,
+      maxPhotosPerPage,
+      rowHeightMm: optimalRowHeightMm,
+      imageHeightMm: 66,
+      availableHeightMm
+    };
+  }
+
+  // Splits total uploaded photos into dynamic A4 pages based on safe row capacity (strict 2 photos/row, target 3 rows/page)
   static calculatePhotoPagesLayout(photos) {
-    if (!photos || photos.length === 0) return [];
+    if (!photos || !Array.isArray(photos) || photos.length === 0) return [];
     const pages = [];
-    const maxPerPage = 6;
-    for (let i = 0; i < photos.length; i += maxPerPage) {
-      pages.push(photos.slice(i, i + maxPerPage));
+    let currentIndex = 0;
+    
+    while (currentIndex < photos.length) {
+      const isFirstPage = (pages.length === 0);
+      const config = this.getPhotoLayoutConfig(isFirstPage);
+      const pagePhotos = photos.slice(currentIndex, currentIndex + config.maxPhotosPerPage);
+      if (pagePhotos.length > 0) {
+        pages.push(pagePhotos);
+      }
+      currentIndex += config.maxPhotosPerPage;
     }
     return pages;
   }
 
-  // Arranges photos on a single page into dynamic rows & columns (1 to 6 photos max)
-  static arrangePageRows(pagePhotos, isFirstPhotoPage = false) {
-    const n = Math.min(pagePhotos.length, 6);
+  // Arranges photos on a single page into rows of maximum 2 photos
+  static arrangePageRows(pagePhotos) {
+    if (!pagePhotos || !Array.isArray(pagePhotos) || pagePhotos.length === 0) return [];
     const rows = [];
-    const availHeightMm = isFirstPhotoPage ? 212 : 222;
-
-    if (n === 1) {
-      rows.push({ photos: [pagePhotos[0]], cols: 1, heightMm: 150 });
-    } else if (n === 2) {
-      rows.push({ photos: [pagePhotos[0], pagePhotos[1]], cols: 2, heightMm: 120 });
-    } else if (n === 3) {
-      rows.push({ photos: [pagePhotos[0], pagePhotos[1], pagePhotos[2]], cols: 3, heightMm: 108 });
-    } else if (n === 4) {
-      const h = Math.floor((availHeightMm - 4) / 2);
-      rows.push({ photos: [pagePhotos[0], pagePhotos[1]], cols: 2, heightMm: Math.min(h, 104) });
-      rows.push({ photos: [pagePhotos[2], pagePhotos[3]], cols: 2, heightMm: Math.min(h, 104) });
-    } else if (n === 5) {
-      const h = Math.floor((availHeightMm - 4) / 2);
-      rows.push({ photos: [pagePhotos[0], pagePhotos[1], pagePhotos[2]], cols: 3, heightMm: Math.min(h, 102) });
-      rows.push({ photos: [pagePhotos[3], pagePhotos[4]], cols: 2, heightMm: Math.min(h, 102) });
-    } else if (n === 6) {
-      const h = Math.floor((availHeightMm - 4) / 2);
-      rows.push({ photos: [pagePhotos[0], pagePhotos[1], pagePhotos[2]], cols: 3, heightMm: Math.min(h, 102) });
-      rows.push({ photos: [pagePhotos[3], pagePhotos[4], pagePhotos[5]], cols: 3, heightMm: Math.min(h, 102) });
+    const photosPerRow = 2;
+    for (let i = 0; i < pagePhotos.length; i += photosPerRow) {
+      rows.push({
+        photos: pagePhotos.slice(i, i + photosPerRow),
+        cols: photosPerRow
+      });
     }
-
     return rows;
   }
 
   // Renders dynamic photo pages with unbreakable cards
   static renderDynamicPhotoGalleries(data, totalPages = 6, photoPages = [], totalPhotosCount = 0, startPageNum = 6) {
     let html = '';
-    const customSlots = data.customSlots || [];
+    const customSlots = (data && data.customSlots) || [];
 
     photoPages.forEach((pagePhotos, pageIdx) => {
       const pageNum = startPageNum + pageIdx;
       const isFirst = pageIdx === 0;
       const subTitle = isFirst ? 'PHOTO EVIDENCE' : `PHOTO EVIDENCE (PART ${pageIdx + 1})`;
-      const rows = this.arrangePageRows(pagePhotos, isFirst);
+      const rows = this.arrangePageRows(pagePhotos);
 
       html += `
         <div class="report-page" id="report-page-${pageNum}">
@@ -1077,8 +1102,8 @@ class ReportTemplate {
 
               <div class="photo-gallery-page-body">
                 ${rows.map(r => `
-                  <div class="photo-gallery-row cols-${r.cols}">
-                    ${r.photos.map(p => this.renderDynamicPhotoCard(p, customSlots, r.cols)).join('')}
+                  <div class="photo-gallery-row">
+                    ${r.photos.map(p => this.renderDynamicPhotoCard(p, customSlots)).join('')}
                   </div>
                 `).join('')}
               </div>
@@ -1094,7 +1119,7 @@ class ReportTemplate {
   }
 
   // Single Unbreakable Photo Evidence Card
-  static renderDynamicPhotoCard(photo, customSlots = [], cols = 2) {
+  static renderDynamicPhotoCard(photo, customSlots = []) {
     if (!photo || !photo.url) return '';
     const photoId = photo.photoId || photo.id || photo.slotId || '';
 
@@ -1123,8 +1148,8 @@ class ReportTemplate {
           </div>
         </div>
         <div class="photo-evidence-caption-box">
-          <div class="photo-point-name" style="${cols === 1 ? 'font-size: 8.5pt;' : cols === 3 ? 'font-size: 6.8pt;' : 'font-size: 7.2pt;'}">${pointName}</div>
-          <div class="photo-sub-caption preview-editable" data-edit-photo-id="${photoId}" data-edit-type="caption" style="${cols === 1 ? 'font-size: 7.2pt;' : cols === 3 ? 'font-size: 5.8pt;' : 'font-size: 6.2pt;'}" title="Click in Edit Preview mode to edit caption">${displayCaption}</div>
+          <div class="photo-point-name">${pointName}</div>
+          <div class="photo-sub-caption preview-editable" data-edit-photo-id="${photoId}" data-edit-type="caption" title="Click in Edit Preview mode to edit caption">${displayCaption}</div>
         </div>
       </div>
     `;

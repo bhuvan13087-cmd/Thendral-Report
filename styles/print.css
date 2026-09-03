@@ -927,16 +927,17 @@
   gap: 2.5mm;
   width: 100%;
   box-sizing: border-box;
-  /* align-items: flex-start so each card wraps its own content height (aspect-ratio-aware) */
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .photo-evidence-card {
-  flex: 1;
+  flex: 0 0 calc((100% - 2.5mm) / 2);
+  width: calc((100% - 2.5mm) / 2);
+  max-width: calc((100% - 2.5mm) / 2);
   border: 1.2px solid #0f172a;
   background: #ffffff;
-  /* block layout: image content drives height, not the flex container */
-  display: block;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border-radius: 2px;
   min-width: 0;
@@ -945,54 +946,32 @@
   page-break-inside: avoid;
 }
 
-/* Single-photo row: center the card and cap its width so it
-   never expands to fill the full page width */
-.photo-gallery-row.cols-1 {
-  justify-content: center;
-}
-
-.photo-gallery-row.cols-1 .photo-evidence-card {
-  flex: none;
-  width: 62%;
-  max-width: 110mm;
-}
-
-/* Single-photo image: slightly more room but still capped */
-.photo-gallery-row.cols-1 .photo-evidence-img {
-  max-height: 90mm;
-}
-
-/* Two-column images */
-.photo-gallery-row.cols-2 .photo-evidence-img {
-  max-height: 90mm;
-}
-
-/* Three-column images: slightly shorter cap so three fit side-by-side cleanly */
-.photo-gallery-row.cols-3 .photo-evidence-img {
-  max-height: 82mm;
-}
-
 .photo-evidence-img-box {
-  /* Clean white background, no bars — image drives the height */
   width: 100%;
-  background: #ffffff;
+  height: 66mm;
+  max-height: 66mm;
+  background: #f8fafc;
   position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .photo-evidence-img {
   /*
-   * Consistent professional photo sizing:
-   * - width: 100% fills the card column
-   * - height: auto preserves the original aspect ratio (portrait stays portrait, landscape stays landscape)
-   * - max-height caps the image so a single photo never fills the whole page
-   * - No object-fit distortion, no letterboxing
+   * Aspect Ratio Preservation & High-Clarity Sizing:
+   * - max-width & max-height: 100% ensures image never overflows the box
+   * - object-fit: contain ensures zero squashing, zero stretching, and zero distortion
+   * - Original aspect ratio is 100% preserved
    */
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
   height: auto;
-  max-height: 90mm;
-  object-fit: scale-down;
+  object-fit: contain;
   display: block;
 }
 
@@ -1009,6 +988,7 @@
   border-radius: 2px;
   letter-spacing: 0.2px;
   pointer-events: none;
+  z-index: 2;
 }
 
 .photo-category-pill {
@@ -1024,6 +1004,7 @@
   text-transform: uppercase;
   letter-spacing: 0.2px;
   pointer-events: none;
+  z-index: 2;
 }
 
 .photo-evidence-caption-box {
@@ -1036,7 +1017,8 @@
   justify-content: center;
   text-align: center;
   box-sizing: border-box;
-  flex-shrink: 0;
+  flex: 1;
+  min-height: 9.5mm;
 }
 
 .photo-point-name {
