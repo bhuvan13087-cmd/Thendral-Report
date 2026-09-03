@@ -1152,37 +1152,9 @@
 }
 
 /* ==========================================================================
-   13. PDF EXPORT MODE & HTML2PDF CONTAINER RULES
+   13. PDF EXPORT MODE (Triggered during html2pdf.js generation)
    Enforces exact 1:1 page-for-page pagination without gap spillover
    ========================================================================== */
-.html2pdf__overlay {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.html2pdf__container {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  box-sizing: border-box !important;
-}
-
-.html2pdf__container .report-page {
-  margin: 0 !important;
-  box-shadow: none !important;
-  border: 1.2px solid #0f172a !important;
-  page-break-after: avoid !important;
-  page-break-inside: avoid !important;
-  break-after: avoid !important;
-  break-inside: avoid !important;
-  border-radius: 0 !important;
-  width: 210mm !important;
-  height: 297mm !important;
-  min-height: 297mm !important;
-  max-height: 297mm !important;
-  box-sizing: border-box !important;
-}
-
 #report-preview-container.pdf-export-mode,
 #temp-pdf-export-container.pdf-export-mode {
   gap: 0 !important;

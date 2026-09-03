@@ -86,9 +86,9 @@ const PDFExporter = {
           return;
         }
 
-        // High-Resolution 1:1 Page-by-Page Rendering
-        // scale: 2 produces sharp 300 DPI equivalent raster
-        // Element-relative coordinate tracking captures full 210mm x 297mm bounds
+        // Standard A4 dimensions: 210mm x 297mm
+        // At standard 96 DPI: 794px width x 1123px height
+        // Scale 2 provides sharp 300 DPI high-resolution output
         const opt = {
           margin: 0,
           filename: filename,
@@ -100,7 +100,13 @@ const PDFExporter = {
             letterRendering: true, 
             scrollY: 0, 
             scrollX: 0, 
-            logging: false
+            x: 0,
+            y: 0,
+            logging: false,
+            width: 794,
+            height: 1123,
+            windowWidth: 794,
+            windowHeight: 1123
           },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
         };
