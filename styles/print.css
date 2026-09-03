@@ -1076,21 +1076,17 @@
     padding: 0 !important;
   }
 
-  /* Hide landing screen, workspace forms, sidebars, headers, and non-report modals during print */
+  /* Hide entire workspace layout (sidebar, header, forms, bottom nav), landing screen, and non-report modals during print */
+  .workspace-layout,
+  .workspace-bottom-nav,
   .login-landing-screen,
-  .workspace-sidebar,
-  .workspace-header,
-  .workspace-body,
-  .workspace-section,
-  .workspace-main > .workspace-header,
-  .header-actions-group,
-  .app-modal-header,
   .toast-notification,
   .btn,
   .camera-modal,
   .preview-photo-controls,
   .preview-photo-btn,
-  .app-modal:not(#report-modal) {
+  .app-modal:not(#report-modal),
+  #report-modal .app-modal-header {
     display: none !important;
   }
 
@@ -1107,8 +1103,6 @@
     box-shadow: none !important;
   }
 
-  .workspace-layout,
-  .workspace-main,
   #report-modal,
   #report-modal .pdf-modal-dialog,
   #report-modal .pdf-modal-body {

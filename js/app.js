@@ -3767,51 +3767,13 @@ class DashboardApp {
       });
     });
 
-    // 3. Three-Dot dropdown toggle and actions
-    const moreBtn = document.getElementById('btn-header-more');
-    if (moreBtn && !moreBtn._bound) {
-      moreBtn._bound = true;
-      moreBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.toggleOptionsDropdown();
-      });
-    }
-
-    const importBtn = document.getElementById('btn-menu-import-json');
-    if (importBtn && !importBtn._bound) {
-      importBtn._bound = true;
-      importBtn.addEventListener('click', () => this.triggerJSONImport());
-    }
-
-    const exportBtn = document.getElementById('btn-menu-export-json');
-    if (exportBtn && !exportBtn._bound) {
-      exportBtn._bound = true;
-      exportBtn.addEventListener('click', () => this.exportCurrentReportJSON());
-    }
-
-    const templateBtn = document.getElementById('btn-menu-load-template');
-    if (templateBtn && !templateBtn._bound) {
-      templateBtn._bound = true;
-      templateBtn.addEventListener('click', () => this.openTemplateModal());
-    }
-
-    const cleanBtn = document.getElementById('btn-menu-clean-report');
-    if (cleanBtn && !cleanBtn._bound) {
-      cleanBtn._bound = true;
-      cleanBtn.addEventListener('click', () => this.createNewCleanReport());
-    }
-
-    const printBtn = document.getElementById('btn-menu-print-dialog');
-    if (printBtn && !printBtn._bound) {
-      printBtn._bound = true;
-      printBtn.addEventListener('click', () => this.printReportViaBrowserDialog());
-    }
-
-    // 4. Close dropdowns on outside click
+    // 3. Close dropdowns on outside click
     document.addEventListener('click', (e) => {
       const dropdownWrap = document.getElementById('options-dropdown-wrap');
-      if (dropdownWrap && !dropdownWrap.contains(e.target)) {
-        dropdownWrap.classList.remove('active');
+      if (dropdownWrap && dropdownWrap.classList.contains('active')) {
+        if (!dropdownWrap.contains(e.target)) {
+          dropdownWrap.classList.remove('active');
+        }
       }
     });
 
@@ -4147,7 +4109,10 @@ class DashboardApp {
   // ==========================================
   // OPTIONS DROPDOWN & PRESET TEMPLATES
   // ==========================================
-  toggleOptionsDropdown() {
+  toggleOptionsDropdown(e) {
+    if (e && typeof e.stopPropagation === 'function') {
+      e.stopPropagation();
+    }
     const wrap = document.getElementById('options-dropdown-wrap');
     if (wrap) wrap.classList.toggle('active');
   }
@@ -4175,13 +4140,13 @@ class DashboardApp {
   }
 
   printReportViaBrowserDialog() {
-    if (document.getElementById('options-dropdown-wrap')) {
-      document.getElementById('options-dropdown-wrap').classList.remove('active');
+    const wrap = document.getElementById('options-dropdown-wrap');
+    if (wrap) {
+      wrap.classList.remove('active');
     }
     this.syncFormToCurrentData();
     this.renderPreview();
-    this.showToast('🖨️ Opening native browser print dialog...');
-    PDFExporter.printToPDF();
+    window.print();
   }
 
   openTemplateModal() {
