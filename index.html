@@ -615,6 +615,41 @@
             <span>Preview PDF</span>
           </button>
 
+          <!-- 3. Canonical Three-Dot Action Menu -->
+          <div class="dropdown-wrap" id="options-dropdown-wrap">
+            <button type="button" class="btn btn-outline btn-icon-only" id="btn-header-more" onclick="app.toggleOptionsDropdown()" title="More Report Options" aria-label="More Report Options">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="5" r="2"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+                <circle cx="12" cy="19" r="2"></circle>
+              </svg>
+            </button>
+            <div class="dropdown-menu" id="header-options-menu">
+              <button type="button" class="dropdown-item" onclick="app.triggerJSONImport()">
+                <span>📥</span>
+                <span>Import JSON Backup</span>
+              </button>
+              <button type="button" class="dropdown-item" onclick="app.exportCurrentReportJSON()">
+                <span>📤</span>
+                <span>Export JSON Backup</span>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button type="button" class="dropdown-item" onclick="app.openTemplateModal()">
+                <span>📑</span>
+                <span>Load Preset Template</span>
+              </button>
+              <button type="button" class="dropdown-item" onclick="app.createNewCleanReport()">
+                <span>✨</span>
+                <span>New Clean Report</span>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button type="button" class="dropdown-item" onclick="app.printReportViaBrowserDialog()">
+                <span>🖨️</span>
+                <span>Print via Browser Dialog</span>
+              </button>
+            </div>
+          </div>
+
           <div class="header-divider-v"></div>
 
           <!-- 3. Authenticated User Profile & Role Badge -->

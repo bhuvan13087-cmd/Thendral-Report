@@ -4106,6 +4106,38 @@ class DashboardApp {
     if (wrap) wrap.classList.toggle('active');
   }
 
+  triggerJSONImport() {
+    if (document.getElementById('options-dropdown-wrap')) {
+      document.getElementById('options-dropdown-wrap').classList.remove('active');
+    }
+    const fileInput = document.getElementById('json-file-input');
+    if (fileInput) {
+      fileInput.value = '';
+      fileInput.click();
+    }
+  }
+
+  exportCurrentReportJSON() {
+    if (document.getElementById('options-dropdown-wrap')) {
+      document.getElementById('options-dropdown-wrap').classList.remove('active');
+    }
+    this.syncFormToCurrentData();
+    const meta = (this.currentData && this.currentData.meta) || {};
+    const filename = `${meta.reportDocNo || 'TWT-10826'}_${meta.edition || 'A'}_backup.json`;
+    PDFExporter.exportJSON(this.currentData, filename);
+    this.showToast('✓ Report backup exported as JSON.');
+  }
+
+  printReportViaBrowserDialog() {
+    if (document.getElementById('options-dropdown-wrap')) {
+      document.getElementById('options-dropdown-wrap').classList.remove('active');
+    }
+    this.syncFormToCurrentData();
+    this.renderPreview();
+    this.showToast('🖨️ Opening native browser print dialog...');
+    PDFExporter.printToPDF();
+  }
+
   openTemplateModal() {
     if (document.getElementById('options-dropdown-wrap')) {
       document.getElementById('options-dropdown-wrap').classList.remove('active');

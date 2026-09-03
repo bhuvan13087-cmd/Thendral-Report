@@ -744,12 +744,12 @@ table, th, td {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
-  min-width: 200px;
+  min-width: 220px;
   padding: 6px;
   display: none;
   flex-direction: column;
   gap: 2px;
-  z-index: 200;
+  z-index: 500;
 }
 
 .dropdown-wrap.active .dropdown-menu {
@@ -759,9 +759,10 @@ table, th, td {
 .dropdown-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 8px 12px;
   font-size: 0.82rem;
+  font-weight: 500;
   color: var(--text-body);
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -769,6 +770,13 @@ table, th, td {
   background: transparent;
   width: 100%;
   text-align: left;
+  transition: all 0.12s ease;
+  white-space: nowrap;
+}
+
+.dropdown-menu .dropdown-item span {
+  display: inline-flex !important;
+  align-items: center;
 }
 
 .dropdown-item:hover {
