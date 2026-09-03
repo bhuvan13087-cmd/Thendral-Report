@@ -2103,9 +2103,12 @@ class DashboardApp {
       tempContainer = document.createElement('div');
       tempContainer.id = 'temp-pdf-export-container';
       tempContainer.style.position = 'fixed';
-      tempContainer.style.left = '-9999px';
-      tempContainer.style.top = '-9999px';
+      tempContainer.style.left = '0';
+      tempContainer.style.top = '0';
       tempContainer.style.width = '210mm';
+      tempContainer.style.opacity = '0';
+      tempContainer.style.pointerEvents = 'none';
+      tempContainer.style.zIndex = '-9999';
       document.body.appendChild(tempContainer);
     }
 

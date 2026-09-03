@@ -1155,7 +1155,8 @@
    13. PDF EXPORT MODE (Triggered during html2pdf.js generation)
    Enforces exact 1:1 page-for-page pagination without gap spillover
    ========================================================================== */
-#report-preview-container.pdf-export-mode {
+#report-preview-container.pdf-export-mode,
+#temp-pdf-export-container.pdf-export-mode {
   gap: 0 !important;
   padding: 0 !important;
   margin: 0 !important;
@@ -1163,7 +1164,8 @@
   width: 210mm !important;
 }
 
-#report-preview-container.pdf-export-mode .report-page {
+#report-preview-container.pdf-export-mode .report-page,
+#temp-pdf-export-container.pdf-export-mode .report-page {
   margin: 0 !important;
   box-shadow: none !important;
   border: 1.2px solid #0f172a !important;
@@ -1174,7 +1176,8 @@
   border-radius: 0 !important;
 }
 
-#report-preview-container.pdf-export-mode .report-page:last-child {
+#report-preview-container.pdf-export-mode .report-page:last-child,
+#temp-pdf-export-container.pdf-export-mode .report-page:last-child {
   page-break-after: auto !important;
   break-after: auto !important;
 }

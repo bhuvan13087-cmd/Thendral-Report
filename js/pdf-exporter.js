@@ -76,48 +76,80 @@ const PDFExporter = {
       reportElement.classList.add('pdf-export-mode');
 
       if (window.html2pdf) {
-        const pages = Array.from(reportElement.querySelectorAll('.report-page'));
-        
+        let pages = Array.from(reportElement.querySelectorAll('.report-page'));
+        if (pages.length === 0 && reportElement.classList.contains('report-page')) {
+          pages = [reportElement];
+        }
+
+        if (pages.length === 0) {
+          window.print();
+          return;
+        }
+
+        // Standard A4 dimensions: 210mm x 297mm
+        // At standard 96 DPI: 794px width x 1123px height
+        // Scale 2 provides sharp 300 DPI high-resolution output
         const opt = {
           margin: 0,
           filename: filename,
-          image: { type: 'jpeg', quality: 0.95 },
+          image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { 
             scale: 2, 
             useCORS: true, 
+            allowTaint: true,
             letterRendering: true, 
             scrollY: 0, 
             scrollX: 0, 
+            x: 0,
+            y: 0,
             logging: false,
+            width: 794,
+            height: 1123,
             windowWidth: 794,
-            width: 794
+            windowHeight: 1123
           },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
         };
 
-        if (pages.length <= 1) {
-          // Single-page PDF generation
-          await window.html2pdf().set(opt).from(reportElement).save();
-        } else {
-          // Multi-page enterprise pipeline: render page-by-page to avoid browser GPU canvas memory/dimension overflow
-          const firstWorker = window.html2pdf().set(opt);
-          await firstWorker.from(pages[0]).toPdf();
-          const pdf = await firstWorker.get('pdf');
-
-          for (let i = 1; i < pages.length; i++) {
-            if (btn) {
-              btn.innerHTML = `<span class="spinner-icon"></span> Rendering Page ${i + 1} of ${pages.length}...`;
-            }
-            const pageWorker = window.html2pdf().set(opt);
-            await pageWorker.from(pages[i]).toCanvas();
-            const canvas = await pageWorker.get('canvas');
-            const imgData = canvas.toDataURL('image/jpeg', 0.95);
-            pdf.addPage();
-            pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+        // Render each page sequentially into high-resolution canvas
+        const canvases = [];
+        for (let i = 0; i < pages.length; i++) {
+          if (btn) {
+            btn.innerHTML = `<span class="spinner-icon"></span> Processing Page ${i + 1} of ${pages.length}...`;
           }
-
-          pdf.save(filename);
+          const pageWorker = window.html2pdf().set(opt);
+          await pageWorker.from(pages[i]).toCanvas();
+          const canvas = await pageWorker.get('canvas');
+          canvases.push(canvas);
         }
+
+        if (btn) {
+          btn.innerHTML = `<span class="spinner-icon"></span> Assembling Full PDF...`;
+        }
+
+        // Initialize jsPDF document instance
+        const docWorker = window.html2pdf().set(opt);
+        await docWorker.from(pages[0]).toPdf();
+        const pdf = await docWorker.get('pdf');
+
+        // Reset to page 1 and remove any extra overflow split pages created during worker init
+        while (pdf.internal.getNumberOfPages() > 1) {
+          pdf.deletePage(pdf.internal.getNumberOfPages());
+        }
+
+        // Render Page 1 image at exact (0, 0, 210, 297) mm
+        pdf.setPage(1);
+        const imgData0 = canvases[0].toDataURL('image/jpeg', 0.98);
+        pdf.addImage(imgData0, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+
+        // Append all subsequent pages with exact dimensions
+        for (let i = 1; i < canvases.length; i++) {
+          const imgData = canvases[i].toDataURL('image/jpeg', 0.98);
+          pdf.addPage('a4', 'portrait');
+          pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+        }
+
+        pdf.save(filename);
       } else {
         // Fallback to high-res system print dialog
         window.print();
