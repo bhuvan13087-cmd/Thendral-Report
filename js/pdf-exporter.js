@@ -38,8 +38,12 @@ const PDFExporter = {
   async downloadPDF(elementId = 'report-preview-container', filename = null) {
     // Force final state synchronization before generating PDF
     if (typeof window !== 'undefined' && window.app && typeof window.app.syncFormToCurrentData === 'function') {
-      window.app.syncFormToCurrentData();
-      window.app.renderPreview();
+      try {
+        window.app.syncFormToCurrentData();
+        window.app.renderPreview();
+      } catch (e) {
+        console.warn('Form sync notice before PDF export:', e);
+      }
     }
 
     if (!filename) {
@@ -70,11 +74,14 @@ const PDFExporter = {
       await this.waitForImages(reportElement);
 
       reportElement.classList.add('pdf-export-mode');
+
       if (window.html2pdf) {
+        const pages = Array.from(reportElement.querySelectorAll('.report-page'));
+        
         const opt = {
           margin: 0,
           filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
+          image: { type: 'jpeg', quality: 0.95 },
           html2canvas: { 
             scale: 2, 
             useCORS: true, 
@@ -85,12 +92,32 @@ const PDFExporter = {
             windowWidth: 794,
             width: 794
           },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-          pagebreak: { 
-            mode: ['css', 'legacy']
-          }
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
         };
-        await window.html2pdf().set(opt).from(reportElement).save();
+
+        if (pages.length <= 1) {
+          // Single-page PDF generation
+          await window.html2pdf().set(opt).from(reportElement).save();
+        } else {
+          // Multi-page enterprise pipeline: render page-by-page to avoid browser GPU canvas memory/dimension overflow
+          const firstWorker = window.html2pdf().set(opt);
+          await firstWorker.from(pages[0]).toPdf();
+          const pdf = await firstWorker.get('pdf');
+
+          for (let i = 1; i < pages.length; i++) {
+            if (btn) {
+              btn.innerHTML = `<span class="spinner-icon"></span> Rendering Page ${i + 1} of ${pages.length}...`;
+            }
+            const pageWorker = window.html2pdf().set(opt);
+            await pageWorker.from(pages[i]).toCanvas();
+            const canvas = await pageWorker.get('canvas');
+            const imgData = canvas.toDataURL('image/jpeg', 0.95);
+            pdf.addPage();
+            pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+          }
+
+          pdf.save(filename);
+        }
       } else {
         // Fallback to high-res system print dialog
         window.print();

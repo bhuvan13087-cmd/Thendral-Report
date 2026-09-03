@@ -838,6 +838,43 @@ class DashboardApp {
     PhotoManager.populateSamplePhotos(this.currentData);
   }
 
+  saveDraftToLocalStorage(data, uid = null) {
+    if (!data) return;
+    try {
+      const json = JSON.stringify(data);
+      if (uid) {
+        localStorage.setItem(`thendral_active_report_id_${uid}`, this.currentReportId);
+        localStorage.setItem(`thendral_report_draft_${uid}`, json);
+      }
+      localStorage.setItem('thendral_active_report_id', this.currentReportId);
+      localStorage.setItem('thendral_report_draft', json);
+    } catch (quotaErr) {
+      // If full data with many heavy base64 images exceeds localStorage 5MB domain quota,
+      // store a lightweight draft in localStorage (stripping heavy base64 payloads).
+      // The full high-res report and unlimited photos are ALWAYS safely persisted in IndexedDB (ReportDB & PhotoDB).
+      try {
+        const lightweight = JSON.parse(JSON.stringify(data));
+        if (Array.isArray(lightweight.photos)) {
+          lightweight.photos = lightweight.photos.map(p => {
+            if (p && p.url && typeof p.url === 'string' && p.url.startsWith('data:image')) {
+              return { ...p, url: '' };
+            }
+            return p;
+          });
+        }
+        const lightweightJson = JSON.stringify(lightweight);
+        if (uid) {
+          localStorage.setItem(`thendral_active_report_id_${uid}`, this.currentReportId);
+          localStorage.setItem(`thendral_report_draft_${uid}`, lightweightJson);
+        }
+        localStorage.setItem('thendral_active_report_id', this.currentReportId);
+        localStorage.setItem('thendral_report_draft', lightweightJson);
+      } catch (innerErr) {
+        console.warn('localStorage draft cache quota full; primary persistence active in IndexedDB.');
+      }
+    }
+  }
+
   async syncActiveReportToDB(status = null) {
     if (!this.currentData) return;
     const meta = this.currentData.meta || {};
@@ -866,10 +903,7 @@ class DashboardApp {
 
     // 1. Always save to local IndexedDB fallback and user-scoped storage
     await ReportDB.saveReport(record);
-    if (uid) {
-      localStorage.setItem(`thendral_active_report_id_${uid}`, this.currentReportId);
-      localStorage.setItem(`thendral_report_draft_${uid}`, JSON.stringify(this.currentData));
-    }
+    this.saveDraftToLocalStorage(this.currentData, uid);
 
     // 2. Cloud Firestore Sync (if user is authenticated)
     if (window.firebaseService && window.firebaseService.currentUser && window.firebaseService.isOnline) {
@@ -1688,8 +1722,7 @@ class DashboardApp {
       console.warn('Local PhotoDB merge notice:', e);
     }
 
-    localStorage.setItem('thendral_active_report_id', this.currentReportId);
-    localStorage.setItem('thendral_report_draft', JSON.stringify(this.currentData));
+    this.saveDraftToLocalStorage(this.currentData, this.currentUser?.uid);
 
     this.renderWorkspace();
     this.renderPreview();
@@ -3908,7 +3941,7 @@ class DashboardApp {
     // write alongside the caller's own awaited write (double-write race condition),
     // and produces a false 'Saved' indicator before the cloud write completes.
     clearTimeout(this.saveTimeout);
-    localStorage.setItem('thendral_report_draft', JSON.stringify(this.currentData));
+    this.saveDraftToLocalStorage(this.currentData, this.currentUser?.uid);
   }
 
   // ==========================================
@@ -4041,7 +4074,7 @@ class DashboardApp {
     // fire AFTER syncActiveReportToDB() fully completes (including the Firestore write),
     // preventing a false 'Saved' indicator in the header autosave pill.
     this.saveTimeout = setTimeout(async () => {
-      localStorage.setItem('thendral_report_draft', JSON.stringify(this.currentData));
+      this.saveDraftToLocalStorage(this.currentData, this.currentUser?.uid);
       await this.syncActiveReportToDB();
       this.setSaveStatus('saved');
       this.renderPreview();
@@ -4108,7 +4141,7 @@ class DashboardApp {
       this.currentReportId = newReportId;
       await this.syncActiveReportToDB('In Progress');
 
-      localStorage.setItem('thendral_report_draft', JSON.stringify(this.currentData));
+      this.saveDraftToLocalStorage(this.currentData, this.currentUser?.uid);
       this.closeTemplateModal();
       this.renderWorkspace();
       this.renderPreview();
@@ -4158,7 +4191,7 @@ class DashboardApp {
       this.currentReportId = newReportId;
       await this.syncActiveReportToDB('Draft');
 
-      localStorage.setItem('thendral_report_draft', JSON.stringify(this.currentData));
+      this.saveDraftToLocalStorage(this.currentData, this.currentUser?.uid);
       this.renderWorkspace();
       this.renderPreview();
       this.switchSection('step-report-details');

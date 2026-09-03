@@ -139,8 +139,8 @@ const PhotoManager = {
     { id: 'slot_2704_hss_pinion', category: 'Gear Teeth', tag: '2704_HSS', label: 'High Speed Shaft Pinion Teeth', defaultCaption: 'High Speed Shaft Output Pinion Teeth' }
   ],
 
-  // Client-side high efficiency image compression
-  processImageFile(file, maxWidth = 1200, maxHeight = 900, quality = 0.86) {
+  // Client-side high efficiency image compression with strict aspect ratio preservation
+  processImageFile(file, maxWidth = 1200, maxHeight = 900, quality = 0.82) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -150,17 +150,10 @@ const PhotoManager = {
           let width = img.width;
           let height = img.height;
 
-          if (width > height) {
-            if (width > maxWidth) {
-              height = Math.round((height * maxWidth) / width);
-              width = maxWidth;
-            }
-          } else {
-            if (height > maxHeight) {
-              width = Math.round((width * maxHeight) / height);
-              height = maxHeight;
-            }
-          }
+          // True aspect-ratio-preserving proportional scale factor
+          const scale = Math.min(1, maxWidth / width, maxHeight / height);
+          width = Math.max(1, Math.round(width * scale));
+          height = Math.max(1, Math.round(height * scale));
 
           canvas.width = width;
           canvas.height = height;

@@ -579,10 +579,13 @@ class FirebaseService {
     // Clean sanitized reportData to prevent Firestore rejecting undefined values
     const sanitizedData = JSON.parse(JSON.stringify(rawData));
 
-    // Upload any remaining Base64 photos to Firebase Cloud Storage to keep Firestore document under 1MB limit
+    // Upload any remaining Base64 photos to Firebase Cloud Storage in parallel batches to keep Firestore document under 1MB limit
     if (this.storage && this.currentUser && Array.isArray(sanitizedData.photos)) {
-      for (const photo of sanitizedData.photos) {
-        if (photo && photo.url && typeof photo.url === 'string' && photo.url.startsWith('data:image')) {
+      const base64Photos = sanitizedData.photos.filter(p => p && p.url && typeof p.url === 'string' && p.url.startsWith('data:image'));
+      const CHUNK_SIZE = 4;
+      for (let i = 0; i < base64Photos.length; i += CHUNK_SIZE) {
+        const chunk = base64Photos.slice(i, i + CHUNK_SIZE);
+        await Promise.all(chunk.map(async (photo) => {
           try {
             const photoId = photo.photoId || photo.id || `p_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
             photo.photoId = photoId;
@@ -602,7 +605,7 @@ class FirebaseService {
           } catch (uploadErr) {
             console.warn('Background Cloud Storage upload during report save notice:', uploadErr);
           }
-        }
+        }));
       }
     }
 
@@ -706,6 +709,25 @@ class FirebaseService {
       isShared: true,
       visibility: 'team'
     };
+
+    // Safety check: ensure Firestore 1MB document limit is never exceeded
+    try {
+      const docJson = JSON.stringify(reportDoc);
+      if (docJson.length > 850000) {
+        // Strip heavy base64 strings from Firestore document (they are stored in Cloud Storage or local IndexedDB)
+        if (Array.isArray(reportDoc.photos)) {
+          reportDoc.photos = reportDoc.photos.map(p => {
+            if (p && p.url && p.url.startsWith('data:image')) {
+              return { ...p, url: '' };
+            }
+            return p;
+          });
+        }
+        if (reportDoc.reportData && Array.isArray(reportDoc.reportData.photos)) {
+          reportDoc.reportData.photos = reportDoc.photos;
+        }
+      }
+    } catch (e) {}
 
     await docRef.set(reportDoc, { merge: true });
     return reportId;
