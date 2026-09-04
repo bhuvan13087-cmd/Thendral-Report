@@ -317,7 +317,10 @@ class ReportTemplate {
     const preparedBy = this.safeVal(meta.preparedBy, this.safeVal(gen.inspector, this.safeVal(gen.inspectorName, this.safeVal(gen.serviceEngineer, '—'))));
     const releasedBy = this.safeVal(meta.releasedBy, this.safeVal(gen.reviewer, this.safeVal(gen.reportReviewer, '—')));
 
-    const companyName = this.safeVal(meta.companyName, 'Thendral Wind Power Engineering Services Pvt Ltd');
+    const rawCompanyName = this.safeVal(meta.companyName, 'Thendral Wind Tech LLP');
+    const companyName = (!rawCompanyName || rawCompanyName === '—' || rawCompanyName === 'Thendral Wind Power Engineering Services Pvt Ltd' || rawCompanyName.includes('Thendral Wind Power Engineering Services'))
+      ? 'Thendral Wind Tech LLP'
+      : rawCompanyName;
     const rawCompanyAddress = this.safeVal(meta.companyAddress, 'Thendral Wind Tech LLP Dindigul');
     const companyAddress = (!rawCompanyAddress || rawCompanyAddress === '—' || String(rawCompanyAddress).includes('Kittampalayam') || String(rawCompanyAddress).includes('Coimbatore') || String(rawCompanyAddress).includes('High Tech Engineering') || String(rawCompanyAddress).includes('641659') || String(rawCompanyAddress).includes('Annur'))
       ? 'Thendral Wind Tech LLP Dindigul'
@@ -396,8 +399,6 @@ class ReportTemplate {
               <div class="company-legal-name">${companyName}</div>
               <div class="company-address-line">${this.ed(companyAddress, 'meta.companyAddress')}</div>
               <div class="company-contact-line">
-                <span>Tel: ${companyPhone}</span>
-                <span class="contact-sep">•</span>
                 <span>Email: ${companyEmail}</span>
                 <span class="contact-sep">•</span>
                 <span>Web: ${companyWeb}</span>
@@ -933,7 +934,7 @@ class ReportTemplate {
         <div class="section-title">8. Legal Terms & Quality Standards Compliance</div>
         
         <div class="legal-text" style="font-size: 7.2pt; line-height: 1.35; color: #475569; margin-bottom: 2mm;">
-          This diagnostic service report contains engineering evaluations derived from high-resolution optical video-borescope visual audits and non-destructive examination performed on-site at the specified wind farm facility. All findings and observations accurately reflect internal mechanical health and surface condition at the precise date and time of intervention. Thendral Wind Power Engineering Services Pvt Ltd disclaims liability for progressive degradation or mechanical failure occurring after inspection due to operating conditions outside OEM certified vibration, torque, or oil temperature envelope parameters.
+          This diagnostic service report contains engineering evaluations derived from high-resolution optical video-borescope visual audits and non-destructive examination performed on-site at the specified wind farm facility. All findings and observations accurately reflect internal mechanical health and surface condition at the precise date and time of intervention. Thendral Wind Tech LLP disclaims liability for progressive degradation or mechanical failure occurring after inspection due to operating conditions outside OEM certified vibration, torque, or oil temperature envelope parameters.
         </div>
 
         <div class="subsection-title" style="margin-bottom: 1.5mm;">8.1 Regulatory Standards, Diagnostic Tooling & HSE Protocol</div>
