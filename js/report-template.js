@@ -136,7 +136,7 @@ class ReportTemplate {
       id: 'executive-summary',
       title: 'EXECUTIVE SUMMARY & RECOMMENDATIONS',
       html: this.getBlockExecutiveSummary(data),
-      heightMm: 60
+      heightMm: 45
     });
 
     // Block 8: Appendix - List of Definitions
@@ -288,7 +288,7 @@ class ReportTemplate {
   static renderFooter(pageNum, totalPages, data) {
     return `
       <div class="report-page-footer">
-        <span class="footer-page-num">Page ${pageNum} of ${totalPages}</span>
+        <span class="footer-page-num">Page ${pageNum}</span>
       </div>
     `;
   }
@@ -304,8 +304,21 @@ class ReportTemplate {
     const docNo = this.safeVal(meta.reportDocNo, '—');
     const edition = this.safeVal(meta.edition, 'A');
     const reportDate = this.safeVal(meta.reportDate, '—');
-    const gearboxPart = this.safeVal(meta.gearboxPartNo, '—');
-    const gearboxSerial = this.safeVal(meta.customerSerialNo, '—');
+    const rawGearboxPart = this.safeVal(meta.gearboxPartNo, '').trim();
+    const rawGearboxSerial = this.safeVal(meta.customerSerialNo, '').trim();
+    const hasPart = rawGearboxPart && rawGearboxPart !== '—';
+    const hasSerial = rawGearboxSerial && rawGearboxSerial !== '—';
+
+    let gearboxIdHtml = '';
+    if (hasPart && hasSerial) {
+      gearboxIdHtml = `${this.ed(rawGearboxPart, 'meta.gearboxPartNo')} • ${this.ed(rawGearboxSerial, 'meta.customerSerialNo')}`;
+    } else if (hasPart) {
+      gearboxIdHtml = this.ed(rawGearboxPart, 'meta.gearboxPartNo');
+    } else if (hasSerial) {
+      gearboxIdHtml = this.ed(rawGearboxSerial, 'meta.customerSerialNo');
+    } else {
+      gearboxIdHtml = this.ed('—', 'meta.gearboxPartNo');
+    }
     const customer = this.safeVal(gen.customerName, '—');
     const site = this.safeVal(gen.siteName, '—');
     const turbineNo = this.safeVal(turb.turbineNumber, '—');
@@ -355,7 +368,7 @@ class ReportTemplate {
 
             <div class="cover-title-section">
               <h1 class="cover-doc-title">SERVICE REPORT</h1>
-              <div class="cover-gearbox-id">${this.ed(gearboxPart, 'meta.gearboxPartNo')} • ${this.ed(gearboxSerial, 'meta.customerSerialNo')}</div>
+              <div class="cover-gearbox-id">${gearboxIdHtml}</div>
             </div>
 
             <!-- Executive Metadata Table -->
@@ -809,7 +822,7 @@ class ReportTemplate {
 
     return `
       <div class="report-section">
-        <div class="section-title">6. Executive Summary & Authorization</div>
+        <div class="section-title">6. Executive Summary</div>
         
         <div class="summary-box">
           <div class="summary-text">${this.ed(summaryText, 'summary.summaryText', 'textarea')}</div>
@@ -839,28 +852,6 @@ class ReportTemplate {
             <strong class="text-primary font-mono">${this.ed(furtherJobs, 'summary.furtherJobs')}</strong>
           </div>
         ` : ''}
-
-        <!-- Digital Signatures Authorization Grid -->
-        <div class="signatures-grid" style="margin-top: 3.5mm;">
-          <div class="sig-column">
-            <div class="sig-image-holder">
-              ${sigs.engineerSigUrl ? `<img src="${sigs.engineerSigUrl}" class="rendered-sig-img" alt="Lead Engineer Signature">` : ''}
-            </div>
-            <div class="sig-line"></div>
-            <div class="sig-name">${this.ed(preparedBy, 'meta.preparedBy')}</div>
-            <div class="sig-role">Lead Field Engineer / Inspector</div>
-            ${reportDate ? `<div class="sig-date">Date: ${reportDate}</div>` : ''}
-          </div>
-          <div class="sig-column">
-            <div class="sig-image-holder">
-              ${sigs.reviewerSigUrl ? `<img src="${sigs.reviewerSigUrl}" class="rendered-sig-img" alt="Reviewer Signature">` : ''}
-            </div>
-            <div class="sig-line"></div>
-            <div class="sig-name">${this.ed(releasedBy, 'meta.releasedBy')}</div>
-            <div class="sig-role">Technical Reviewer / Approver</div>
-            ${reportDate ? `<div class="sig-date">Date: ${reportDate}</div>` : ''}
-          </div>
-        </div>
       </div>
     `;
   }
@@ -1096,7 +1087,7 @@ class ReportTemplate {
                     <div class="section-title" style="font-size: 8pt;">Photo Evidence (Continued — Part ${pageIdx + 1})</div>
                   </div>
                   <div class="photo-count-badge" style="font-size: 6.2pt; padding: 1mm 2.5mm;">
-                    Page ${pageNum} of ${totalPages}
+                    Page ${pageNum}
                   </div>
                 </div>
               `}
@@ -1141,8 +1132,6 @@ class ReportTemplate {
       <div class="photo-evidence-card" data-photo-card-id="${photoId}">
         <div class="photo-evidence-img-box">
           <img src="${photo.url}" class="photo-evidence-img" alt="${pointName}">
-          ${photo.timestamp ? `<div class="photo-timestamp-pill">${photo.timestamp}</div>` : ''}
-          ${group && group.title ? `<div class="photo-category-pill">${group.title.replace(/^\d+\.\s*/, '')}</div>` : ''}
           <div class="preview-photo-controls">
             <button type="button" class="preview-photo-btn btn-replace" onclick="event.stopPropagation(); app.previewReplacePhoto('${photoId}')" title="Replace Photo">↻ Replace</button>
             <button type="button" class="preview-photo-btn btn-remove" onclick="event.stopPropagation(); app.previewDeletePhoto('${photoId}')" title="Remove Photo">✕ Remove</button>

@@ -734,10 +734,7 @@
 }
 
 .signatures-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10mm;
-  padding: 0 8mm;
+  display: none !important;
 }
 
 .sig-column {
@@ -975,36 +972,9 @@
   display: block;
 }
 
-.photo-timestamp-pill {
-  position: absolute;
-  bottom: 2px;
-  left: 3px;
-  background: rgba(15, 23, 42, 0.88);
-  color: #facc15;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
-  font-size: 5.6pt;
-  font-weight: 700;
-  padding: 1px 3.5px;
-  border-radius: 2px;
-  letter-spacing: 0.2px;
-  pointer-events: none;
-  z-index: 2;
-}
-
+.photo-timestamp-pill,
 .photo-category-pill {
-  position: absolute;
-  top: 2px;
-  right: 3px;
-  background: rgba(14, 116, 144, 0.92);
-  color: #ffffff;
-  font-size: 5.2pt;
-  font-weight: 700;
-  padding: 1px 3.5px;
-  border-radius: 2px;
-  text-transform: uppercase;
-  letter-spacing: 0.2px;
-  pointer-events: none;
-  z-index: 2;
+  display: none !important;
 }
 
 .photo-evidence-caption-box {

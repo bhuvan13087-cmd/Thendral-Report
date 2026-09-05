@@ -693,6 +693,29 @@ class DashboardApp {
           loadedId = cloudDraft.id || cloudDraft.reportId;
           loadedData = cloudDraft.reportData || cloudDraft.data;
           console.log(`[DRAFT_02_FIRESTORE_RESTORE] Restored draft ${loadedId} from Firestore for UID: ${uid}`);
+
+          // Re-hydrate any stripped photo URLs from local ReportDB if available
+          try {
+            const localRecord = await ReportDB.getReportById(loadedId);
+            const localData = localRecord?.reportData || localRecord?.data;
+            if (localData && Array.isArray(localData.photos) && Array.isArray(loadedData.photos)) {
+              const localUrlMap = new Map();
+              localData.photos.forEach(p => {
+                if (p && p.url && p.url.trim().length > 0) {
+                  if (p.id) localUrlMap.set(p.id, p.url);
+                  if (p.photoId) localUrlMap.set(p.photoId, p.url);
+                  if (p.slotId) localUrlMap.set(p.slotId, p.url);
+                  if (p.inspectionItemId) localUrlMap.set(p.inspectionItemId, p.url);
+                }
+              });
+              loadedData.photos.forEach(p => {
+                if (!p.url || p.url.trim().length === 0) {
+                  const restored = localUrlMap.get(p.photoId) || localUrlMap.get(p.id) || localUrlMap.get(p.slotId) || localUrlMap.get(p.inspectionItemId);
+                  if (restored) p.url = restored;
+                }
+              });
+            }
+          } catch (localRehydrateErr) {}
         }
       } catch (cloudErr) {
         console.warn('[DRAFT_FIRESTORE_QUERY_WARN] Firestore draft query fallback:', cloudErr);
@@ -774,13 +797,23 @@ class DashboardApp {
     try {
       const localPhotos = await PhotoDB.getAllPhotos();
       if (Array.isArray(localPhotos) && localPhotos.length > 0) {
-        const localMap = new Map(localPhotos.map(p => [p.id || p.photoId, p]));
+        const localMap = new Map();
+        localPhotos.forEach(p => {
+          if (p && p.url && p.url.trim().length > 0) {
+            if (p.id) localMap.set(p.id, p);
+            if (p.photoId) localMap.set(p.photoId, p);
+            if (p.slotId) localMap.set(p.slotId, p);
+            if (p.inspectionItemId) localMap.set(p.inspectionItemId, p);
+          }
+        });
         (this.currentData.photos || []).forEach(p => {
-          const key = p.photoId || p.id;
-          if (key && localMap.has(key)) {
-            const cached = localMap.get(key);
-            if (cached && cached.url && (!p.url || p.url.trim().length === 0)) {
+          if (!p.url || p.url.trim().length === 0) {
+            const cached = localMap.get(p.photoId) || localMap.get(p.id) || localMap.get(p.slotId) || localMap.get(p.inspectionItemId);
+            if (cached && cached.url) {
               p.url = cached.url;
+              if (cached.caption && (!p.caption || p.caption.trim() === '')) {
+                p.caption = cached.caption;
+              }
             }
           }
         });
@@ -788,6 +821,20 @@ class DashboardApp {
     } catch (e) {
       console.warn('Local PhotoDB merge notice:', e);
     }
+
+    // Ensure all loaded photos with URLs are safely persisted into PhotoDB
+    try {
+      if (Array.isArray(this.currentData.photos)) {
+        for (const p of this.currentData.photos) {
+          if (p && p.url && p.url.trim().length > 0) {
+            const pId = p.photoId || p.id || p.slotId || p.inspectionItemId;
+            if (pId) {
+              await PhotoDB.savePhoto({ id: pId, photoId: pId, ...p });
+            }
+          }
+        }
+      }
+    } catch (e) {}
 
     // 6. Cache user-scoped keys
     try {
@@ -805,14 +852,42 @@ class DashboardApp {
   }
 
   async loadInitialData() {
-    // Basic startup fallback before authentication resolves
-    const saved = localStorage.getItem('thendral_report_draft');
-    if (saved && !this.currentData) {
+    // 1. Try to restore active report from local IndexedDB (ReportDB)
+    const activeId = localStorage.getItem('thendral_active_report_id');
+    if (activeId && !this.currentData) {
       try {
-        this.currentData = JSON.parse(saved);
+        const dbRecord = await ReportDB.getReportById(activeId);
+        if (dbRecord && (dbRecord.reportData || dbRecord.data)) {
+          this.currentData = dbRecord.reportData || dbRecord.data;
+          this.currentReportId = dbRecord.id || dbRecord.reportId || activeId;
+        }
+      } catch (e) {
+        console.warn('ReportDB active report restore notice in loadInitialData:', e);
+      }
+    }
+
+    // 2. Fallback to localStorage draft
+    if (!this.currentData) {
+      const saved = localStorage.getItem('thendral_report_draft');
+      if (saved) {
+        try {
+          this.currentData = JSON.parse(saved);
+        } catch (e) {}
+      }
+    }
+
+    // 3. Fallback to most recent report in ReportDB
+    if (!this.currentData) {
+      try {
+        const allReps = await ReportDB.getAllReports();
+        if (allReps && allReps.length > 0 && (allReps[0].reportData || allReps[0].data)) {
+          this.currentData = allReps[0].reportData || allReps[0].data;
+          this.currentReportId = allReps[0].id || allReps[0].reportId;
+        }
       } catch (e) {}
     }
 
+    // 4. Fallback to clean blank report
     if (!this.currentData) {
       this.currentData = JSON.parse(JSON.stringify(SAMPLE_REPORTS.clean_blank_report));
     }
@@ -836,6 +911,49 @@ class DashboardApp {
 
     ThendralReportStore.sanitizeReportData(this.currentData);
     PhotoManager.populateSamplePhotos(this.currentData);
+
+    // 5. Hydrate photos from PhotoDB to ensure photos are never blanked out on startup
+    try {
+      const localPhotos = await PhotoDB.getAllPhotos();
+      if (Array.isArray(localPhotos) && localPhotos.length > 0 && this.currentData) {
+        const localMap = new Map();
+        localPhotos.forEach(p => {
+          if (p && p.url && p.url.trim().length > 0) {
+            if (p.id) localMap.set(p.id, p);
+            if (p.photoId) localMap.set(p.photoId, p);
+            if (p.slotId) localMap.set(p.slotId, p);
+            if (p.inspectionItemId) localMap.set(p.inspectionItemId, p);
+          }
+        });
+        (this.currentData.photos || []).forEach(p => {
+          if (!p.url || p.url.trim().length === 0) {
+            const cached = localMap.get(p.photoId) || localMap.get(p.id) || localMap.get(p.slotId) || localMap.get(p.inspectionItemId);
+            if (cached && cached.url) {
+              p.url = cached.url;
+              if (cached.caption && (!p.caption || p.caption.trim() === '')) {
+                p.caption = cached.caption;
+              }
+            }
+          }
+        });
+      }
+    } catch (e) {
+      console.warn('Local PhotoDB merge notice in loadInitialData:', e);
+    }
+
+    // 6. Ensure non-empty photos are saved in PhotoDB
+    try {
+      if (Array.isArray(this.currentData.photos)) {
+        for (const p of this.currentData.photos) {
+          if (p && p.url && p.url.trim().length > 0) {
+            const pId = p.photoId || p.id || p.slotId || p.inspectionItemId;
+            if (pId) {
+              await PhotoDB.savePhoto({ id: pId, photoId: pId, ...p });
+            }
+          }
+        }
+      }
+    } catch (e) {}
   }
 
   saveDraftToLocalStorage(data, uid = null) {
@@ -881,6 +999,52 @@ class DashboardApp {
     const turb = this.currentData.turbine || {};
     const gen = this.currentData.generalInfo || {};
     const uid = this.currentUser?.uid || this.currentData.createdByUid;
+
+    // A. Re-hydrate any empty URLs from PhotoDB before saving so we never overwrite good photo data
+    try {
+      const cachedPhotos = await PhotoDB.getAllPhotos();
+      if (Array.isArray(cachedPhotos) && cachedPhotos.length > 0 && Array.isArray(this.currentData.photos)) {
+        const photoMap = new Map();
+        cachedPhotos.forEach(p => {
+          if (p && p.url && p.url.trim().length > 0) {
+            if (p.id) photoMap.set(p.id, p.url);
+            if (p.photoId) photoMap.set(p.photoId, p.url);
+            if (p.slotId) photoMap.set(p.slotId, p.url);
+            if (p.inspectionItemId) photoMap.set(p.inspectionItemId, p.url);
+          }
+        });
+        this.currentData.photos.forEach(p => {
+          if (!p.url || p.url.trim().length === 0) {
+            const cachedUrl = photoMap.get(p.photoId) || photoMap.get(p.id) || photoMap.get(p.slotId) || photoMap.get(p.inspectionItemId);
+            if (cachedUrl) p.url = cachedUrl;
+          }
+        });
+      }
+    } catch (rehydrateErr) {
+      console.warn('Photo re-hydration notice in syncActiveReportToDB:', rehydrateErr);
+    }
+
+    // B. Explicitly persist all attached photos in this.currentData.photos to PhotoDB
+    if (Array.isArray(this.currentData.photos) && this.currentData.photos.length > 0) {
+      try {
+        for (const p of this.currentData.photos) {
+          if (p && p.url && typeof p.url === 'string' && p.url.trim().length > 0) {
+            const pId = p.photoId || p.id || p.slotId || p.inspectionItemId;
+            if (pId) {
+              const photoRecord = {
+                ...p,
+                id: pId,
+                photoId: pId,
+                reportId: this.currentReportId || meta.reportId || 'TWS-REP'
+              };
+              await PhotoDB.savePhoto(photoRecord);
+            }
+          }
+        }
+      } catch (photoSaveErr) {
+        console.warn('PhotoDB bulk save notice in syncActiveReportToDB:', photoSaveErr);
+      }
+    }
 
     const record = {
       id: this.currentReportId,
@@ -1707,13 +1871,23 @@ class DashboardApp {
     try {
       const localPhotos = await PhotoDB.getAllPhotos();
       if (Array.isArray(localPhotos) && localPhotos.length > 0) {
-        const localMap = new Map(localPhotos.map(p => [p.id || p.photoId, p]));
+        const localMap = new Map();
+        localPhotos.forEach(p => {
+          if (p && p.url && p.url.trim().length > 0) {
+            if (p.id) localMap.set(p.id, p);
+            if (p.photoId) localMap.set(p.photoId, p);
+            if (p.slotId) localMap.set(p.slotId, p);
+            if (p.inspectionItemId) localMap.set(p.inspectionItemId, p);
+          }
+        });
         (this.currentData.photos || []).forEach(p => {
-          const key = p.photoId || p.id;
-          if (key && localMap.has(key)) {
-            const cached = localMap.get(key);
-            if (cached && cached.url && (!p.url || p.url.trim().length === 0)) {
+          if (!p.url || p.url.trim().length === 0) {
+            const cached = localMap.get(p.photoId) || localMap.get(p.id) || localMap.get(p.slotId) || localMap.get(p.inspectionItemId);
+            if (cached && cached.url) {
               p.url = cached.url;
+              if (cached.caption && (!p.caption || p.caption.trim() === '')) {
+                p.caption = cached.caption;
+              }
             }
           }
         });
@@ -1721,6 +1895,20 @@ class DashboardApp {
     } catch (e) {
       console.warn('Local PhotoDB merge notice:', e);
     }
+
+    // Persist any non-empty photos back to PhotoDB
+    try {
+      if (Array.isArray(this.currentData.photos)) {
+        for (const p of this.currentData.photos) {
+          if (p && p.url && p.url.trim().length > 0) {
+            const pid = p.photoId || p.id || p.slotId || p.inspectionItemId;
+            if (pid) {
+              await PhotoDB.savePhoto({ id: pid, photoId: pid, ...p });
+            }
+          }
+        }
+      }
+    } catch (e) {}
 
     this.saveDraftToLocalStorage(this.currentData, this.currentUser?.uid);
 
@@ -3162,8 +3350,6 @@ class DashboardApp {
           <div class="attached-photo-card">
             <div class="photo-preview-box">
               <img src="${p.url}" alt="${pointName}" onclick="app.openPreviewModalSingle('${p.url}')">
-              ${p.timestamp ? `<div class="photo-hud-timestamp">${p.timestamp}</div>` : ''}
-              ${group && group.title ? `<div class="photo-hud-category">${group.title.replace(/^\d+\.\s*/, '')}</div>` : ''}
             </div>
             <div class="photo-card-content">
               <div class="photo-card-title-row">

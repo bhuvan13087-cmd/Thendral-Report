@@ -30,7 +30,14 @@ class ThendralImageStore {
   }
 
   async savePhoto(photoObj) {
+    if (!photoObj) return;
     try {
+      if (!photoObj.id) {
+        photoObj.id = photoObj.photoId || photoObj.slotId || photoObj.inspectionItemId || ('p_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6));
+      }
+      if (!photoObj.photoId) {
+        photoObj.photoId = photoObj.id;
+      }
       const db = await this.openDB();
       return new Promise((resolve, reject) => {
         const tx = db.transaction([this.storeName], 'readwrite');
@@ -56,6 +63,22 @@ class ThendralImageStore {
       });
     } catch (err) {
       return [];
+    }
+  }
+
+  async getPhotoById(photoId) {
+    if (!photoId) return null;
+    try {
+      const db = await this.openDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction([this.storeName], 'readonly');
+        const store = tx.objectStore(this.storeName);
+        const req = store.get(photoId);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = (e) => reject(e.target.error);
+      });
+    } catch (err) {
+      return null;
     }
   }
 
@@ -260,8 +283,13 @@ const PhotoManager = {
       existingIndex = report.photos.findIndex(p => p && (p.inspectionItemId === itemId || (itemId && p.slotId === itemId)));
     }
     
+    const photoId = (existingIndex >= 0 && (report.photos[existingIndex].photoId || report.photos[existingIndex].id)) 
+      ? (report.photos[existingIndex].photoId || report.photos[existingIndex].id) 
+      : (photoMeta.photoId || photoMeta.id || 'p_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9));
+
     const normalizedRecord = {
-      photoId: (existingIndex >= 0 && report.photos[existingIndex].photoId) ? report.photos[existingIndex].photoId : (photoMeta.photoId || 'p_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9)),
+      id: photoId,
+      photoId: photoId,
       reportId: (report.meta && (report.meta.reportId || report.meta.reportDocNo)) || 'TWS-REP',
       sectionId: photoMeta.sectionId || 'general',
       inspectionItemId: itemId || '',
@@ -316,6 +344,8 @@ const PhotoManager = {
     const photo = report.photos.find(p => p && (p.photoId === photoId || p.id === photoId || p.slotId === photoId || p.inspectionItemId === photoId));
     if (photo) {
       photo.url = newUrl;
+      photo.id = photo.id || photo.photoId || photoId;
+      photo.photoId = photo.photoId || photo.id || photoId;
       if (newTimestamp) photo.timestamp = newTimestamp;
       photo.updatedAt = new Date().toISOString();
       return photo;
@@ -405,12 +435,14 @@ const PhotoManager = {
     });
   },
 
-  // Migration normalization: ensures all photos have photoId and proper labels
+  // Migration normalization: ensures all photos have photoId, id and proper labels
   populateSamplePhotos(report) {
     if (!report.photos) report.photos = [];
     report.photos.forEach((p, idx) => {
-      if (!p.photoId) p.photoId = 'p_' + (idx + 1) + '_' + Date.now();
+      if (!p.id) p.id = p.photoId || p.slotId || p.inspectionItemId || ('p_' + (idx + 1) + '_' + Date.now());
+      if (!p.photoId) p.photoId = p.id;
       if (!p.inspectionItemId && p.slotId) p.inspectionItemId = p.slotId;
+      if (!p.slotId && p.inspectionItemId) p.slotId = p.inspectionItemId;
       if (!p.label) p.label = this.getPhotoDisplayName(p, report.customSlots || []);
       if (!p.pointName) p.pointName = p.label;
     });
